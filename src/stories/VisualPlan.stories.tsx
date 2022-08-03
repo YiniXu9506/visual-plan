@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { VisualPlan } from '../index'
+import { VisualPlan } from '../VisualPlan'
 
 export default {
   title: 'Example/VisualPlan',
