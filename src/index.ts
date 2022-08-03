@@ -1,5 +1,3 @@
-const VisualPlan = null
+import { VisualPlan } from './VisualPlan'
 
 export { VisualPlan }
-
-export default VisualPlan
