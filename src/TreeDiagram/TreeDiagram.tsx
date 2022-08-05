@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import _ from 'lodash'
 import { AssignInternalProperties } from './utlis'
 import styles from './index.module.less'
 import { TreeDiagramProps, TreeNodeDatum } from './types'
@@ -196,7 +195,7 @@ const TreeDiagram = ({
 
   const handleNodeExpandBtnToggle = useCallback(
     (nodeId: string) => {
-      const data = treeNodeDatum.map(datum => _.clone(datum))
+      const data = treeNodeDatum.map(datum => ({ ...datum }))
 
       // @ts-ignore
       const matches = findNodesById(nodeId, data, [])

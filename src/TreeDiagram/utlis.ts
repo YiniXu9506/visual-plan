@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { flextree } from 'd3-flextree'
 import { hierarchy } from 'd3'
 
@@ -11,12 +10,14 @@ type nodeFlexSize = {
   height: number
 }
 
+let incrementId = 0
+
 export const AssignInternalProperties = (
   data: RawNodeDatum[],
   nodeFlexSize: nodeFlexSize
 ): TreeNodeDatum[] => {
   const d = Array.isArray(data) ? data : [data]
-  return d.map((n) => {
+  return d.map(n => {
     const nodeDatum = n as TreeNodeDatum
     // assign default properties.
     nodeDatum.__node_attrs = {
@@ -26,10 +27,10 @@ export const AssignInternalProperties = (
       isNodeDetailVisible: false,
       nodeFlexSize: {
         width: nodeFlexSize.width,
-        height: nodeFlexSize.height
-      }
+        height: nodeFlexSize.height,
+      },
     }
-    nodeDatum.__node_attrs.id = uuidv4()
+    nodeDatum.__node_attrs.id = `${++incrementId}`
 
     // If there are children, recursively assign properties to them too.
     if (nodeDatum.children && nodeDatum.children.length > 0) {
@@ -48,18 +49,18 @@ export const generateNodesAndLinks = (
   nodeMargin: nodeMarginType
 ) => {
   const tree = flextree({
-    nodeSize: (node) => {
+    nodeSize: node => {
       const _nodeSize = node.data.__node_attrs.nodeFlexSize
 
       return [
         _nodeSize.width + nodeMargin.siblingMargin,
-        _nodeSize.height + nodeMargin.childrenMargin
+        _nodeSize.height + nodeMargin.childrenMargin,
       ]
-    }
+    },
   })
 
   const rootNode = tree(
-    hierarchy(treeNodeDatum, (d) =>
+    hierarchy(treeNodeDatum, d =>
       d.__node_attrs.collapsed ? null : d.children
     )
   )

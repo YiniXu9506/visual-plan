@@ -1,5 +1,5 @@
-import React from 'react'
+import VisualPlan from './TreeDiagram'
 
-export const VisualPlan = () => <div>Visual Plan</div>
+export { VisualPlan }
 
 export default VisualPlan
