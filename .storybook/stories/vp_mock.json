@@ -1,0 +1,401 @@
+{
+    "ctes": [
+        {
+            "accessObjects": [],
+            "actRows": 9,
+            "children": [
+                {
+                    "accessObjects": [],
+                    "actRows": 9,
+                    "children": [
+                        {
+                            "accessObjects": [],
+                            "actRows": 9,
+                            "children": [
+                                {
+                                    "accessObjects": [
+                                        {
+                                            "scanObject": {
+                                                "database": "test2",
+                                                "table": "table1"
+                                            }
+                                        }
+                                    ],
+                                    "actRows": 9,
+                                    "copExecInfo": {
+                                        "scan_detail": {
+                                            "rocksdb": {
+                                                "block": {
+                                                    "cache_hit_count": "0",
+                                                    "read_byte": "0 Bytes",
+                                                    "read_count": "0"
+                                                },
+                                                "delete_skipped_count": "0",
+                                                "key_skipped_count": "9"
+                                            },
+                                            "total_keys": "10",
+                                            "total_process_keys": "9",
+                                            "total_process_keys_size": "477"
+                                        },
+                                        "tikv_task": {
+                                            "loops": "1",
+                                            "time": "1ms"
+                                        }
+                                    },
+                                    "cost": 487.5,
+                                    "diagnosis": [
+                                        "pseudo_est"
+                                    ],
+                                    "diskBytes": "N/A",
+                                    "duration": "1ms",
+                                    "estRows": 5,
+                                    "labels": [],
+                                    "memoryBytes": "N/A",
+                                    "name": "TableFullScan_15",
+                                    "operatorInfo": "keep order:false, stats:pseudo",
+                                    "rootBasicExecInfo": {},
+                                    "rootGroupExecInfo": [],
+                                    "storeType": "tikv",
+                                    "taskType": "cop"
+                                }
+                            ],
+                            "copExecInfo": {},
+                            "cost": 39.25,
+                            "diagnosis": [],
+                            "diskBytes": "N/A",
+                            "duration": "1.23ms",
+                            "estRows": 5,
+                            "labels": [],
+                            "memoryBytes": "411",
+                            "name": "TableReader_16",
+                            "operatorInfo": "data:TableFullScan_15",
+                            "rootBasicExecInfo": {
+                                "loops": "3",
+                                "time": "1.23ms"
+                            },
+                            "rootGroupExecInfo": [
+                                {
+                                    "cop_task": {
+                                        "copr_cache_hit_ratio": "0.00",
+                                        "distsql_concurrency": "15",
+                                        "max": "1.4ms",
+                                        "num": "1",
+                                        "proc_keys": "9",
+                                        "rpc_num": "1",
+                                        "rpc_time": "1.36ms",
+                                        "tot_proc": "1ms"
+                                    }
+                                }
+                            ],
+                            "storeType": "tidb",
+                            "taskType": "root"
+                        }
+                    ],
+                    "copExecInfo": {},
+                    "cost": 75.25,
+                    "diagnosis": [],
+                    "diskBytes": "N/A",
+                    "duration": "6.19ms",
+                    "estRows": 4,
+                    "labels": [
+                        "seedPart"
+                    ],
+                    "memoryBytes": "760",
+                    "name": "Selection_13",
+                    "operatorInfo": "not(isnull(test2.table1.a))",
+                    "rootBasicExecInfo": {
+                        "loops": "2",
+                        "time": "6.19ms"
+                    },
+                    "rootGroupExecInfo": [],
+                    "storeType": "tidb",
+                    "taskType": "root"
+                }
+            ],
+            "copExecInfo": {},
+            "diagnosis": [],
+            "diskBytes": "N/A",
+            "duration": "6.2ms",
+            "estRows": 4,
+            "labels": [],
+            "memoryBytes": "1520",
+            "name": "CTE_0",
+            "operatorInfo": "Non-Recursive CTE",
+            "rootBasicExecInfo": {
+                "loops": "3",
+                "time": "6.2ms"
+            },
+            "rootGroupExecInfo": [],
+            "storeType": "tidb",
+            "taskType": "root"
+        },
+        {
+            "accessObjects": [],
+            "actRows": 2,
+            "children": [
+                {
+                    "accessObjects": [],
+                    "actRows": 2,
+                    "children": [
+                        {
+                            "accessObjects": [],
+                            "actRows": 2,
+                            "children": [
+                                {
+                                    "accessObjects": [
+                                        {
+                                            "scanObject": {
+                                                "database": "test2",
+                                                "table": "table2"
+                                            }
+                                        }
+                                    ],
+                                    "actRows": 2,
+                                    "copExecInfo": {
+                                        "scan_detail": {
+                                            "rocksdb": {
+                                                "block": {
+                                                    "cache_hit_count": "0",
+                                                    "read_byte": "0 Bytes",
+                                                    "read_count": "0"
+                                                },
+                                                "delete_skipped_count": "0",
+                                                "key_skipped_count": "2"
+                                            },
+                                            "total_keys": "3",
+                                            "total_process_keys": "2",
+                                            "total_process_keys_size": "106"
+                                        },
+                                        "tikv_task": {
+                                            "loops": "1",
+                                            "time": "1ms"
+                                        }
+                                    },
+                                    "cost": 975000,
+                                    "diagnosis": [
+                                        "pseudo_est",
+                                        "high_est_error"
+                                    ],
+                                    "diskBytes": "N/A",
+                                    "duration": "1ms",
+                                    "estRows": 10000,
+                                    "labels": [],
+                                    "memoryBytes": "N/A",
+                                    "name": "TableFullScan_20",
+                                    "operatorInfo": "keep order:false, stats:pseudo",
+                                    "rootBasicExecInfo": {},
+                                    "rootGroupExecInfo": [],
+                                    "storeType": "tikv",
+                                    "taskType": "cop"
+                                }
+                            ],
+                            "copExecInfo": {},
+                            "cost": 75834.66666666667,
+                            "diagnosis": [],
+                            "diskBytes": "N/A",
+                            "duration": "1.29ms",
+                            "estRows": 10000,
+                            "labels": [],
+                            "memoryBytes": "296",
+                            "name": "TableReader_21",
+                            "operatorInfo": "data:TableFullScan_20",
+                            "rootBasicExecInfo": {
+                                "loops": "3",
+                                "time": "1.29ms"
+                            },
+                            "rootGroupExecInfo": [
+                                {
+                                    "cop_task": {
+                                        "copr_cache_hit_ratio": "0.00",
+                                        "distsql_concurrency": "15",
+                                        "max": "1.36ms",
+                                        "num": "1",
+                                        "proc_keys": "2",
+                                        "rpc_num": "1",
+                                        "rpc_time": "1.33ms",
+                                        "tot_proc": "1ms"
+                                    }
+                                }
+                            ],
+                            "storeType": "tidb",
+                            "taskType": "root"
+                        }
+                    ],
+                    "copExecInfo": {},
+                    "cost": 111852.66666666667,
+                    "diagnosis": [],
+                    "diskBytes": "N/A",
+                    "duration": "6.14ms",
+                    "estRows": 8000,
+                    "labels": [
+                        "seedPart"
+                    ],
+                    "memoryBytes": "760",
+                    "name": "Selection_18",
+                    "operatorInfo": "not(isnull(test2.table2.c))",
+                    "rootBasicExecInfo": {
+                        "loops": "2",
+                        "time": "6.14ms"
+                    },
+                    "rootGroupExecInfo": [],
+                    "storeType": "tidb",
+                    "taskType": "root"
+                }
+            ],
+            "copExecInfo": {},
+            "diagnosis": [],
+            "diskBytes": "N/A",
+            "duration": "6.16ms",
+            "estRows": 8000,
+            "labels": [],
+            "memoryBytes": "1520",
+            "name": "CTE_1",
+            "operatorInfo": "Non-Recursive CTE",
+            "rootBasicExecInfo": {
+                "loops": "3",
+                "time": "6.16ms"
+            },
+            "rootGroupExecInfo": [],
+            "storeType": "tidb",
+            "taskType": "root"
+        }
+    ],
+    "discardedDueToTooLong": false,
+    "main": {
+        "accessObjects": [],
+        "actRows": 6,
+        "children": [
+            {
+                "accessObjects": [],
+                "actRows": 9,
+                "children": [
+                    {
+                        "accessObjects": [
+                            {
+                                "otherObject": "CTE:cte1"
+                            }
+                        ],
+                        "actRows": 9,
+                        "copExecInfo": {},
+                        "diagnosis": [],
+                        "diskBytes": "N/A",
+                        "duration": "6.2ms",
+                        "estRows": 4,
+                        "labels": [],
+                        "memoryBytes": "1520",
+                        "name": "CTEFullScan_27",
+                        "operatorInfo": "data:CTE_0",
+                        "rootBasicExecInfo": {
+                            "loops": "3",
+                            "time": "6.2ms"
+                        },
+                        "rootGroupExecInfo": [],
+                        "storeType": "tidb",
+                        "taskType": "root"
+                    }
+                ],
+                "copExecInfo": {},
+                "cost": 87.25,
+                "diagnosis": [],
+                "diskBytes": "N/A",
+                "duration": "6.2ms",
+                "estRows": 3.2,
+                "labels": [
+                    "buildSide"
+                ],
+                "memoryBytes": "760",
+                "name": "Selection_26",
+                "operatorInfo": "not(isnull(test2.table1.a))",
+                "rootBasicExecInfo": {
+                    "loops": "2",
+                    "time": "6.2ms"
+                },
+                "rootGroupExecInfo": [],
+                "storeType": "tidb",
+                "taskType": "root"
+            },
+            {
+                "accessObjects": [],
+                "actRows": 2,
+                "children": [
+                    {
+                        "accessObjects": [
+                            {
+                                "otherObject": "CTE:cte2"
+                            }
+                        ],
+                        "actRows": 2,
+                        "copExecInfo": {},
+                        "diagnosis": [],
+                        "diskBytes": "N/A",
+                        "duration": "6.16ms",
+                        "estRows": 8000,
+                        "labels": [],
+                        "memoryBytes": "1520",
+                        "name": "CTEFullScan_29",
+                        "operatorInfo": "data:CTE_1",
+                        "rootBasicExecInfo": {
+                            "loops": "3",
+                            "time": "6.16ms"
+                        },
+                        "rootGroupExecInfo": [],
+                        "storeType": "tidb",
+                        "taskType": "root"
+                    }
+                ],
+                "copExecInfo": {},
+                "cost": 135852.6666666667,
+                "diagnosis": [],
+                "diskBytes": "N/A",
+                "duration": "6.18ms",
+                "estRows": 6400,
+                "labels": [
+                    "probeSide"
+                ],
+                "memoryBytes": "760",
+                "name": "Selection_28",
+                "operatorInfo": "not(isnull(test2.table2.c))",
+                "rootBasicExecInfo": {
+                    "loops": "2",
+                    "time": "6.18ms"
+                },
+                "rootGroupExecInfo": [],
+                "storeType": "tidb",
+                "taskType": "root"
+            }
+        ],
+        "copExecInfo": {},
+        "cost": 135969.9198666667,
+        "diagnosis": [],
+        "diskBytes": "N/A",
+        "duration": "19.3ms",
+        "estRows": 4,
+        "labels": [],
+        "memoryBytes": "18132",
+        "name": "HashJoin_25",
+        "operatorInfo": "inner join, equal:[eq(test2.table1.a, test2.table2.c)]",
+        "rootBasicExecInfo": {
+            "loops": "2",
+            "time": "19.3ms"
+        },
+        "rootGroupExecInfo": [
+            {
+                "build_hash_table": {
+                    "build": "12.5ms",
+                    "fetch": "6.29ms",
+                    "total": "18.8ms"
+                },
+                "probe": {
+                    "concurrency": "5",
+                    "fetch": "94.2ms",
+                    "max": "19.1ms",
+                    "probe": "322.4µs",
+                    "total": "94.5ms"
+                }
+            }
+        ],
+        "storeType": "tidb",
+        "taskType": "root"
+    },
+    "withRuntimeStats": true
+}

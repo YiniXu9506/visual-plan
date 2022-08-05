@@ -39,7 +39,12 @@ export interface TreeDiagramProps {
    * The root node object, in which child nodes (also of type `RawNodeDatum`)
    * are recursively defined in the `children` key.
    */
-  data: RawNodeDatum[]
+  data: {
+    main: RawNodeDatum
+    ctes?: RawNodeDatum[]
+    discardedDueToTooLong: boolean
+    withRuntimeStats: boolean
+  }
 
   /**
    * The dimensions of the tree container,

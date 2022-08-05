@@ -3,24 +3,23 @@ import { Button, Card } from 'antd'
 import {
   PlusOutlined,
   MinusOutlined,
-  ExclamationCircleFilled
+  ExclamationCircleFilled,
 } from '@ant-design/icons'
-import { toFixed } from '@baurine/grafana-value-formats'
-import { telemetry } from '@lib/apps/Statement/utils/telemetry'
+// import { toFixed } from '@baurine/grafana-value-formats'
 
 import styles from './DefaultNode.module.less'
 
 const collapsableButtonSize = {
   width: 60,
-  height: 30
+  height: 30,
 }
 
-export const DefaultNode = (nodeProps) => {
+export const DefaultNode = nodeProps => {
   const {
     nodeDatum,
     hierarchyPointNode,
     onNodeExpandBtnToggle,
-    onNodeDetailClick
+    onNodeDetailClick,
   } = nodeProps
   const { width: nodeWidth, height: nodeHeight } =
     nodeDatum.__node_attrs.nodeFlexSize
@@ -29,16 +28,14 @@ export const DefaultNode = (nodeProps) => {
   const nodeTranslate = {
     x: x - nodeWidth / 2,
     y: y,
-    k: 1
+    k: 1,
   }
 
   const handleExpandBtnToggleOnClick = (e, node) => {
-    telemetry.toggleExpandBtnOnNode(node.name)
     onNodeExpandBtnToggle(node.__node_attrs.id)
   }
 
   const handleOnNodeDetailClick = (e, node) => {
-    telemetry.clickNode(node.name)
     onNodeDetailClick(node)
   }
 
@@ -84,12 +81,12 @@ export const DefaultNode = (nodeProps) => {
               size="small"
               title={nodeDatum.name}
               extra={
-                nodeDatum.diagnosis.length > 0 && (
+                nodeDatum.diagnosis?.length > 0 && (
                   <>
                     <ExclamationCircleFilled
                       style={{ color: '#fa7070', paddingRight: 5 }}
                     />
-                    {nodeDatum.diagnosis.length}
+                    {nodeDatum.diagnosis?.length}
                   </>
                 )
               }
@@ -97,9 +94,9 @@ export const DefaultNode = (nodeProps) => {
               style={{
                 width: nodeWidth,
                 height: nodeHeight - collapsableButtonSize.height,
-                position: 'initial'
+                position: 'initial',
               }}
-              onClick={(e) => handleOnNodeDetailClick(e, nodeDatum)}
+              onClick={e => handleOnNodeDetailClick(e, nodeDatum)}
               headStyle={{ backgroundColor: headColor(nodeDatum.storeType) }}
             >
               <div className={styles.cardContentP}>
@@ -109,7 +106,8 @@ export const DefaultNode = (nodeProps) => {
                 Actual Rows: <span>{nodeDatum.actRows}</span>
               </div>
               <div className={styles.cardContentP}>
-                Estimate Rows: <span>{toFixed(nodeDatum.estRows)}</span>
+                {/* Estimate Rows: <span>{toFixed(nodeDatum.estRows)}</span> */}
+                Estimate Rows: <span>{nodeDatum.estRows}</span>
               </div>
               <div className={styles.cardContentP}>
                 Run at: <span>{nodeDatum.storeType}</span>
@@ -121,9 +119,9 @@ export const DefaultNode = (nodeProps) => {
                   width: collapsableButtonSize.width,
                   height: collapsableButtonSize.height,
                   marginLeft: (nodeWidth - 60) / 2,
-                  position: 'initial'
+                  position: 'initial',
                 }}
-                onClick={(e) => handleExpandBtnToggleOnClick(e, nodeDatum)}
+                onClick={e => handleExpandBtnToggleOnClick(e, nodeDatum)}
               >
                 {nodeDatum.__node_attrs.collapsed ? (
                   <PlusOutlined />

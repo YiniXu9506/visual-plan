@@ -30,7 +30,7 @@ const MainChart = ({
   nodeMargin,
   adjustPosition,
   zoomToFitViewportScale,
-  getTreePosition
+  getTreePosition,
 }: MainChartProps) => {
   return (
     <svg
@@ -55,7 +55,7 @@ const MainChart = ({
               customNodeElement,
               onNodeExpandBtnToggle,
               onNodeDetailClick,
-              getTreePosition
+              getTreePosition,
             }}
           />
         </g>

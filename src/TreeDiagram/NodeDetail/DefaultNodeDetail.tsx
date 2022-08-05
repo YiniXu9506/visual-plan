@@ -1,36 +1,19 @@
 import React from 'react'
 
 import ReactJson from 'react-json-view'
-import { toFixed, getValueFormat } from '@baurine/grafana-value-formats'
+// import { toFixed, getValueFormat } from '@baurine/grafana-value-formats'
 import { Tabs, Tooltip } from 'antd'
 import { InfoCircleTwoTone } from '@ant-design/icons'
 
-import { addTranslations } from '@lib/utils/i18n'
-import { useTranslation } from 'react-i18next'
-import translations from '../translations'
-import { telemetry } from '@lib/apps/Statement/utils/telemetry'
-
-addTranslations(translations)
-
-export const DefaultNodeDetail = (nodeDetailProps) => {
+export const DefaultNodeDetail = nodeDetailProps => {
   const nodeDatum = nodeDetailProps.data
-  const { t } = useTranslation()
 
   return (
-    <Tabs
-      defaultActiveKey="1"
-      type="card"
-      size="middle"
-      onTabClick={(key) => telemetry.clickTabOnNodeDetail(key)}
-    >
-      <Tabs.TabPane
-        tab={t(`binary_plan.tabs.general`)}
-        key="1"
-        style={{ padding: '1rem' }}
-      >
+    <Tabs defaultActiveKey="1" type="card" size="middle">
+      <Tabs.TabPane tab="General" key="1" style={{ padding: '1rem' }}>
         <p>
           Duration{' '}
-          <Tooltip title={t(`binary_plan.tooltip.duration`)}>
+          <Tooltip title="The time taken by the parent operator includes the time taken by all children.">
             <InfoCircleTwoTone style={{ paddingRight: 5 }} />
           </Tooltip>
           : <span>{nodeDatum.duration} </span>
@@ -40,37 +23,34 @@ export const DefaultNodeDetail = (nodeDetailProps) => {
           Actual Rows: <span>{nodeDatum.actRows}</span>
         </p>
         <p>
-          Estimate Rows: <span>{toFixed(nodeDatum.estRows, 0)}</span>
+          {/* Estimate Rows: <span>{toFixed(nodeDatum.estRows, 0)}</span> */}
+          Estimate Rows: <span>{nodeDatum.estRows}</span>
         </p>
         <p>
           Run at: <span>{nodeDatum.storeType}</span>
         </p>
         {nodeDatum.cost && (
           <p>
-            Cost: <span>{toFixed(nodeDatum.cost, 0)}</span>
+            Cost: <span>{nodeDatum.cost}</span>
           </p>
         )}
       </Tabs.TabPane>
-      <Tabs.TabPane
-        tab={t(`binary_plan.tabs.hardware_usage`)}
-        key="2"
-        style={{ padding: '1rem' }}
-      >
+      <Tabs.TabPane tab="Hardware Usage" key="2" style={{ padding: '1rem' }}>
         <p>
           Disk:{' '}
-          <span>
+          {/* <span>
             {getValueFormat('deckbytes')(nodeDatum.diskBytes, 2, null)}{' '}
-          </span>
+          </span> */}
         </p>
         <p>
           Memory:{' '}
-          <span>
+          {/* <span>
             {getValueFormat('deckbytes')(nodeDatum.memoryBytes, 2, null)}{' '}
-          </span>
+          </span> */}
         </p>
       </Tabs.TabPane>
       <Tabs.TabPane
-        tab={t(`binary_plan.tabs.advanced_info`)}
+        tab="Advanced Information"
         key="3"
         style={{ padding: '1rem' }}
       >
@@ -154,11 +134,12 @@ export const DefaultNodeDetail = (nodeDetailProps) => {
         )}
       </Tabs.TabPane>
       {nodeDatum.diagnosis.length > 0 && (
-        <Tabs.TabPane tab={t(`binary_plan.tabs.diagnosis`)} key="4">
+        <Tabs.TabPane tab="Diagnosis" key="4">
           <ol type="1">
             {nodeDatum.diagnosis.map((d, idx) => (
               <li key={idx} style={{ padding: '1rem 0' }}>
-                {t(`binary_plan.diagnosis.${d}`)}
+                {d}
+                {/* {t(`binary_plan.diagnosis.${d}`)} */}
               </li>
             ))}
           </ol>

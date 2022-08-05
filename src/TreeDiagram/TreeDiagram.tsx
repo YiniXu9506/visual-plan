@@ -37,9 +37,9 @@ const findNodesById = (
   if (hits.length > 0) {
     return hits
   }
-  hits = hits.concat(nodeSet.filter((node) => node.__node_attrs.id === nodeId))
+  hits = hits.concat(nodeSet.filter(node => node.__node_attrs.id === nodeId))
 
-  nodeSet.forEach((node) => {
+  nodeSet.forEach(node => {
     if (node.children && node.children.length > 0) {
       hits = findNodesById(nodeId, node.children, hits)
     }
@@ -54,7 +54,7 @@ const expandSpecificNode = (nodeDatum: TreeNodeDatum) => {
 const collapseAllDescententNodes = (nodeDatum: TreeNodeDatum) => {
   nodeDatum.__node_attrs.collapsed = true
   if (nodeDatum.children && nodeDatum.children.length > 0) {
-    nodeDatum.children.forEach((child) => {
+    nodeDatum.children.forEach(child => {
       collapseAllDescententNodes(child)
     })
   }
@@ -70,7 +70,7 @@ const TreeDiagram = ({
   customNodeElement = DefaultNode,
   customLinkElement = DefaultLink,
   customNodeDetailElement = DefaultNodeDetail,
-  gapBetweenTrees
+  gapBetweenTrees,
 }: TreeDiagramProps) => {
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [showNodeDetail, setShowNodeDetail] = useState(false)
@@ -85,13 +85,13 @@ const TreeDiagram = ({
   const [multiTreesTranslate, setMultiTreesTranslate] = useState({
     x: 0,
     y: 0,
-    k: 1
+    k: 1,
   })
 
   // Sets the bound of entire tree
   const [multiTreesBound, setMultiTreesBound] = useState({
     width: 0,
-    height: 0
+    height: 0,
   })
 
   const treeDiagramContainerRef = useRef<HTMLDivElement>(null)
@@ -131,7 +131,7 @@ const TreeDiagram = ({
     setMultiTreesTranslate({
       x: minimapScaleX(zoomScale)(-brushX)!,
       y: minimapScaleY(zoomScale)(-brushY)!,
-      k: zoomScale
+      k: zoomScale,
     })
   }
 
@@ -162,8 +162,8 @@ const TreeDiagram = ({
       [minimapScaleX(t.k).invert(-t.x), minimapScaleY(t.k).invert(-t.y)],
       [
         minimapScaleX(t.k).invert(-t.x + multiTreesViewport.width),
-        minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height)
-      ]
+        minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height),
+      ],
     ])
   }
 
@@ -194,7 +194,7 @@ const TreeDiagram = ({
 
   const handleNodeExpandBtnToggle = useCallback(
     (nodeId: string) => {
-      const data = treeNodeDatum.map((datum) => _.clone(datum))
+      const data = treeNodeDatum.map(datum => _.clone(datum))
 
       // @ts-ignore
       const matches = findNodesById(nodeId, data, [])
@@ -212,14 +212,14 @@ const TreeDiagram = ({
     [treeNodeDatum]
   )
 
-  const handleOnNodeDetailClick = useCallback((node) => {
+  const handleOnNodeDetailClick = useCallback(node => {
     setShowNodeDetail(true)
     setSelectedNodeDetail(node)
   }, [])
 
   // Updates multiTrees bound and returns single tree position, which contains root point and offset to original point [0,0].
   const getInitSingleTreeBound = useCallback(
-    (treeIdx) => {
+    treeIdx => {
       let offset = 0
       let multiTreesBound: rectBound = { width: 0, height: 0 }
       const singleTreeGroupNode = select(
@@ -232,7 +232,7 @@ const TreeDiagram = ({
         x: x,
         y: y,
         width: width,
-        height: height
+        height: height,
       }
 
       for (let i = treeIdx; i > 0; i--) {
@@ -256,7 +256,7 @@ const TreeDiagram = ({
       setMultiTreesBound({
         width: multiTreesBound.width + width,
         height:
-          multiTreesBound.height > height ? multiTreesBound.height : height
+          multiTreesBound.height > height ? multiTreesBound.height : height,
       })
 
       return { x, y, offset }
@@ -278,13 +278,14 @@ const TreeDiagram = ({
       height:
         k > 1
           ? (multiTreesViewport.height - multiTreesBound.height) / 2
-          : (multiTreesViewport.height - multiTreesBound.height * k) / 2
+          : (multiTreesViewport.height - multiTreesBound.height * k) / 2,
     })
   }
 
   useEffect(() => {
+    const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(data, nodeSize!)
+    const treeNodes = AssignInternalProperties(_data, nodeSize!)
     setTreeNodeDatum(treeNodes)
   }, [data, nodeSize])
 
@@ -292,7 +293,7 @@ const TreeDiagram = ({
     if (treeDiagramContainerRef.current) {
       setMultiTreesViewport({
         width: treeDiagramContainerRef.current?.clientWidth,
-        height: treeDiagramContainerRef.current?.clientHeight
+        height: treeDiagramContainerRef.current?.clientHeight,
       })
       getZoomToFitViewPortScale()
       bindZoomListener()
@@ -371,9 +372,9 @@ TreeDiagram.defaultProps = {
   minimapScale: 0.15,
   nodeMargin: {
     siblingMargin: 40,
-    childrenMargin: 60
+    childrenMargin: 60,
   },
-  gapBetweenTrees: 100
+  gapBetweenTrees: 100,
 }
 
 export default TreeDiagram
