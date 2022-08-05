@@ -10,6 +10,8 @@ import NodeWrapperDetail from './NodeDetail/NodeDetailWrapper'
 
 import { Drawer } from 'antd'
 
+import 'antd/dist/antd.css'
+
 // imports d3 APIs
 import { zoom as d3Zoom, zoomIdentity } from 'd3'
 import { brush as d3Brush } from 'd3'
