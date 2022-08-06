@@ -12,7 +12,7 @@ npm i -S visual-plan
 
 ```tsx
 import VisualPlan from 'visual-plan'
-import 'visual-plan/index.css'
+import 'visual-plan/dist/index.css'
 
 // ...
 ```

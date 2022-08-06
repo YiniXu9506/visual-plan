@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { VisualPlan } from '../../src'
-import '../../src/style/index.less'
 import mockData from './vp_mock.json'
 
 export default {
