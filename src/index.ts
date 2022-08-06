@@ -1,4 +1,4 @@
-import { VisualPlan } from './VisualPlan'
+import VisualPlan from './VisualPlan'
 
 import './style/index.less'
 
