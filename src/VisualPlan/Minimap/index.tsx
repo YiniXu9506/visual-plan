@@ -4,15 +4,21 @@ import { brush as d3Brush, BrushBehavior } from 'd3'
 import { zoom as d3Zoom, zoomIdentity, zoomTransform } from 'd3'
 
 import { Trees } from '../MemorizedTrees'
-import { rectBound, TreeNodeDatum, nodeMarginType } from '../types'
+import {
+  RectSize,
+  TreeNodeDatum,
+  NodeMargin,
+  NodeProps,
+  LinkProps,
+} from '../types'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]
   classNamePrefix: string
-  viewport: rectBound
-  multiTreesBound: rectBound
-  customLinkElement: JSX.Element
-  customNodeElement: JSX.Element
+  viewport: RectSize
+  multiTreesBound: RectSize
+  customLink: LinkProps
+  customNode: NodeProps
   minimapScale: number
   minimapScaleX?: any
   minimapScaleY?: any
@@ -24,10 +30,10 @@ interface MinimapProps {
   ) => void
   brushBehavior?: BrushBehavior<any>
   brushRef?: Ref<SVGGElement>
-  adjustPosition: rectBound
+  adjustPosition: RectSize
   zoomToFitViewportScale: number
   getTreePosition: (idx: number) => any
-  nodeMargin?: nodeMarginType
+  nodeMargin?: NodeMargin
 }
 
 const Minimap = ({
@@ -35,9 +41,8 @@ const Minimap = ({
   classNamePrefix,
   viewport,
   multiTreesBound,
-  nodeMargin,
-  customLinkElement,
-  customNodeElement,
+  customLink,
+  customNode,
   minimapScale,
   minimapScaleX,
   minimapScaleY,
@@ -46,11 +51,11 @@ const Minimap = ({
   adjustPosition,
   zoomToFitViewportScale,
   getTreePosition,
-  brushRef
+  brushRef,
 }: MinimapProps) => {
   const minimapContainer = {
     width: viewport.width * minimapScale,
-    height: viewport.height * minimapScale
+    height: viewport.height * minimapScale,
   }
   const { width: multiTreesBoundWidth, height: multiTreesBoundHeight } =
     multiTreesBound
@@ -127,7 +132,7 @@ const Minimap = ({
     // init brush seletion
     brushBehavior.move(brushSelection, [
       [0, 0],
-      [viewport.width, viewport.height]
+      [viewport.width, viewport.height],
     ])
   }
 
@@ -172,11 +177,11 @@ const Minimap = ({
             <Trees
               {...{
                 treeNodeDatum,
-                nodeMargin: nodeMargin!,
                 zoomToFitViewportScale,
-                customLinkElement,
-                customNodeElement,
-                getTreePosition
+                customLink,
+                customNode,
+                // onNodeDetailClick,
+                getTreePosition,
               }}
             />
           </g>

@@ -8,7 +8,7 @@ interface MultiTreesProps {
   zoomToFitViewportScale: number
   customLink: LinkProps
   customNode: NodeProps
-  toggleNode: (nodeId: string) => void
+  toggleNode?: (nodeId: string) => void
   // onNodeDetailClick?: (node: TreeNodeDatum) => void
   getTreePosition: (treeIdx: number) => any
 }
@@ -31,7 +31,7 @@ const _Trees = ({
         zoomToFitViewportScale={zoomToFitViewportScale}
         customLink={customLink}
         customNode={customNode}
-        toggleNode={toggleNode}
+        toggleNode={toggleNode!}
         // onNodeDetailClick={onNodeDetailClick!}
         getTreePosition={getTreePosition}
       />

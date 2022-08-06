@@ -2,17 +2,17 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import {
   TreeNodeDatum,
   ThemeType,
-  NodeType,
-  LinkType,
   BinaryPlan,
   NodeProps,
   LinkProps,
   RectSize,
+  NodeType,
 } from './types'
 
 import { DefaultNode } from './Node/DefaultNode'
 import { DefaultLink } from './Link/DefaultLink'
 import MainChart from './MainChart'
+import Minimap from './Minimap'
 
 import style from './index.module.less'
 
@@ -23,7 +23,14 @@ import {
   collapseAllDescententNodes,
 } from './utlis'
 
-import { select, zoom as d3Zoom, zoomIdentity, event } from 'd3'
+import {
+  select,
+  zoom as d3Zoom,
+  zoomIdentity,
+  event,
+  scaleLinear,
+  brush as d3Brush,
+} from 'd3'
 
 interface VisualPlanProps {
   // node raw data
@@ -65,6 +72,7 @@ const VisualPlan = ({
   data,
   customNode,
   customLink,
+  minimap,
   onNodeClick,
   cte,
 }: VisualPlanProps) => {
@@ -95,6 +103,8 @@ const VisualPlan = ({
   // A SVG container for main chart
   const multiTreesSVGSelection = select('.multiTreesSVG')
   const treeDiagramContainerRef = useRef<HTMLDivElement>(null)
+  const brushRef = useRef<SVGGElement>(null)
+  const brushSelection = select(brushRef.current!)
 
   const getZoomToFitViewPortScale = () => {
     const widthRatio = multiTreesViewport.width / multiTreesBound.width
@@ -166,13 +176,13 @@ const VisualPlan = ({
     setMultiTreesTranslate(t)
 
     // Moves brush on minimap when zoom behavior is triggered.
-    // brushBehavior.move(brushSelection, [
-    //   [minimapScaleX(t.k).invert(-t.x), minimapScaleY(t.k).invert(-t.y)],
-    //   [
-    //     minimapScaleX(t.k).invert(-t.x + multiTreesViewport.width),
-    //     minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height),
-    //   ],
-    // ])
+    brushBehavior.move(brushSelection, [
+      [minimapScaleX(t.k).invert(-t.x), minimapScaleY(t.k).invert(-t.y)],
+      [
+        minimapScaleX(t.k).invert(-t.x + multiTreesViewport.width),
+        minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height),
+      ],
+    ])
   }
 
   // TODO: Limits zoom extent
@@ -191,6 +201,9 @@ const VisualPlan = ({
         .scale(multiTreesTranslate.k)
     )
   }
+
+  // Limits brush move extent
+  const brushBehavior = d3Brush()
 
   const handleNodeToggle = useCallback(
     (nodeId: string) => {
@@ -211,6 +224,39 @@ const VisualPlan = ({
     },
     [treeNodeDatum]
   )
+
+  /**
+   *
+   * @param zoomScale
+   * @returns a continuous linear scale function to calculate the corresponding width in mainChart or minimap
+   *
+   * minimapScaleX(zoomScale)(widthOnMinimap) will return corresponding widthOnMainChart
+   * minimapScaleX(zoomScale).invert(widthOnMainChart) will return corresponding widthOnMinimap
+   */
+  const minimapScaleX = (zoomScale: number) => {
+    return scaleLinear()
+      .domain([0, multiTreesBound.width])
+      .range([0, multiTreesBound.width * zoomScale])
+  }
+
+  // Creates a continuous linear scale to calculate the corresponse height in mainChart or minimap
+  const minimapScaleY = (zoomScale: number) => {
+    return scaleLinear()
+      .domain([0, multiTreesBound.height])
+      .range([0, multiTreesBound.height * zoomScale])
+  }
+
+  const handleUpdateTreeTranslate = (
+    zoomScale: number,
+    brushX: number,
+    brushY: number
+  ) => {
+    setMultiTreesTranslate({
+      x: minimapScaleX(zoomScale)(-brushX)!,
+      y: minimapScaleY(zoomScale)(-brushY)!,
+      k: zoomScale,
+    })
+  }
 
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
@@ -245,6 +291,26 @@ const VisualPlan = ({
         adjustPosition={adjustPosition}
         zoomToFitViewportScale={zoomToFitViewportScale}
       />
+      {minimap && multiTreesViewport.height && (
+        <Minimap
+          treeNodeDatum={treeNodeDatum}
+          classNamePrefix="minimapMultiTrees"
+          viewport={multiTreesViewport}
+          customLink={customLink!}
+          customNode={customNode!}
+          multiTreesBound={multiTreesBound}
+          minimapScale={minimap['scale']}
+          minimapScaleX={minimapScaleX}
+          minimapScaleY={minimapScaleY}
+          multiTreesSVG={multiTreesSVGSelection}
+          updateTreeTranslate={handleUpdateTreeTranslate}
+          brushBehavior={brushBehavior}
+          brushRef={brushRef}
+          adjustPosition={adjustPosition}
+          zoomToFitViewportScale={zoomToFitViewportScale}
+          getTreePosition={getInitSingleTreeBound}
+        />
+      )}
     </div>
   )
 }
@@ -256,7 +322,7 @@ VisualPlan.defaultProps = {
     gap: 100,
   },
   theme: 'light',
-  minimap: false,
+  minimap: { scale: 0.15 },
 }
 
 export default VisualPlan
