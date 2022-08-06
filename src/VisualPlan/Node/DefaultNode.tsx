@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Card } from 'antd'
+import Card from 'antd/es/card'
+import 'antd/lib/card/style/index.css'
 import {
   PlusOutlined,
   MinusOutlined,
@@ -112,7 +113,8 @@ const RenderDefaultNodeElement = (
               </div>
             </Card>
             {nodeDatum.__node_attrs.collapsiable && (
-              <Button
+              <button
+                className="vp-btn"
                 style={{
                   width: collapsableButtonSize.width,
                   height: collapsableButtonSize.height,
@@ -126,7 +128,7 @@ const RenderDefaultNodeElement = (
                 ) : (
                   <MinusOutlined />
                 )}
-              </Button>
+              </button>
             )}
           </div>
         </foreignObject>
