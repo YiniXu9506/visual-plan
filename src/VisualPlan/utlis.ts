@@ -1,13 +1,13 @@
 import { flextree } from 'd3-flextree'
 import { hierarchy } from 'd3'
 
-import { RawNodeDatum, TreeNodeDatum, nodeMarginType, rectSize } from './types'
+import { RawNodeDatum, TreeNodeDatum, NodeMargin, RectSize } from './types'
 
 let incrementId = 0
 
 export const AssignInternalProperties = (
   data: RawNodeDatum[],
-  nodeFlexSize: rectSize
+  nodeFlexSize: RectSize
 ): TreeNodeDatum[] => {
   const d = Array.isArray(data) ? data : [data]
   return d.map(n => {
@@ -39,7 +39,7 @@ export const AssignInternalProperties = (
 
 export const generateNodesAndLinks = (
   treeNodeDatum: TreeNodeDatum,
-  nodeMargin: nodeMarginType
+  nodeMargin: NodeMargin
 ) => {
   const tree = flextree({
     nodeSize: node => {
@@ -62,4 +62,35 @@ export const generateNodesAndLinks = (
   const links = rootNode.links()
 
   return { nodes, links }
+}
+
+export const findNodesById = (
+  nodeId: string,
+  nodeSet: TreeNodeDatum[],
+  hits: TreeNodeDatum[]
+) => {
+  if (hits.length > 0) {
+    return hits
+  }
+  hits = hits.concat(nodeSet.filter(node => node.__node_attrs.id === nodeId))
+
+  nodeSet.forEach(node => {
+    if (node.children && node.children.length > 0) {
+      hits = findNodesById(nodeId, node.children, hits)
+    }
+  })
+  return hits
+}
+
+export const expandSpecificNode = (nodeDatum: TreeNodeDatum) => {
+  nodeDatum.__node_attrs.collapsed = false
+}
+
+export const collapseAllDescententNodes = (nodeDatum: TreeNodeDatum) => {
+  nodeDatum.__node_attrs.collapsed = true
+  if (nodeDatum.children && nodeDatum.children.length > 0) {
+    nodeDatum.children.forEach(child => {
+      collapseAllDescententNodes(child)
+    })
+  }
 }

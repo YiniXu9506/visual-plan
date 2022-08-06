@@ -1,9 +1,12 @@
 import React from 'react'
 
 import styles from './DefaultLink.module.less'
+import { TreeNodeDatum } from '../types'
 
-export const DefaultLink = (linkProps) => {
-  const { data: link } = linkProps
+import { HierarchyPointLink } from 'd3'
+
+export const RenderDefaultLinkElement = (hierarchyPointLink: HierarchyPointLink<TreeNodeDatum>) => {
+  const link = hierarchyPointLink
   // Draws lines between parent and child node
   // Generates horizontal diagonal - play with it here - https://observablehq.com/@bumbeishvili/curved-edges-horizontal-d3-v3-v4-v5-v6
   function diagonal(s, t) {
@@ -54,4 +57,8 @@ export const DefaultLink = (linkProps) => {
       />
     </React.Fragment>
   )
+}
+
+export const DefaultLink = {
+  renderLinkElement: RenderDefaultLinkElement
 }

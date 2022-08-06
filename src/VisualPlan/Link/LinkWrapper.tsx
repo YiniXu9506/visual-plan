@@ -1,16 +1,18 @@
 import React from 'react'
+import { TreeNodeDatum } from '../types'
+import { HierarchyPointLink } from 'd3'
 
-const LinksWrapper = (props) => {
-  const { data, renderCustomLinkElement } = props
+interface LinkWrapperProps {
+  data: HierarchyPointLink<TreeNodeDatum>
+  renderCustomLinkElement: (node: HierarchyPointLink<TreeNodeDatum>) => JSX.Element
+}
+ 
 
-  const renderLink = () => {
-    const linkProps = {
-      data: data
-    }
-
-    return renderCustomLinkElement(linkProps)
-  }
-  return <>{renderLink()}</>
+const LinksWrapper = ({
+  data: hierarchyPointLink,
+  renderCustomLinkElement
+}: LinkWrapperProps) => {
+  return <>{renderCustomLinkElement(hierarchyPointLink)}</>
 }
 
 export default LinksWrapper

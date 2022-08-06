@@ -1,4 +1,11 @@
-import { HierarchyNode } from 'd3'
+import { HierarchyPointNode, HierarchyPointLink } from 'd3'
+
+export interface Translate {
+  x: number
+  y: number
+  k: number
+}
+
 export interface NodeType {
   children: NodeType[] | null
   data: RawNodeDatum
@@ -16,12 +23,12 @@ export interface LinkType {
 
 export type ThemeType = 'dark' | 'light'
 
-export interface rectSize {
+export interface RectSize {
   width: number
   height: number
 }
 
-export interface nodeMarginType {
+export interface NodeMargin {
   siblingMargin: number
   childrenMargin: number
 }
@@ -69,6 +76,11 @@ export interface BinaryPlan {
 }
 
 export interface NodeProps {
-  nodeSize: rectSize
-  renderNodeElement: (node: HierarchyNode<TreeNodeDatum>) => JSX.Element
+  nodeSize: RectSize
+  nodeMargin: NodeMargin
+  renderNodeElement: (node: HierarchyPointNode<TreeNodeDatum>) => JSX.Element
+}
+
+export interface LinkProps {
+  renderLinkElement: (link: HierarchyPointLink<TreeNodeDatum>) => JSX.Element
 }

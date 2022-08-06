@@ -3,28 +3,25 @@ import { TreeNodeDatum } from '../types'
 import { HierarchyPointNode } from 'd3'
 
 interface NodeWrapperProps {
-  nodeData: HierarchyPointNode<TreeNodeDatum>
-  renderCustomNodeElement: (node: HierarchyPointNode<TreeNodeDatum>) => JSX.Element
-  zoomScale?: number
-  onNodeExpandBtnToggle?: (nodeId: string) => void
-  onNodeDetailClick?: (node: TreeNodeDatum) => void
+  data: HierarchyPointNode<TreeNodeDatum>
+  toggleNode: (nodeId: string) => void
+  renderCustomNodeElement: (
+    node: HierarchyPointNode<TreeNodeDatum>,
+    handleNodeToggle: () => void
+  ) => JSX.Element
+  // zoomScale?: number
+  // onNodeDetailClick?: (node: TreeNodeDatum) => void
 }
 
 const NodeWrapper = ({
-  nodeData,
-  renderCustomNodeElement
+  data: hierarchyPointNode,
+  toggleNode,
+  renderCustomNodeElement,
 }: NodeWrapperProps) => {
-  // const renderNode = () => {
-  //   const nodeProps = {
-  //     hierarchyPointNode: hierarchyPointNode,
-  //     onNodeExpandBtnToggle: onNodeExpandBtnToggle,
-  //     onNodeDetailClick: onNodeDetailClick
-  //   }
-
-  //   return renderCustomNodeElement(nodeProps)
-  // }
-
-  return <>{renderCustomNodeElement(nodeData)}</>
+  const handleNodeToggle = () => {
+    toggleNode(hierarchyPointNode.data.__node_attrs.id)
+  }
+  return <>{renderCustomNodeElement(hierarchyPointNode, handleNodeToggle)}</>
 }
 
 export default NodeWrapper

@@ -9,29 +9,22 @@ import {
 
 import styles from './DefaultNode.module.less'
 
-import { rectSize, TreeNodeDatum } from '../types'
+import { RectSize, TreeNodeDatum } from '../types'
 
-import {HierarchyNode} from 'd3'
+import { HierarchyPointNode } from 'd3'
 
 const collapsableButtonSize = {
   width: 60,
   height: 30,
 }
 
-interface NodeProps {
-  nodeSize: rectSize
-  renderNodeElement: (node: HierarchyNode<TreeNodeDatum>) => JSX.Element
-}
-
-export const DefaultNode = (nodeProps: NodeProps) => {
-  const {
-    nodeSize,
-    renderNodeElement,
-    // onNodeExpandBtnToggle,
-    // onNodeDetailClick,
-  } = nodeProps
+const RenderDefaultNodeElement = (
+  hierarchyPointNode: HierarchyPointNode<TreeNodeDatum>,
+  handleNodeToggle
+) => {
+  const nodeDatum = hierarchyPointNode.data
   const { width: nodeWidth, height: nodeHeight } =
-  hierarchyPointNode.data.__node_attrs.nodeFlexSize
+    nodeDatum.__node_attrs.nodeFlexSize!
 
   const { x, y } = hierarchyPointNode
   const nodeTranslate = {
@@ -39,10 +32,6 @@ export const DefaultNode = (nodeProps: NodeProps) => {
     y: y,
     k: 1,
   }
-
-  // const handleExpandBtnToggleOnClick = (e, node) => {
-  //   onNodeExpandBtnToggle(node.__node_attrs.id)
-  // }
 
   // const handleOnNodeDetailClick = (e, node) => {
   //   onNodeDetailClick(node)
@@ -130,7 +119,7 @@ export const DefaultNode = (nodeProps: NodeProps) => {
                   marginLeft: (nodeWidth - 60) / 2,
                   position: 'initial',
                 }}
-                // onClick={e => handleExpandBtnToggleOnClick(e, nodeDatum)}
+                onClick={handleNodeToggle}
               >
                 {nodeDatum.__node_attrs.collapsed ? (
                   <PlusOutlined />
@@ -144,4 +133,13 @@ export const DefaultNode = (nodeProps: NodeProps) => {
       </g>
     </React.Fragment>
   )
+}
+
+export const DefaultNode = {
+  nodeSize: { width: 250, height: 180 },
+  nodeMargin: {
+    siblingMargin: 40,
+    childrenMargin: 60,
+  },
+  renderNodeElement: RenderDefaultNodeElement,
 }
