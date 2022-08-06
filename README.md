@@ -7,3 +7,12 @@ A React component to show a visualization of execution plan.
 ```
 npm i -S visual-plan
 ```
+
+## Usage
+
+```tsx
+import VisualPlan from 'visual-plan'
+import 'visual-plan/index.css'
+
+// ...
+```
