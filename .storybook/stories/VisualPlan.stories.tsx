@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { VisualPlan } from '../../src/VisualPlan'
+import VisualPlan from '../../src/VisualPlan'
 import mockData from './vp_mock.json'
 
 export default {
@@ -9,5 +9,7 @@ export default {
 }
 
 export const Basic = () => (
-  <VisualPlan data={mockData as any} viewport={{ height: 500, width: 1000 }} />
+  <div style={{ height: 600 }}>
+    <VisualPlan data={mockData as any} />
+  </div>
 )
