@@ -10,18 +10,22 @@
     "visual plan"
   ],
   "main": "dist/index.js",
-  "module": "dist/module/index.js",
   "types": "dist/types/index.d.ts",
   "targets": {
     "main": {
       "source": "src/index.ts",
       "distDir": "dist/index.js",
-      "optimize": true
-    },
-    "storybook": {}
+      "optimize": true,
+      "includeNodeModules": {
+        "react": false,
+        "react-dom": false,
+        "d3": false
+      }
+    }
   },
   "scripts": {
-    "build": "parcel build",
+    "build": "parcel build --no-optimize",
+    "build:analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer",
     "dev": "parcel watch",
     "sb": "start-storybook -p 6006",
     "build-sb": "build-storybook"
@@ -31,6 +35,7 @@
     "@babel/core": "^7.18.9",
     "@mdx-js/react": "^2.1.2",
     "@parcel/packager-ts": "^2.6.2",
+    "@parcel/reporter-bundle-analyzer": "2.6.2",
     "@parcel/transformer-less": "^2.6.2",
     "@parcel/transformer-typescript-types": "^2.6.2",
     "@storybook/addon-actions": "^6.5.9",
@@ -66,14 +71,6 @@
     "react-json-view": {
       "react": "^18.2.0",
       "react-dom": "^18.2.0"
-    }
-  },
-  "alias": {
-    "react": {
-      "global": "React"
-    },
-    "react-dom": {
-      "global": "ReactDOM"
     }
   }
 }
