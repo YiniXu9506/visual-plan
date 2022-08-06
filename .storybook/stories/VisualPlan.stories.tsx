@@ -1,6 +1,6 @@
 import React from 'react'
 
-import VisualPlan from '../../src/VisualPlan'
+import { VisualPlan } from '../../src'
 import mockData from './vp_mock.json'
 
 export default {
