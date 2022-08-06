@@ -19,6 +19,7 @@ coverage
 .package-lock.json
 yarn.lock
 .cache
+parcel-bundle-reports
 
 # Editor directories and files
 .vscode/*

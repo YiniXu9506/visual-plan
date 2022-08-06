@@ -22,7 +22,7 @@ const _Trees = ({
   customNodeElement,
   onNodeExpandBtnToggle,
   onNodeDetailClick,
-  getTreePosition
+  getTreePosition,
 }: MultiTreesProps) => (
   <>
     {treeNodeDatum.map((datum, idx) => (
