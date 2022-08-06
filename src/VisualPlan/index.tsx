@@ -14,6 +14,8 @@ import { DefaultNode } from './Node/DefaultNode'
 import { DefaultLink } from './Link/DefaultLink'
 import MainChart from './MainChart'
 
+import style from './index.module.less'
+
 import {
   AssignInternalProperties,
   findNodesById,
@@ -31,8 +33,7 @@ interface VisualPlanProps {
   customNode?: NodeProps
   customLink?: LinkProps
 
-  // properties used to calculate tree layout and transform
-  getContainer?: HTMLElement
+  // the gap between multiple trees
   cte?: {
     gap: number
   }
@@ -64,17 +65,14 @@ const VisualPlan = ({
   data,
   customNode,
   customLink,
-  getContainer,
   onNodeClick,
   cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [multiTreesViewport, setMultiTreesViewport] = useState<RectSize>({
-    // width: getContainer!.getBoundingClientRect().width,
-    // height: getContainer!.getBoundingClientRect().height,
-    width: 500,
-    height: 500,
+    width: 0,
+    height: 0,
   })
 
   const [zoomToFitViewportScale, setZoomToFitViewportScale] = useState(0)
@@ -234,7 +232,7 @@ const VisualPlan = ({
   }, [multiTreesBound])
 
   return (
-    <div ref={treeDiagramContainerRef}>
+    <div ref={treeDiagramContainerRef} className={style.TreeDiagramContainer}>
       <MainChart
         treeNodeDatum={treeNodeDatum}
         classNamePrefix="multiTrees"
@@ -254,7 +252,6 @@ const VisualPlan = ({
 VisualPlan.defaultProps = {
   customNode: DefaultNode,
   customLink: DefaultLink,
-  getContainer: document.body,
   cte: {
     gap: 100,
   },
