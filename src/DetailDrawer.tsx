@@ -8,7 +8,7 @@ import Drawer, { DrawerProps } from 'antd/lib/drawer'
 import 'antd/lib/drawer/style/index.css'
 import { InfoCircleTwoTone } from '@ant-design/icons'
 
-import { RawNodeDatum } from './VisualPlan/types'
+import { RawNodeDatum } from './types'
 
 interface DetailDrawerProps {
   data: RawNodeDatum

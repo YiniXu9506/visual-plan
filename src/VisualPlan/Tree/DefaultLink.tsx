@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CustomLink, LinkProps } from '../types'
+import { CustomLink, LinkProps } from '../../types'
 
 import styles from './DefaultLink.module.less'
 

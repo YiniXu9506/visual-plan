@@ -22,8 +22,8 @@ import {
   NodeMargin,
   CustomLink,
   CustomNode,
-} from './types'
-import { ThemeContext } from './context/ThemeContext'
+} from '../types'
+import { ThemeContext } from '../context/ThemeContext'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]

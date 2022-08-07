@@ -3,8 +3,8 @@ import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
 import { DefaultNode } from './DefaultNode'
 import { DefaultLink } from './DefaultLink'
-import { TreeNodeDatum, NodeMargin, CustomLink, CustomNode } from '../types'
-import { generateNodesAndLinks } from '../utlis'
+import { TreeNodeDatum, NodeMargin, CustomLink, CustomNode } from '../../types'
+import { generateNodesAndLinks } from '../../utlis'
 
 interface SingleTreeProps {
   datum: TreeNodeDatum

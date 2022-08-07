@@ -1,5 +1,5 @@
 import VisualPlan from './VisualPlan'
-import VisualPlanThumbnail from './VisualPlan/Thumbnail'
+import VisualPlanThumbnail from './Thumbnail'
 
 import './style/index.less'
 

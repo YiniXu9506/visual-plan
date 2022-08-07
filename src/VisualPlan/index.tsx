@@ -8,14 +8,14 @@ import {
   brush as d3Brush,
 } from 'd3'
 
-import { VisualPlanProps, TreeNodeDatum, RectSize } from './types'
-import { ThemeContext } from './context/ThemeContext'
+import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
+import { ThemeContext } from '../context/ThemeContext'
 import {
   AssignInternalProperties,
   findNodesById,
   expandSpecificNode,
   collapseAllDescententNodes,
-} from './utlis'
+} from '../utlis'
 import MainView from './MainView'
 import Minimap from './Minimap'
 

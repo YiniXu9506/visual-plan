@@ -6,7 +6,7 @@ import {
   Translate,
   CustomLink,
   CustomNode,
-} from './types'
+} from '../types'
 import { Trees } from './Tree'
 
 interface MainViewProps {

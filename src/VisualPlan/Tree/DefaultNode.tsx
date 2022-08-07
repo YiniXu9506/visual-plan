@@ -5,9 +5,8 @@ import {
   ExclamationCircleFilled,
 } from '@ant-design/icons'
 
-import { CustomNode, NodeProps } from '../types'
-
-import { ThemeContext } from '../context/ThemeContext'
+import { CustomNode, NodeProps } from '../../types'
+import { ThemeContext } from '../../context/ThemeContext'
 
 const collapsableButtonSize = {
   width: 60,

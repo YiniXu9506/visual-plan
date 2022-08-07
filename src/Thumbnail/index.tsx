@@ -3,7 +3,7 @@ import { select } from 'd3'
 
 import { AssignInternalProperties } from '../utlis'
 import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
-import { Trees } from '../Tree'
+import { Trees } from '../VisualPlan/Tree/index'
 
 import styles from './index.module.less'
 
