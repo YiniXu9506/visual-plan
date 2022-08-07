@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 import {
   TreeNodeDatum,
@@ -11,7 +11,6 @@ import { Trees } from './Tree'
 
 interface MainViewProps {
   treeNodeDatum: TreeNodeDatum[]
-  classNamePrefix: string
   translate: Translate
   customLink: CustomLink
   customNode: CustomNode
@@ -23,48 +22,53 @@ interface MainViewProps {
   zoomToFitViewportScale: number
 }
 
-const MainView = ({
-  treeNodeDatum,
-  classNamePrefix,
-  translate,
-  viewport,
-  customLink,
-  customNode,
-  toggleNode,
-  onNodeClick,
-  adjustPosition,
-  zoomToFitViewportScale,
-  getTreePosition,
-}: MainViewProps) => {
-  return (
-    <svg
-      className={`${classNamePrefix}SVG`}
-      width={viewport.width}
-      height={viewport.height}
-    >
-      <g
-        className={`${classNamePrefix}GroupWrapper`}
-        transform={`translate(${translate.x}, ${translate.y}) scale(${translate.k})`}
+const MainView = forwardRef<SVGSVGElement, MainViewProps>(
+  (
+    {
+      treeNodeDatum,
+      translate,
+      viewport,
+      customLink,
+      customNode,
+      toggleNode,
+      onNodeClick,
+      adjustPosition,
+      zoomToFitViewportScale,
+      getTreePosition,
+    },
+    ref
+  ) => {
+    return (
+      <svg
+        className="multiTreesSVG"
+        width={viewport.width}
+        height={viewport.height}
+        ref={ref}
       >
         <g
-          className={`${classNamePrefix}Group`}
-          transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
+          className="multiTreesGroupWrapper"
+          transform={`translate(${translate.x}, ${translate.y}) scale(${translate.k})`}
         >
-          <Trees
-            {...{
-              treeNodeDatum,
-              zoomToFitViewportScale,
-              customLink,
-              customNode,
-              toggleNode,
-              onNodeClick,
-              getTreePosition,
-            }}
-          />
+          <g
+            className="multiTreesGroup"
+            transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
+          >
+            <Trees
+              {...{
+                treeNodeDatum,
+                zoomToFitViewportScale,
+                customLink,
+                customNode,
+                toggleNode,
+                onNodeClick,
+                getTreePosition,
+              }}
+            />
+          </g>
         </g>
-      </g>
-    </svg>
-  )
-}
+      </svg>
+    )
+  }
+)
 
 export default MainView
