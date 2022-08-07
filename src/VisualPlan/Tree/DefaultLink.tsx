@@ -1,11 +1,13 @@
 import React from 'react'
-
-import styles from './DefaultLink.module.less'
-import { TreeNodeDatum } from '../types'
-
 import { HierarchyPointLink } from 'd3'
 
-export const RenderDefaultLinkElement = (hierarchyPointLink: HierarchyPointLink<TreeNodeDatum>) => {
+import { TreeNodeDatum } from '../types'
+
+import styles from './DefaultLink.module.less'
+
+export const RenderDefaultLinkElement = (
+  hierarchyPointLink: HierarchyPointLink<TreeNodeDatum>
+) => {
   const link = hierarchyPointLink
   // Draws lines between parent and child node
   // Generates horizontal diagonal - play with it here - https://observablehq.com/@bumbeishvili/curved-edges-horizontal-d3-v3-v4-v5-v6
@@ -49,7 +51,8 @@ export const RenderDefaultLinkElement = (hierarchyPointLink: HierarchyPointLink<
           // source node
           {
             x: link.source.x,
-            y: link.source.y + link.source.data.__node_attrs.nodeFlexSize.height
+            y:
+              link.source.y + link.source.data.__node_attrs.nodeFlexSize.height,
           },
           // target node
           { x: link.target.x, y: link.target.y }
@@ -60,5 +63,5 @@ export const RenderDefaultLinkElement = (hierarchyPointLink: HierarchyPointLink<
 }
 
 export const DefaultLink = {
-  renderLinkElement: RenderDefaultLinkElement
+  renderLinkElement: RenderDefaultLinkElement,
 }

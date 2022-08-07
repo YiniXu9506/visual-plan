@@ -1,21 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { VisualPlanProps, TreeNodeDatum, RectSize } from './types'
-
-import { DefaultNode } from './Node/DefaultNode'
-import { DefaultLink } from './Link/DefaultLink'
-import MainChart from './MainChart'
-import Minimap from './Minimap'
-import { DetailDrawer } from '../DetailDrawer'
-
-import { ThemeContext } from './context/ThemeContext'
-
-import {
-  AssignInternalProperties,
-  findNodesById,
-  expandSpecificNode,
-  collapseAllDescententNodes,
-} from './utlis'
-
 import {
   select,
   zoom as d3Zoom,
@@ -24,6 +7,17 @@ import {
   scaleLinear,
   brush as d3Brush,
 } from 'd3'
+
+import { VisualPlanProps, TreeNodeDatum, RectSize } from './types'
+import { ThemeContext } from './context/ThemeContext'
+import {
+  AssignInternalProperties,
+  findNodesById,
+  expandSpecificNode,
+  collapseAllDescententNodes,
+} from './utlis'
+import MainView from './MainView'
+import Minimap from './Minimap'
 
 interface TreeBoundType {
   [k: string]: {
@@ -157,7 +151,7 @@ const VisualPlan = ({
     .scaleExtent([0.2, 5])
     .on('zoom', () => onZoom())
 
-  // Binds MainChart container
+  // Binds MainView container
   const bindZoomListener = () => {
     multiTreesSVGSelection.call(zoomBehavior as any)
 
@@ -195,10 +189,10 @@ const VisualPlan = ({
   /**
    *
    * @param zoomScale
-   * @returns a continuous linear scale function to calculate the corresponding width in mainChart or minimap
+   * @returns a continuous linear scale function to calculate the corresponding width in MainView or minimap
    *
-   * minimapScaleX(zoomScale)(widthOnMinimap) will return corresponding widthOnMainChart
-   * minimapScaleX(zoomScale).invert(widthOnMainChart) will return corresponding widthOnMinimap
+   * minimapScaleX(zoomScale)(widthOnMinimap) will return corresponding widthOnMainView
+   * minimapScaleX(zoomScale).invert(widthOnMainView) will return corresponding widthOnMinimap
    */
   const minimapScaleX = (zoomScale: number) => {
     return scaleLinear()
@@ -206,7 +200,7 @@ const VisualPlan = ({
       .range([0, multiTreesBound.width * zoomScale])
   }
 
-  // Creates a continuous linear scale to calculate the corresponse height in mainChart or minimap
+  // Creates a continuous linear scale to calculate the corresponse height in MainView or minimap
   const minimapScaleY = (zoomScale: number) => {
     return scaleLinear()
       .domain([0, multiTreesBound.height])
@@ -228,9 +222,9 @@ const VisualPlan = ({
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(_data, customNode!.nodeSize)
+    const treeNodes = AssignInternalProperties(_data, customNode?.nodeSize)
     setTreeNodeDatum(treeNodes)
-  }, [data, customNode!.nodeSize])
+  }, [data, customNode?.nodeSize])
 
   useEffect(() => {
     if (treeDiagramContainerRef.current) {
@@ -250,7 +244,7 @@ const VisualPlan = ({
         ref={treeDiagramContainerRef}
         className={`treeDiagramContainer ${theme}`}
       >
-        <MainChart
+        <MainView
           treeNodeDatum={treeNodeDatum}
           classNamePrefix="multiTrees"
           translate={multiTreesTranslate}
@@ -288,8 +282,6 @@ const VisualPlan = ({
 }
 
 VisualPlan.defaultProps = {
-  customNode: DefaultNode,
-  customLink: DefaultLink,
   cte: {
     gap: 100,
   },

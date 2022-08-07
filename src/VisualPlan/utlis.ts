@@ -3,11 +3,13 @@ import { hierarchy } from 'd3'
 
 import { RawNodeDatum, TreeNodeDatum, NodeMargin, RectSize } from './types'
 
+export const DEFAULT_NODE_SIZE = { width: 250, height: 200 }
+
 let incrementId = 0
 
 export const AssignInternalProperties = (
   data: RawNodeDatum[],
-  nodeFlexSize: RectSize
+  nodeFlexSize: RectSize = DEFAULT_NODE_SIZE
 ): TreeNodeDatum[] => {
   const d = Array.isArray(data) ? data : [data]
   return d.map(n => {

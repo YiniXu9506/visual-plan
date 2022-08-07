@@ -5,7 +5,7 @@ import {
   ExclamationCircleFilled,
 } from '@ant-design/icons'
 
-import { TreeNodeDatum } from '../types'
+import { NodeProps, TreeNodeDatum } from '../types'
 
 import { ThemeContext } from '../context/ThemeContext'
 
@@ -136,7 +136,7 @@ const RenderDefaultNodeElement = (
   )
 }
 
-export const DefaultNode = {
+export const DefaultNode: NodeProps = {
   nodeSize: { width: 250, height: 200 },
   nodeMargin: {
     siblingMargin: 40,

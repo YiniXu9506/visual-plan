@@ -5,11 +5,17 @@ import React, {
   useEffect,
   useRef,
 } from 'react'
-import { select, event } from 'd3'
-import { brush as d3Brush, BrushBehavior } from 'd3'
-import { zoom as d3Zoom, zoomIdentity, zoomTransform } from 'd3'
+import {
+  select,
+  event,
+  brush as d3Brush,
+  BrushBehavior,
+  zoom as d3Zoom,
+  zoomIdentity,
+  zoomTransform,
+} from 'd3'
 
-import { Trees } from '../MemorizedTrees'
+import { Trees } from '../Tree'
 import {
   RectSize,
   TreeNodeDatum,
@@ -17,7 +23,6 @@ import {
   NodeProps,
   LinkProps,
 } from '../types'
-
 import { ThemeContext } from '../context/ThemeContext'
 
 interface MinimapProps {

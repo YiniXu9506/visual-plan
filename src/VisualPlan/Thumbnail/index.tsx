@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import styles from './index.module.less'
-import { AssignInternalProperties } from '../utlis'
-import { VisualPlanProps, TreeNodeDatum } from '../types'
-
-import { Trees } from '../MemorizedTrees'
-// imports d3 APIs
 import { select } from 'd3'
-import { RectSize } from '../types'
-import { DefaultNode } from '../Node/DefaultNode'
-import { DefaultLink } from '../Link/DefaultLink'
+
+import { AssignInternalProperties } from '../utlis'
+import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
+import { Trees } from '../Tree'
+
+import styles from './index.module.less'
 
 interface TreeBoundType {
   [k: string]: {
@@ -23,7 +20,7 @@ const VisualPlanThumbnail = ({
   data,
   customNode,
   customLink,
-  cte
+  cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
@@ -39,12 +36,12 @@ const VisualPlanThumbnail = ({
   // Sets the bound of entire tree
   const [multiTreesBound, setMultiTreesBound] = useState({
     width: 0,
-    height: 0
+    height: 0,
   })
 
   // Updates multiTrees bound and returns single tree position, which contains root point and offset to original point [0,0].
   const getInitSingleTreeBound = useCallback(
-    (treeIdx) => {
+    treeIdx => {
       let offset = 0
       let multiTreesBound: RectSize = { width: 0, height: 0 }
       const singleTreeGroupNode = select(
@@ -57,7 +54,7 @@ const VisualPlanThumbnail = ({
         x: x,
         y: y,
         width: width,
-        height: height
+        height: height,
       }
 
       for (let i = treeIdx; i > 0; i--) {
@@ -83,7 +80,7 @@ const VisualPlanThumbnail = ({
       setMultiTreesBound({
         width: multiTreesBound.width + width,
         height:
-          multiTreesBound.height > height ? multiTreesBound.height : height
+          multiTreesBound.height > height ? multiTreesBound.height : height,
       })
 
       return { x, y, offset }
@@ -146,7 +143,7 @@ const VisualPlanThumbnail = ({
               zoomToFitViewportScale: 1,
               customLink: customLink!,
               customNode: customNode!,
-              getTreePosition: getInitSingleTreeBound
+              getTreePosition: getInitSingleTreeBound,
             }}
           />
         </g>
@@ -156,11 +153,9 @@ const VisualPlanThumbnail = ({
 }
 
 VisualPlanThumbnail.defaultProps = {
-  customNode: DefaultNode,
-  customLink: DefaultLink,
   cte: {
-    gap: 100
-  }
+    gap: 100,
+  },
 }
 
 export default VisualPlanThumbnail

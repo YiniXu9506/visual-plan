@@ -1,9 +1,15 @@
 import React from 'react'
 
-import { TreeNodeDatum, RectSize, NodeProps, LinkProps, Translate } from '../types'
-import { Trees } from '../MemorizedTrees'
+import {
+  TreeNodeDatum,
+  RectSize,
+  NodeProps,
+  LinkProps,
+  Translate,
+} from './types'
+import { Trees } from './Tree'
 
-interface MainChartProps {
+interface MainViewProps {
   treeNodeDatum: TreeNodeDatum[]
   classNamePrefix: string
   translate: Translate
@@ -17,7 +23,7 @@ interface MainChartProps {
   zoomToFitViewportScale: number
 }
 
-const MainChart = ({
+const MainView = ({
   treeNodeDatum,
   classNamePrefix,
   translate,
@@ -29,7 +35,7 @@ const MainChart = ({
   adjustPosition,
   zoomToFitViewportScale,
   getTreePosition,
-}: MainChartProps) => {
+}: MainViewProps) => {
   return (
     <svg
       className={`${classNamePrefix}SVG`}
@@ -61,4 +67,4 @@ const MainChart = ({
   )
 }
 
-export default MainChart
+export default MainView

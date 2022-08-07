@@ -103,7 +103,10 @@ export interface BinaryPlan {
 export interface NodeProps {
   nodeSize: RectSize
   nodeMargin: NodeMargin
-  renderNodeElement: (node: HierarchyPointNode<TreeNodeDatum>) => JSX.Element
+  renderNodeElement: (
+    hierarchyPointNode: HierarchyPointNode<TreeNodeDatum>,
+    handleNodeToggle: any
+  ) => JSX.Element
 }
 
 export interface LinkProps {
