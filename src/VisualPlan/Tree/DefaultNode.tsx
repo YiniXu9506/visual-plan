@@ -15,7 +15,8 @@ const collapsableButtonSize = {
 
 const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   node,
-  onNodeToggle,
+  onToggle,
+  onClick,
 }) => {
   const nodeDatum = node.data
   const { width: nodeWidth, height: nodeHeight } =
@@ -75,7 +76,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 height: nodeHeight - collapsableButtonSize.height,
                 position: 'initial',
               }}
-              // onClick={e => handleOnNodeDetailClick(e, nodeDatum)}
+              onClick={() => onClick?.(nodeDatum)}
             >
               <div
                 className="card-header"
@@ -117,7 +118,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                   marginLeft: (nodeWidth - 60) / 2,
                   position: 'initial',
                 }}
-                onClick={onNodeToggle}
+                onClick={() => onToggle(nodeDatum)}
               >
                 {nodeDatum.__node_attrs.collapsed ? (
                   <PlusOutlined />

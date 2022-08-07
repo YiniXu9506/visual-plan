@@ -255,6 +255,7 @@ const VisualPlan = ({
           getTreePosition={getInitSingleTreeBound}
           adjustPosition={adjustPosition}
           zoomToFitViewportScale={zoomToFitViewportScale}
+          onNodeClick={onNodeClick}
         />
         {minimap && multiTreesViewport.height && (
           <Minimap

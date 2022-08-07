@@ -25,7 +25,7 @@ export interface VisualPlanProps {
     | boolean
 
   // tree behavior
-  onNodeClick?: (node: NodeType) => void
+  onNodeClick?: (node: RawNodeDatum) => void
 }
 
 export type Theme = 'light' | 'dark'
@@ -111,7 +111,8 @@ export interface CustomNode {
 
 export interface NodeProps {
   node: HierarchyPointNode<TreeNodeDatum>
-  onNodeToggle: any
+  onToggle: (node: TreeNodeDatum) => void
+  onClick?: (node: TreeNodeDatum) => void
 }
 
 export interface CustomLink {

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { VisualPlan, VisualPlanThumbnail } from '../../src'
 import { DetailDrawer } from '../../src/DetailDrawer'
-import { RawNodeDatum } from '../../src/VisualPlan/types'
+import { RawNodeDatum } from '../../src/types'
 import mockData from './vp_mock.json'
 
 export default {
@@ -24,12 +24,23 @@ export const DarkTheme = () => (
 )
 
 export const WithDetailDrawer = () => {
+  const [showDetailDrawer, setShowDetailDrawer] = useState(false)
   const [detailData, setDetailData] = useState<RawNodeDatum | null>(null)
 
   return (
     <div style={{ position: 'relative', height: 300 }}>
-      <VisualPlan data={mockData as any} onNodeClick={n => console.log(n)} />
-      <DetailDrawer data={detailData!} visible={!!detailData} />
+      <VisualPlan
+        data={mockData as any}
+        onNodeClick={n => {
+          setDetailData(n)
+          setShowDetailDrawer(true)
+        }}
+      />
+      <DetailDrawer
+        data={detailData!}
+        visible={showDetailDrawer}
+        onClose={() => setShowDetailDrawer(false)}
+      />
     </div>
   )
 }

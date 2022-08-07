@@ -17,7 +17,7 @@ interface MainViewProps {
   customNode: CustomNode
   viewport: RectSize
   toggleNode: (nodeId: string) => void
-  // onNodeDetailClick: (node: TreeNodeDatum) => void
+  onNodeClick?: (node: TreeNodeDatum) => void
   getTreePosition: (treeIdx: number) => any
   adjustPosition: RectSize
   zoomToFitViewportScale: number
@@ -31,7 +31,7 @@ const MainView = ({
   customLink,
   customNode,
   toggleNode,
-  // onNodeDetailClick,
+  onNodeClick,
   adjustPosition,
   zoomToFitViewportScale,
   getTreePosition,
@@ -57,7 +57,7 @@ const MainView = ({
               customLink,
               customNode,
               toggleNode,
-              // onNodeDetailClick,
+              onNodeClick,
               getTreePosition,
             }}
           />

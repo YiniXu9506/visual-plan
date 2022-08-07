@@ -13,7 +13,7 @@ interface SingleTreeProps {
   customLink: CustomLink
   customNode: CustomNode
   toggleNode: (nodeId: string) => void
-  onNodeDetailClick?: (node: TreeNodeDatum) => void
+  onNodeClick?: (node: TreeNodeDatum) => void
   getTreePosition: (number) => any
 }
 
@@ -24,7 +24,7 @@ const SingleTree = ({
   customLink = DefaultLink,
   customNode = DefaultNode,
   toggleNode,
-  onNodeDetailClick,
+  onNodeClick,
   getTreePosition,
 }: SingleTreeProps) => {
   const singleTreeGroupRef = useRef(null)
@@ -89,9 +89,10 @@ const SingleTree = ({
               <customNode.renderNodeElement
                 key={hierarchyPointNode.data.name}
                 node={hierarchyPointNode}
-                onNodeToggle={node => {
-                  toggleNode(hierarchyPointNode.data.__node_attrs.id)
+                onToggle={node => {
+                  toggleNode(node.__node_attrs.id)
                 }}
+                onClick={onNodeClick}
               />
             )
           })}
@@ -106,7 +107,7 @@ interface TreesProps {
   customLink: CustomLink
   customNode: CustomNode
   toggleNode?: (nodeId: string) => void
-  // onNodeDetailClick?: (node: TreeNodeDatum) => void
+  onNodeClick?: (node: TreeNodeDatum) => void
   getTreePosition: (treeIdx: number) => any
 }
 
@@ -117,7 +118,7 @@ const Trees = memo(
     customLink,
     customNode,
     toggleNode,
-    // onNodeDetailClick,
+    onNodeClick,
     getTreePosition,
   }: TreesProps) => (
     <>
@@ -130,7 +131,7 @@ const Trees = memo(
           customLink={customLink}
           customNode={customNode}
           toggleNode={toggleNode!}
-          // onNodeDetailClick={onNodeDetailClick!}
+          onNodeClick={onNodeClick}
           getTreePosition={getTreePosition}
         />
       ))}
