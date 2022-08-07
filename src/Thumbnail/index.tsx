@@ -31,7 +31,8 @@ const VisualPlanThumbnail = ({
   const singleTreeBoundsMap = useRef<TreeBoundType>({})
 
   const thumbnailContainerGRef = useRef<HTMLDivElement>(null)
-  const thumbnaiSVGSelection = select('.thumbnailSVG')
+  const thumbnailSVGRef = useRef<SVGSVGElement>(null)
+  const thumbnaiSVGSelection = select(thumbnailSVGRef.current)
 
   // Sets the bound of entire tree
   const [multiTreesBound, setMultiTreesBound] = useState({
@@ -135,7 +136,7 @@ const VisualPlanThumbnail = ({
 
   return (
     <div className={styles.ThumbnailContainer} ref={thumbnailContainerGRef}>
-      <svg className="thumbnailSVG">
+      <svg className="thumbnailSVG" ref={thumbnailSVGRef}>
         <g className="thumbnailGroup">
           <Trees
             {...{
