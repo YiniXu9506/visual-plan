@@ -250,17 +250,12 @@ const VisualPlan = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multiTreesBound])
 
-  const { themeType, setThemeType } = useContext(ThemeContext)
-  useEffect(() => {
-    setThemeType(theme!)
-  }, [theme])
-
   return (
-    <ThemeContext.Provider value={{ themeType, setThemeType }}>
+    <ThemeContext.Provider value={{ themeType: theme! }}>
       <div
         ref={treeDiagramContainerRef}
         className={`treeDiagramContainer ${theme}`}
-      > 
+      >
         <MainChart
           treeNodeDatum={treeNodeDatum}
           classNamePrefix="multiTrees"

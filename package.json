@@ -21,7 +21,20 @@
         "react-dom": false,
         "d3": false
       }
+    },
+    "detail-drawer": {
+      "source": "src/DetailDrawer.tsx",
+      "distDir": "dist/detail-drawer",
+      "optimize": true,
+      "includeNodeModules": {
+        "react": false,
+        "react-dom": false,
+        "d3": false
+      }
     }
+  },
+  "engines": {
+    "node": ">= 16"
   },
   "scripts": {
     "build": "parcel build --no-optimize",
