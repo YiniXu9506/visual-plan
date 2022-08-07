@@ -3,9 +3,9 @@ import React from 'react'
 import {
   TreeNodeDatum,
   RectSize,
-  NodeProps,
-  LinkProps,
   Translate,
+  CustomLink,
+  CustomNode,
 } from './types'
 import { Trees } from './Tree'
 
@@ -13,8 +13,8 @@ interface MainViewProps {
   treeNodeDatum: TreeNodeDatum[]
   classNamePrefix: string
   translate: Translate
-  customLink: LinkProps
-  customNode: NodeProps
+  customLink: CustomLink
+  customNode: CustomNode
   viewport: RectSize
   toggleNode: (nodeId: string) => void
   // onNodeDetailClick: (node: TreeNodeDatum) => void

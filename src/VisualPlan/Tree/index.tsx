@@ -3,15 +3,15 @@ import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
 import { DefaultNode } from './DefaultNode'
 import { DefaultLink } from './DefaultLink'
-import { TreeNodeDatum, NodeMargin, NodeProps, LinkProps } from '../types'
+import { TreeNodeDatum, NodeMargin, CustomLink, CustomNode } from '../types'
 import { generateNodesAndLinks } from '../utlis'
 
 interface SingleTreeProps {
   datum: TreeNodeDatum
   treeIdx: number
   zoomToFitViewportScale: number
-  customLink: LinkProps
-  customNode: NodeProps
+  customLink: CustomLink
+  customNode: CustomNode
   toggleNode: (nodeId: string) => void
   onNodeDetailClick?: (node: TreeNodeDatum) => void
   getTreePosition: (number) => any
@@ -78,11 +78,7 @@ const SingleTree = ({
       <g className="linksWrapper">
         {links &&
           links.map((link, i) => {
-            return (
-              <React.Fragment key={i}>
-                {customLink.renderLinkElement(link)}
-              </React.Fragment>
-            )
+            return <customLink.renderLinkElement key={i} link={link} />
           })}
       </g>
 
@@ -90,11 +86,13 @@ const SingleTree = ({
         {nodes &&
           nodes.map((hierarchyPointNode, i) => {
             return (
-              <React.Fragment key={hierarchyPointNode.data.name}>
-                {customNode.renderNodeElement(hierarchyPointNode, () => {
+              <customNode.renderNodeElement
+                key={hierarchyPointNode.data.name}
+                node={hierarchyPointNode}
+                onNodeToggle={node => {
                   toggleNode(hierarchyPointNode.data.__node_attrs.id)
-                })}
-              </React.Fragment>
+                }}
+              />
             )
           })}
       </g>
@@ -105,8 +103,8 @@ const SingleTree = ({
 interface TreesProps {
   treeNodeDatum: TreeNodeDatum[]
   zoomToFitViewportScale: number
-  customLink: LinkProps
-  customNode: NodeProps
+  customLink: CustomLink
+  customNode: CustomNode
   toggleNode?: (nodeId: string) => void
   // onNodeDetailClick?: (node: TreeNodeDatum) => void
   getTreePosition: (treeIdx: number) => any

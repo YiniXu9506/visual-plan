@@ -1,3 +1,4 @@
+import React from 'react'
 import { HierarchyPointNode, HierarchyPointLink } from 'd3'
 
 export interface VisualPlanProps {
@@ -5,8 +6,8 @@ export interface VisualPlanProps {
   data: BinaryPlan
 
   // custom Node/Link render
-  customNode?: NodeProps
-  customLink?: LinkProps
+  customNode?: CustomNode
+  customLink?: CustomLink
 
   // the gap between multiple trees
   cte?: {
@@ -14,7 +15,7 @@ export interface VisualPlanProps {
   }
 
   // theme, default light mode
-  theme?: 'light' | 'dark'
+  theme?: Theme
 
   // minimap
   minimap?:
@@ -26,6 +27,8 @@ export interface VisualPlanProps {
   // tree behavior
   onNodeClick?: (node: NodeType) => void
 }
+
+export type Theme = 'light' | 'dark'
 
 export interface Translate {
   x: number
@@ -100,15 +103,21 @@ export interface BinaryPlan {
   withRuntimeStats: boolean
 }
 
-export interface NodeProps {
+export interface CustomNode {
   nodeSize: RectSize
   nodeMargin: NodeMargin
-  renderNodeElement: (
-    hierarchyPointNode: HierarchyPointNode<TreeNodeDatum>,
-    handleNodeToggle: any
-  ) => JSX.Element
+  renderNodeElement: React.FC<NodeProps>
+}
+
+export interface NodeProps {
+  node: HierarchyPointNode<TreeNodeDatum>
+  onNodeToggle: any
+}
+
+export interface CustomLink {
+  renderLinkElement: React.FC<LinkProps>
 }
 
 export interface LinkProps {
-  renderLinkElement: (link: HierarchyPointLink<TreeNodeDatum>) => JSX.Element
+  link: HierarchyPointLink<TreeNodeDatum>
 }

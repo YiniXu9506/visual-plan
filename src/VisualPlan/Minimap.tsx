@@ -15,23 +15,23 @@ import {
   zoomTransform,
 } from 'd3'
 
-import { Trees } from '../Tree'
+import { Trees } from './Tree'
 import {
   RectSize,
   TreeNodeDatum,
   NodeMargin,
-  NodeProps,
-  LinkProps,
-} from '../types'
-import { ThemeContext } from '../context/ThemeContext'
+  CustomLink,
+  CustomNode,
+} from './types'
+import { ThemeContext } from './context/ThemeContext'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]
   classNamePrefix: string
   viewport: RectSize
   multiTreesBound: RectSize
-  customLink: LinkProps
-  customNode: NodeProps
+  customLink: CustomLink
+  customNode: CustomNode
   minimapScale: number
   minimapScaleX?: any
   minimapScaleY?: any

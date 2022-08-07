@@ -5,26 +5,24 @@ import {
   ExclamationCircleFilled,
 } from '@ant-design/icons'
 
-import { NodeProps, TreeNodeDatum } from '../types'
+import { CustomNode, NodeProps } from '../types'
 
 import { ThemeContext } from '../context/ThemeContext'
-
-import { HierarchyPointNode } from 'd3'
 
 const collapsableButtonSize = {
   width: 60,
   height: 30,
 }
 
-const RenderDefaultNodeElement = (
-  hierarchyPointNode: HierarchyPointNode<TreeNodeDatum>,
-  handleNodeToggle
-) => {
-  const nodeDatum = hierarchyPointNode.data
+const RenderDefaultNodeElement: React.FC<NodeProps> = ({
+  node,
+  onNodeToggle,
+}) => {
+  const nodeDatum = node.data
   const { width: nodeWidth, height: nodeHeight } =
     nodeDatum.__node_attrs.nodeFlexSize!
 
-  const { x, y } = hierarchyPointNode
+  const { x, y } = node
   const nodeTranslate = {
     x: x - nodeWidth / 2,
     y: y,
@@ -120,7 +118,7 @@ const RenderDefaultNodeElement = (
                   marginLeft: (nodeWidth - 60) / 2,
                   position: 'initial',
                 }}
-                onClick={handleNodeToggle}
+                onClick={onNodeToggle}
               >
                 {nodeDatum.__node_attrs.collapsed ? (
                   <PlusOutlined />
@@ -136,7 +134,7 @@ const RenderDefaultNodeElement = (
   )
 }
 
-export const DefaultNode: NodeProps = {
+export const DefaultNode: CustomNode = {
   nodeSize: { width: 250, height: 200 },
   nodeMargin: {
     siblingMargin: 40,
