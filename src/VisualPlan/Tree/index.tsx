@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef, memo } from 'react'
 import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
-import NodeWrapper from './NodeWrapper'
-import LinkWrapper from './LinkWrapper'
 import { DefaultNode } from './DefaultNode'
 import { DefaultLink } from './DefaultLink'
 import { TreeNodeDatum, NodeMargin, NodeProps, LinkProps } from '../types'
