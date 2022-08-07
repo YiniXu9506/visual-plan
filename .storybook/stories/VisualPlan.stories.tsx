@@ -1,6 +1,7 @@
 import { useState } from '@storybook/addons'
 import React from 'react'
 
+// import { VisualPlan } from '../../dist'
 import { VisualPlan, VisualPlanThumbnail } from '../../src'
 import { DetailDrawer } from '../../src/DetailDrawer'
 import { RawNodeDatum } from '../../src/types'
