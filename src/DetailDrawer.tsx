@@ -9,7 +9,8 @@ import 'antd/lib/drawer/style/index.css'
 import { InfoCircleTwoTone } from '@ant-design/icons'
 
 import { RawNodeDatum } from './types'
-
+import { diagnosisText } from './data/diagnosis'
+ 
 interface DetailDrawerProps {
   data: RawNodeDatum
 }
@@ -163,8 +164,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
               <ol type="1">
                 {data.diagnosis.map((d, idx) => (
                   <li key={idx} style={{ padding: '1rem 0' }}>
-                    {d}
-                    {/* {t(`binary_plan.diagnosis.${d}`)} */}
+                    {diagnosisText[d]}
                   </li>
                 ))}
               </ol>
