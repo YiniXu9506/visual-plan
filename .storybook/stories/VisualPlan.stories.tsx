@@ -12,13 +12,13 @@ export default {
 }
 
 export const Basic = () => (
-  <div style={{ height: 300 }}>
+  <div style={{ height: 600 }}>
     <VisualPlan data={mockData as any} />
   </div>
 )
 
 export const DarkTheme = () => (
-  <div style={{ position: 'relative', height: 300 }}>
+  <div style={{ position: 'relative', height: 600 }}>
     <VisualPlan data={mockData as any} theme="dark" />
   </div>
 )
@@ -28,7 +28,7 @@ export const WithDetailDrawer = () => {
   const [detailData, setDetailData] = useState<RawNodeDatum | null>(null)
 
   return (
-    <div style={{ position: 'relative', height: 300 }}>
+    <div style={{ position: 'relative', height: 600 }}>
       <VisualPlan
         data={mockData as any}
         onNodeClick={n => {

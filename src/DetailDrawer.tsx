@@ -10,7 +10,9 @@ import { InfoCircleTwoTone } from '@ant-design/icons'
 
 import { RawNodeDatum } from './types'
 import { diagnosisText } from './data/diagnosis'
- 
+
+import { decimalSIPrefix, toFixed } from './utlis'
+
 interface DetailDrawerProps {
   data: RawNodeDatum
 }
@@ -24,7 +26,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
       <Drawer
         title={data.name}
         placement="right"
-        width={window.innerWidth * 0.3}
+        width={window.innerWidth * 0.35}
         closable={false}
         destroyOnClose={true}
         getContainer={false}
@@ -46,7 +48,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
             </p>
             <p>
               {/* Estimate Rows: <span>{toFixed(data.estRows, 0)}</span> */}
-              Estimate Rows: <span>{data.estRows}</span>
+              Estimate Rows: <span>{toFixed(data.estRows, 0)}</span>
             </p>
             <p>
               Run at: <span>{data.storeType}</span>
@@ -64,15 +66,15 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
           >
             <p>
               Disk:{' '}
-              {/* <span>
-            {getValueFormat('deckbytes')(data.diskBytes, 2, null)}{' '}
-          </span> */}
+              <span>
+                {decimalSIPrefix('deckbytes')(data.diskBytes, 2, null)}
+              </span>
             </p>
             <p>
               Memory:{' '}
-              {/* <span>
-            {getValueFormat('deckbytes')(data.memoryBytes, 2, null)}{' '}
-          </span> */}
+              <span>
+                {decimalSIPrefix('deckbytes')(data.memoryBytes, 2, null)}
+              </span>
             </p>
           </Tabs.TabPane>
           <Tabs.TabPane
