@@ -14,7 +14,7 @@ export interface VisualPlanProps {
   }
 
   // theme, default light mode
-  theme?: ThemeType
+  theme?: THEME
 
   // minimap
   minimap?:
@@ -48,7 +48,10 @@ export interface LinkType {
   target: NodeType
 }
 
-export type ThemeType = 'dark' | 'light'
+export enum THEME {
+	DARK = 'dark',
+	LIGHT = 'light'
+}
 
 export interface RectSize {
   width: number

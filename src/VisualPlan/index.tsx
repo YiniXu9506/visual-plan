@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
-import {
-  VisualPlanProps,
-  TreeNodeDatum,
-  RectSize,
-} from './types'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react'
+import { VisualPlanProps, TreeNodeDatum, RectSize, THEME } from './types'
 
 import { DefaultNode } from './Node/DefaultNode'
 import { DefaultLink } from './Link/DefaultLink'
 import MainChart from './MainChart'
 import Minimap from './Minimap'
+import { DetailDrawer } from '../DetailDrawer'
 
-import style from './index.module.less'
+import { ThemeContext } from './context/ThemeContext'
 
 import {
   AssignInternalProperties,
@@ -42,6 +45,7 @@ const VisualPlan = ({
   customNode,
   customLink,
   minimap,
+  theme,
   onNodeClick,
   cte,
 }: VisualPlanProps) => {
@@ -246,41 +250,51 @@ const VisualPlan = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [multiTreesBound])
 
+  const { themeType, setThemeType } = useContext(ThemeContext)
+  useEffect(() => {
+    setThemeType(theme!)
+  }, [theme])
+
   return (
-    <div ref={treeDiagramContainerRef} className={style.TreeDiagramContainer}>
-      <MainChart
-        treeNodeDatum={treeNodeDatum}
-        classNamePrefix="multiTrees"
-        translate={multiTreesTranslate}
-        viewport={multiTreesViewport}
-        customLink={customLink!}
-        customNode={customNode!}
-        toggleNode={handleNodeToggle}
-        getTreePosition={getInitSingleTreeBound}
-        adjustPosition={adjustPosition}
-        zoomToFitViewportScale={zoomToFitViewportScale}
-      />
-      {minimap && multiTreesViewport.height && (
-        <Minimap
+    <ThemeContext.Provider value={{ themeType, setThemeType }}>
+      <div
+        ref={treeDiagramContainerRef}
+        className={`treeDiagramContainer ${theme}`}
+      > 
+        <MainChart
           treeNodeDatum={treeNodeDatum}
-          classNamePrefix="minimapMultiTrees"
+          classNamePrefix="multiTrees"
+          translate={multiTreesTranslate}
           viewport={multiTreesViewport}
           customLink={customLink!}
           customNode={customNode!}
-          multiTreesBound={multiTreesBound}
-          minimapScale={minimap['scale']}
-          minimapScaleX={minimapScaleX}
-          minimapScaleY={minimapScaleY}
-          multiTreesSVG={multiTreesSVGSelection}
-          updateTreeTranslate={handleUpdateTreeTranslate}
-          brushBehavior={brushBehavior}
-          brushRef={brushRef}
+          toggleNode={handleNodeToggle}
+          getTreePosition={getInitSingleTreeBound}
           adjustPosition={adjustPosition}
           zoomToFitViewportScale={zoomToFitViewportScale}
-          getTreePosition={getInitSingleTreeBound}
         />
-      )}
-    </div>
+        {minimap && multiTreesViewport.height && (
+          <Minimap
+            treeNodeDatum={treeNodeDatum}
+            classNamePrefix="minimapMultiTrees"
+            viewport={multiTreesViewport}
+            customLink={customLink!}
+            customNode={customNode!}
+            multiTreesBound={multiTreesBound}
+            minimapScale={minimap['scale']}
+            minimapScaleX={minimapScaleX}
+            minimapScaleY={minimapScaleY}
+            multiTreesSVG={multiTreesSVGSelection}
+            updateTreeTranslate={handleUpdateTreeTranslate}
+            brushBehavior={brushBehavior}
+            brushRef={brushRef}
+            adjustPosition={adjustPosition}
+            zoomToFitViewportScale={zoomToFitViewportScale}
+            getTreePosition={getInitSingleTreeBound}
+          />
+        )}
+      </div>
+    </ThemeContext.Provider>
   )
 }
 
@@ -290,7 +304,7 @@ VisualPlan.defaultProps = {
   cte: {
     gap: 100,
   },
-  theme: 'light',
+  theme: THEME.DARK,
   minimap: { scale: 0.15 },
 }
 

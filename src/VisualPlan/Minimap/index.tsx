@@ -1,4 +1,4 @@
-import React, { MutableRefObject, Ref, useEffect, useRef } from 'react'
+import React, { MutableRefObject, Ref, useContext, useEffect, useRef } from 'react'
 import { select, event } from 'd3'
 import { brush as d3Brush, BrushBehavior } from 'd3'
 import { zoom as d3Zoom, zoomIdentity, zoomTransform } from 'd3'
@@ -11,6 +11,8 @@ import {
   NodeProps,
   LinkProps,
 } from '../types'
+
+import { ThemeContext } from '../context/ThemeContext'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]
@@ -53,6 +55,7 @@ const Minimap = ({
   getTreePosition,
   brushRef,
 }: MinimapProps) => {
+  const {themeType} = useContext(ThemeContext)
   const minimapContainer = {
     width: viewport.width * minimapScale,
     height: viewport.height * minimapScale,
@@ -72,16 +75,10 @@ const Minimap = ({
       .attr('height', minimapContainer.height)
       .attr('viewBox', [0, 0, viewport.width, viewport.height].join(' '))
       .attr('preserveAspectRatio', 'xMidYMid meet')
-      .style('position', 'absolute')
-      .style('top', 0)
-      .style('left', 20)
-      .style('border', '1px solid grey')
-      .style('background', 'white')
 
     select('.minimap-rect')
       .attr('width', viewport.width)
       .attr('height', viewport.height)
-      .attr('fill', 'white')
 
     minimapMultiTreesGroupSelection
       .attr('width', multiTreesBoundWidth)
@@ -114,16 +111,6 @@ const Minimap = ({
 
   // TODO: Limits brush move extent
   const brushBehavior = d3Brush()
-    // .extent([
-    //   [
-    //     minimapScaleX(1)(-viewport.width / 2),
-    //     minimapScaleY(1)(-viewport.height / 2),
-    //   ],
-    //   [
-    //     minimapScaleX(1)(multiTreesBoundWidth + viewport.width / 2),
-    //     minimapScaleY(1)(multiTreesBoundHeight + viewport.height / 2),
-    //   ],
-    // ])
     .on('brush', () => onBrush())
 
   const bindBrushListener = () => {
@@ -162,7 +149,7 @@ const Minimap = ({
   }, [brushRef])
 
   return (
-    <div ref={minimapContainerRef}>
+    <div ref={minimapContainerRef} className={`minimapContainer`}>
       <svg
         className={`${classNamePrefix}SVG`}
         width={minimapContainer.width}
@@ -186,7 +173,7 @@ const Minimap = ({
             />
           </g>
         </g>
-        <g ref={_brushRef}></g>
+        <g ref={_brushRef} className="minimap-brush"></g>
       </svg>
     </div>
   )

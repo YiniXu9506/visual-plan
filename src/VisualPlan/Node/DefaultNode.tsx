@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Card from 'antd/es/card'
 import 'antd/lib/card/style/index.css'
 import {
@@ -8,9 +8,11 @@ import {
 } from '@ant-design/icons'
 // import { toFixed } from '@baurine/grafana-value-formats'
 
-import styles from './DefaultNode.module.less'
+// import styles from './DefaultNode.module.less'
 
-import { RectSize, TreeNodeDatum } from '../types'
+import { TreeNodeDatum } from '../types'
+
+import { ThemeContext } from '../context/ThemeContext'
 
 import { HierarchyPointNode } from 'd3'
 
@@ -51,14 +53,15 @@ const RenderDefaultNodeElement = (
     }
   }
 
+  const {themeType} = useContext(ThemeContext)
+
   return (
     <React.Fragment>
       <g
-        className="node"
+        className={themeType}
         transform={`translate(${nodeTranslate.x}, ${nodeTranslate.y}) scale(${nodeTranslate.k})`}
       >
         <rect
-          className="node-rect"
           width={nodeWidth}
           height={nodeHeight}
           x={0}
@@ -66,14 +69,13 @@ const RenderDefaultNodeElement = (
           fill="none"
         ></rect>
         <foreignObject
-          className={styles.NodeForeginObject}
+          className='nodeForeginObject'
           width={nodeWidth}
           height={nodeHeight}
           x={0}
           y={0}
         >
           <div
-            className="node-foreign-object-div"
             style={{ width: nodeWidth, height: nodeHeight }}
           >
             <Card
@@ -89,7 +91,7 @@ const RenderDefaultNodeElement = (
                   </>
                 )
               }
-              className={styles.nodeCard}
+              className='nodeCard'
               style={{
                 width: nodeWidth,
                 height: nodeHeight - collapsableButtonSize.height,
@@ -98,17 +100,17 @@ const RenderDefaultNodeElement = (
               // onClick={e => handleOnNodeDetailClick(e, nodeDatum)}
               headStyle={{ backgroundColor: headColor(nodeDatum.storeType) }}
             >
-              <div className={styles.cardContentP}>
+              <div className='cardContentP'>
                 Duration: <span>{nodeDatum.duration}</span>
               </div>
-              <div className={styles.cardContentP}>
+              <div className='cardContentP'>
                 Actual Rows: <span>{nodeDatum.actRows}</span>
               </div>
-              <div className={styles.cardContentP}>
+              <div className='cardContentP'>
                 {/* Estimate Rows: <span>{toFixed(nodeDatum.estRows)}</span> */}
                 Estimate Rows: <span>{nodeDatum.estRows}</span>
               </div>
-              <div className={styles.cardContentP}>
+              <div className='cardContentP'>
                 Run at: <span>{nodeDatum.storeType}</span>
               </div>
             </Card>
@@ -138,7 +140,7 @@ const RenderDefaultNodeElement = (
 }
 
 export const DefaultNode = {
-  nodeSize: { width: 250, height: 180 },
+  nodeSize: { width: 250, height: 200 },
   nodeMargin: {
     siblingMargin: 40,
     childrenMargin: 60,

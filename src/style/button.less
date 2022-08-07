@@ -1,3 +1,28 @@
+.dark {
+  .vp-btn {
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    color: rgb(208 208 208 / 0.85);
+    background: #676666;
+
+    &:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+  }
+}
+
+.light {
+  .vp-btn {
+    color: rgba(0, 0, 0, 0.85);
+    background: #fff;
+
+    &:hover {
+      color: #40a9ff;
+      border-color: #40a9ff;
+    }
+  }
+}
+
 .vp-btn {
   line-height: 1.5715;
   position: relative;
@@ -19,12 +44,4 @@
   padding: 4px 15px;
   font-size: 14px;
   border-radius: 2px;
-  color: rgba(0, 0, 0, 0.85);
-  border-color: #d9d9d9;
-  background: #fff;
-
-	&:hover {
-		color: #40a9ff;
-    border-color: #40a9ff;
-	}
 }
