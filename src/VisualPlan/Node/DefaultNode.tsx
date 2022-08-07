@@ -1,14 +1,9 @@
 import React, { useContext } from 'react'
-import Card from 'antd/es/card'
-import 'antd/lib/card/style/index.css'
 import {
   PlusOutlined,
   MinusOutlined,
   ExclamationCircleFilled,
 } from '@ant-design/icons'
-// import { toFixed } from '@baurine/grafana-value-formats'
-
-// import styles from './DefaultNode.module.less'
 
 import { TreeNodeDatum } from '../types'
 
@@ -76,19 +71,7 @@ const RenderDefaultNodeElement = (
           y={0}
         >
           <div style={{ width: nodeWidth, height: nodeHeight }}>
-            <Card
-              size="small"
-              title={nodeDatum.name}
-              extra={
-                nodeDatum.diagnosis?.length > 0 && (
-                  <>
-                    <ExclamationCircleFilled
-                      style={{ color: '#fa7070', paddingRight: 5 }}
-                    />
-                    {nodeDatum.diagnosis?.length}
-                  </>
-                )
-              }
+            <div
               className="nodeCard"
               style={{
                 width: nodeWidth,
@@ -96,22 +79,38 @@ const RenderDefaultNodeElement = (
                 position: 'initial',
               }}
               // onClick={e => handleOnNodeDetailClick(e, nodeDatum)}
-              headStyle={{ backgroundColor: headColor(nodeDatum.storeType) }}
             >
-              <div className="cardContentP">
-                Duration: <span>{nodeDatum.duration}</span>
+              <div
+                className="card-header"
+                style={{ backgroundColor: headColor(nodeDatum.storeType) }}
+              >
+                <div className="title">{nodeDatum.name}</div>
+                <div className="extra">
+                  {nodeDatum.diagnosis?.length > 0 && (
+                    <>
+                      <ExclamationCircleFilled
+                        style={{ color: '#fa7070', paddingRight: 5 }}
+                      />
+                      {nodeDatum.diagnosis?.length}
+                    </>
+                  )}
+                </div>
               </div>
-              <div className="cardContentP">
-                Actual Rows: <span>{nodeDatum.actRows}</span>
+              <div className="card-body">
+                <p className="content">
+                  Duration: <span>{nodeDatum.duration}</span>
+                </p>
+                <p className="content">
+                  Actual Rows: <span>{nodeDatum.actRows}</span>
+                </p>
+                <p className="content">
+                  Estimate Rows: <span>{nodeDatum.estRows}</span>
+                </p>
+                <p className="content">
+                  Run at: <span>{nodeDatum.storeType}</span>
+                </p>
               </div>
-              <div className="cardContentP">
-                {/* Estimate Rows: <span>{toFixed(nodeDatum.estRows)}</span> */}
-                Estimate Rows: <span>{nodeDatum.estRows}</span>
-              </div>
-              <div className="cardContentP">
-                Run at: <span>{nodeDatum.storeType}</span>
-              </div>
-            </Card>
+            </div>
             {nodeDatum.__node_attrs.collapsiable && (
               <button
                 className="vp-btn"
