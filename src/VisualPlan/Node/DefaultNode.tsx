@@ -53,12 +53,12 @@ const RenderDefaultNodeElement = (
     }
   }
 
-  const {themeType} = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
   return (
     <React.Fragment>
       <g
-        className={themeType}
+        className={theme}
         transform={`translate(${nodeTranslate.x}, ${nodeTranslate.y}) scale(${nodeTranslate.k})`}
       >
         <rect
@@ -69,15 +69,13 @@ const RenderDefaultNodeElement = (
           fill="none"
         ></rect>
         <foreignObject
-          className='nodeForeginObject'
+          className="nodeForeginObject"
           width={nodeWidth}
           height={nodeHeight}
           x={0}
           y={0}
         >
-          <div
-            style={{ width: nodeWidth, height: nodeHeight }}
-          >
+          <div style={{ width: nodeWidth, height: nodeHeight }}>
             <Card
               size="small"
               title={nodeDatum.name}
@@ -91,7 +89,7 @@ const RenderDefaultNodeElement = (
                   </>
                 )
               }
-              className='nodeCard'
+              className="nodeCard"
               style={{
                 width: nodeWidth,
                 height: nodeHeight - collapsableButtonSize.height,
@@ -100,17 +98,17 @@ const RenderDefaultNodeElement = (
               // onClick={e => handleOnNodeDetailClick(e, nodeDatum)}
               headStyle={{ backgroundColor: headColor(nodeDatum.storeType) }}
             >
-              <div className='cardContentP'>
+              <div className="cardContentP">
                 Duration: <span>{nodeDatum.duration}</span>
               </div>
-              <div className='cardContentP'>
+              <div className="cardContentP">
                 Actual Rows: <span>{nodeDatum.actRows}</span>
               </div>
-              <div className='cardContentP'>
+              <div className="cardContentP">
                 {/* Estimate Rows: <span>{toFixed(nodeDatum.estRows)}</span> */}
                 Estimate Rows: <span>{nodeDatum.estRows}</span>
               </div>
-              <div className='cardContentP'>
+              <div className="cardContentP">
                 Run at: <span>{nodeDatum.storeType}</span>
               </div>
             </Card>

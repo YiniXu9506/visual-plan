@@ -3,8 +3,7 @@
 // keeps track of the current theme selected by user
 
 import React, { createContext } from 'react'
-import { THEME } from '../types'
 
 export const ThemeContext = createContext({
-  themeType: THEME.DARK,
+  theme: 'light',
 })

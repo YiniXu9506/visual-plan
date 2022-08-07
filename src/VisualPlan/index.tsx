@@ -1,11 +1,5 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useContext,
-} from 'react'
-import { VisualPlanProps, TreeNodeDatum, RectSize, THEME } from './types'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { VisualPlanProps, TreeNodeDatum, RectSize } from './types'
 
 import { DefaultNode } from './Node/DefaultNode'
 import { DefaultLink } from './Link/DefaultLink'
@@ -251,7 +245,7 @@ const VisualPlan = ({
   }, [multiTreesBound])
 
   return (
-    <ThemeContext.Provider value={{ themeType: theme! }}>
+    <ThemeContext.Provider value={{ theme: theme! }}>
       <div
         ref={treeDiagramContainerRef}
         className={`treeDiagramContainer ${theme}`}
@@ -299,7 +293,7 @@ VisualPlan.defaultProps = {
   cte: {
     gap: 100,
   },
-  theme: THEME.DARK,
+  theme: 'light',
   minimap: { scale: 0.15 },
 }
 

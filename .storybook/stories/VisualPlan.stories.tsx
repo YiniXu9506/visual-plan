@@ -14,8 +14,8 @@ export const Basic = () => (
   </div>
 )
 
-// export const Thumbnail = () => (
-//   <div style={{ position: 'relative', height: 300 }}>
-//     <VisualPlanThumbnail data={mockData as any} />
-//   </div>
-// )
+export const DarkTheme = () => (
+  <div style={{ position: 'relative', height: 300 }}>
+    <VisualPlan data={mockData as any} theme="dark" />
+  </div>
+)

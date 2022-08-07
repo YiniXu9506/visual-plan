@@ -1,4 +1,10 @@
-import React, { MutableRefObject, Ref, useContext, useEffect, useRef } from 'react'
+import React, {
+  MutableRefObject,
+  Ref,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react'
 import { select, event } from 'd3'
 import { brush as d3Brush, BrushBehavior } from 'd3'
 import { zoom as d3Zoom, zoomIdentity, zoomTransform } from 'd3'
@@ -55,7 +61,7 @@ const Minimap = ({
   getTreePosition,
   brushRef,
 }: MinimapProps) => {
-  const {themeType} = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
   const minimapContainer = {
     width: viewport.width * minimapScale,
     height: viewport.height * minimapScale,
@@ -110,8 +116,7 @@ const Minimap = ({
   }
 
   // TODO: Limits brush move extent
-  const brushBehavior = d3Brush()
-    .on('brush', () => onBrush())
+  const brushBehavior = d3Brush().on('brush', () => onBrush())
 
   const bindBrushListener = () => {
     brushSelection.call(brushBehavior)
