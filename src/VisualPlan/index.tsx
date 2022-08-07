@@ -1,12 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import {
+  VisualPlanProps,
   TreeNodeDatum,
-  ThemeType,
-  BinaryPlan,
-  NodeProps,
-  LinkProps,
   RectSize,
-  NodeType,
 } from './types'
 
 import { DefaultNode } from './Node/DefaultNode'
@@ -31,33 +27,6 @@ import {
   scaleLinear,
   brush as d3Brush,
 } from 'd3'
-
-interface VisualPlanProps {
-  // node raw data
-  data: BinaryPlan
-
-  // custom Node/Link render
-  customNode?: NodeProps
-  customLink?: LinkProps
-
-  // the gap between multiple trees
-  cte?: {
-    gap: number
-  }
-
-  // theme, default light mode
-  theme?: ThemeType
-
-  // minimap
-  minimap?:
-    | {
-        scale?: number
-      }
-    | boolean
-
-  // tree behavior
-  onNodeClick?: (node: NodeType) => void
-}
 
 interface TreeBoundType {
   [k: string]: {

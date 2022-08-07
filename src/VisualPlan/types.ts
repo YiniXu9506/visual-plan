@@ -1,5 +1,32 @@
 import { HierarchyPointNode, HierarchyPointLink } from 'd3'
 
+export interface VisualPlanProps {
+  // node raw data
+  data: BinaryPlan
+
+  // custom Node/Link render
+  customNode?: NodeProps
+  customLink?: LinkProps
+
+  // the gap between multiple trees
+  cte?: {
+    gap: number
+  }
+
+  // theme, default light mode
+  theme?: ThemeType
+
+  // minimap
+  minimap?:
+    | {
+        scale?: number
+      }
+    | boolean
+
+  // tree behavior
+  onNodeClick?: (node: NodeType) => void
+}
+
 export interface Translate {
   x: number
   y: number
