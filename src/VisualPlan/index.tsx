@@ -62,7 +62,8 @@ const VisualPlan = ({
   })
 
   // A SVG container for main chart
-  const multiTreesSVGSelection = select('.multiTreesSVG')
+  const mainViewRef = useRef<SVGSVGElement>(null)
+  const mainViewSelection = select(mainViewRef.current)
   const treeDiagramContainerRef = useRef<HTMLDivElement>(null)
   const brushRef = useRef<SVGGElement>(null)
   const brushSelection = select(brushRef.current!)
@@ -153,9 +154,9 @@ const VisualPlan = ({
 
   // Binds MainView container
   const bindZoomListener = () => {
-    multiTreesSVGSelection.call(zoomBehavior as any)
+    mainViewSelection.call(zoomBehavior as any)
 
-    multiTreesSVGSelection.call(
+    mainViewSelection.call(
       d3Zoom().transform as any,
       zoomIdentity
         .translate(multiTreesTranslate.x, multiTreesTranslate.y)
@@ -246,7 +247,6 @@ const VisualPlan = ({
       >
         <MainView
           treeNodeDatum={treeNodeDatum}
-          classNamePrefix="multiTrees"
           translate={multiTreesTranslate}
           viewport={multiTreesViewport}
           customLink={customLink!}
@@ -256,6 +256,7 @@ const VisualPlan = ({
           adjustPosition={adjustPosition}
           zoomToFitViewportScale={zoomToFitViewportScale}
           onNodeClick={onNodeClick}
+          ref={mainViewRef}
         />
         {minimap && multiTreesViewport.height && (
           <Minimap
@@ -268,7 +269,7 @@ const VisualPlan = ({
             minimapScale={minimap['scale']}
             minimapScaleX={minimapScaleX}
             minimapScaleY={minimapScaleY}
-            multiTreesSVG={multiTreesSVGSelection}
+            multiTreesSVG={mainViewSelection}
             updateTreeTranslate={handleUpdateTreeTranslate}
             brushBehavior={brushBehavior}
             brushRef={brushRef}
