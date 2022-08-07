@@ -261,7 +261,6 @@ const VisualPlan = ({
         {minimap && multiTreesViewport.height && (
           <Minimap
             treeNodeDatum={treeNodeDatum}
-            classNamePrefix="minimapMultiTrees"
             viewport={multiTreesViewport}
             customLink={customLink!}
             customNode={customNode!}

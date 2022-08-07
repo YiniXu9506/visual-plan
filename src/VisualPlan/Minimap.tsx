@@ -27,7 +27,6 @@ import { ThemeContext } from '../context/ThemeContext'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]
-  classNamePrefix: string
   viewport: RectSize
   multiTreesBound: RectSize
   customLink: CustomLink
@@ -51,7 +50,6 @@ interface MinimapProps {
 
 const Minimap = ({
   treeNodeDatum,
-  classNamePrefix,
   viewport,
   multiTreesBound,
   customLink,
@@ -77,17 +75,20 @@ const Minimap = ({
   const _brushRef = useRef<SVGGElement>(null)
   const brushSelection = select(_brushRef.current!)
   const minimapContainerRef = useRef(null)
-  const minimapMultiTreesSVGSelection = select(`.${classNamePrefix}SVG`)
-  const minimapMultiTreesGroupSelection = select(`.${classNamePrefix}Group`)
+  const minimapSVGRef = useRef<SVGSVGElement>(null)
+  const minimapSVGSelection = select(minimapSVGRef.current)
+  const minimapTreesRef = useRef<SVGGElement>(null)
+  const minimapMultiTreesGroupSelection = select(minimapTreesRef.current)
+  const minimapRef = useRef<SVGRectElement>(null)
 
   const drawMinimap = () => {
-    minimapMultiTreesSVGSelection
+    minimapSVGSelection
       .attr('width', minimapContainer.width)
       .attr('height', minimapContainer.height)
       .attr('viewBox', [0, 0, viewport.width, viewport.height].join(' '))
       .attr('preserveAspectRatio', 'xMidYMid meet')
 
-    select('.minimap-rect')
+    select(minimapRef.current)
       .attr('width', viewport.width)
       .attr('height', viewport.height)
 
@@ -147,8 +148,8 @@ const Minimap = ({
 
   useEffect(() => {
     // Removes these elements can avoid re-select brush on minimap
-    minimapMultiTreesSVGSelection.selectAll('.handle').remove()
-    minimapMultiTreesSVGSelection.selectAll('.overlay').remove()
+    minimapSVGSelection.selectAll('.handle').remove()
+    minimapSVGSelection.selectAll('.overlay').remove()
   })
 
   useEffect(() => {
@@ -161,14 +162,15 @@ const Minimap = ({
   return (
     <div ref={minimapContainerRef} className={`minimapContainer`}>
       <svg
-        className={`${classNamePrefix}SVG`}
+        ref={minimapSVGRef}
+        className="minimapMultiTreesSVG"
         width={minimapContainer.width}
         height={minimapContainer.height}
       >
-        <rect className="minimap-rect"></rect>
-        <g className={`${classNamePrefix}GroupWrapper`}>
+        <rect className="minimap-rect" ref={minimapRef}></rect>
+        <g className="minimapMultiTreesGroupWrapper" ref={minimapTreesRef}>
           <g
-            className={`${classNamePrefix}Group`}
+            className="minimapMultiTreesGroup"
             transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
           >
             <Trees
