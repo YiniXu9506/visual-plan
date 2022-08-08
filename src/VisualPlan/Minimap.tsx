@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import {
   select,
-  event,
   brush as d3Brush,
   BrushBehavior,
   zoom as d3Zoom,
@@ -97,7 +96,7 @@ const Minimap = ({
       .attr('height', multiTreesBoundHeight)
   }
 
-  const onBrush = () => {
+  const onBrush = (event) => {
     if (event.sourceEvent && event.sourceEvent.type === 'zoom') return null
     if (Array.isArray(event.selection)) {
       const [[brushX, brushY]] = event.selection
@@ -122,7 +121,7 @@ const Minimap = ({
   }
 
   // TODO: Limits brush move extent
-  const brushBehavior = d3Brush().on('brush', () => onBrush())
+  const brushBehavior = d3Brush().on('brush', (event) => onBrush(event))
 
   const bindBrushListener = () => {
     brushSelection.call(brushBehavior)

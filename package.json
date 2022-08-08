@@ -61,7 +61,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@types/d3": "^7.4.0",
     "babel-loader": "^8.2.5",
-    "d3": "^5.16.0",
+    "d3": "^7.6.1",
     "html-webpack-plugin": "^5.5.0",
     "less": "^3.13.1",
     "less-loader": "^11.0.0",
@@ -77,7 +77,7 @@
     "react-json-view": "^1.21.3"
   },
   "peerDependencies": {
-    "d3": "^5",
+    "d3": "^7.6.1",
     "react": ">=17"
   },
   "overrides": {
