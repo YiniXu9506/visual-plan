@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "parcel build --no-optimize && npm run build:type",
-    "build:type": "npx -p typescript tsc src/**/*.ts* --declaration --allowJs --emitDeclarationOnly --esModuleInterop --jsx react --out dist/types.d.ts",
+    "build:type": "npx -p typescript tsc --out dist/types.d.ts >> /dev/null 2>&1",
     "build:analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer",
     "dev": "parcel watch",
     "sb": "start-storybook -p 6006",
