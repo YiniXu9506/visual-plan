@@ -2,8 +2,8 @@ name: NPM Publish
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - 'v*'
 
 jobs:
   publish:
@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Check package version
-        uses: technote-space/package-version-check-action@v1
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          COMMIT_DISABLED: 1
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
       - name: Install Package dependencies
         run: npm i
@@ -26,3 +28,8 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check Package Version
+        uses: technote-space/package-version-check-action@v1
+        with:
+          COMMIT_DISABLED: 1
