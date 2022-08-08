@@ -2,3 +2,4 @@
 .storybook
 legacy
 parcel-bundle-reports
+storybook-static

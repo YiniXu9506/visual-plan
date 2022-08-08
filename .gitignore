@@ -20,6 +20,7 @@ coverage
 yarn.lock
 .cache
 parcel-bundle-reports
+storybook-static
 
 # Editor directories and files
 .vscode/*
