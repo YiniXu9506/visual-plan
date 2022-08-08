@@ -1,0 +1,28 @@
+name: NPM Publish
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  publish:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check package version
+        uses: technote-space/package-version-check-action@v1
+        with:
+          COMMIT_DISABLED: 1
+
+      - name: Install Package dependencies
+        run: npm i
+      - name: Build
+        run: npm run build
+      - name: Publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
