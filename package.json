@@ -1,6 +1,6 @@
 {
   "name": "visual-plan",
-  "version": "0.0.1",
+  "version": "0.0.2-beta1",
   "description": "A React component to show a visualization of execution plan.",
   "keywords": [
     "react",
@@ -77,8 +77,8 @@
     "react-json-view": "^1.21.3"
   },
   "peerDependencies": {
-    "d3": "5",
-    "react": "17"
+    "d3": ">=5",
+    "react": ">=17"
   },
   "overrides": {
     "react-json-view": {
