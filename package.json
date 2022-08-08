@@ -1,6 +1,6 @@
 {
   "name": "visual-plan",
-  "version": "0.0.2-beta2",
+  "version": "0.0.0",
   "description": "A React component to show a visualization of execution plan.",
   "keywords": [
     "react",
