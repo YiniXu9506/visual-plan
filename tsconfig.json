@@ -4,7 +4,12 @@
 		"src/index.d.ts"
 	],
 	"compilerOptions": {
+		"baseUrl": "./",
 		"skipDefaultLibCheck": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"esModuleInterop": true,
+		"jsx": "react"
 	}
 }
