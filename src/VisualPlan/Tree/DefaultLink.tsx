@@ -2,7 +2,7 @@ import React from 'react'
 
 import { CustomLink, LinkProps } from '../../types'
 
-import styles from './DefaultLink.module.less'
+import '../../style/default_link.less'
 
 export const RenderDefaultLinkElement: React.FC<LinkProps> = ({ link }) => {
   // Draws lines between parent and child node
@@ -42,7 +42,7 @@ export const RenderDefaultLinkElement: React.FC<LinkProps> = ({ link }) => {
   return (
     <React.Fragment>
       <path
-        className={styles.pathLink}
+        className='pathLink'
         d={diagonal(
           // source node
           {
