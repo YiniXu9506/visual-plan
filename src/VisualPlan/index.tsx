@@ -3,7 +3,6 @@ import {
   select,
   zoom as d3Zoom,
   zoomIdentity,
-  event,
   scaleLinear,
   brush as d3Brush,
 } from 'd3'
@@ -133,7 +132,7 @@ const VisualPlan = ({
     [singleTreeBoundsMap, gapBetweenTrees]
   )
 
-  const onZoom = () => {
+  const onZoom = (event) => {
     const t = event.transform
     setMultiTreesTranslate(t)
 
@@ -150,7 +149,7 @@ const VisualPlan = ({
   // TODO: Limits zoom extent
   const zoomBehavior = d3Zoom()
     .scaleExtent([0.2, 5])
-    .on('zoom', () => onZoom())
+    .on('zoom', (event) => onZoom(event))
 
   // Binds MainView container
   const bindZoomListener = () => {

@@ -3,6 +3,7 @@ import ReactJson from 'react-json-view'
 import Tabs from 'antd/lib/tabs'
 import 'antd/lib/tabs/style/index.css'
 import Tooltip from 'antd/lib/tooltip'
+import 'antd/lib/col/style/css.js'
 import 'antd/lib/tooltip/style/index.css'
 import Drawer, { DrawerProps } from 'antd/lib/drawer'
 import 'antd/lib/drawer/style/index.css'
@@ -26,7 +27,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
       <Drawer
         title={data.name}
         placement="right"
-        width={window.innerWidth * 0.35}
+        width={window.innerWidth * 0.3}
         closable={false}
         destroyOnClose={true}
         getContainer={false}
@@ -67,13 +68,13 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
             <p>
               Disk:{' '}
               <span>
-                {decimalSIPrefix('deckbytes')(data.diskBytes, 2, null)}
+                {Number(data.diskBytes) ? decimalSIPrefix('B')(data.diskBytes, 2, null) : data.diskBytes}
               </span>
             </p>
             <p>
               Memory:{' '}
               <span>
-                {decimalSIPrefix('deckbytes')(data.memoryBytes, 2, null)}
+                {Number(data.memoryBytes) ? decimalSIPrefix('B')(data.memoryBytes, 2, null) : data.memoryBytes}
               </span>
             </p>
           </Tabs.TabPane>
