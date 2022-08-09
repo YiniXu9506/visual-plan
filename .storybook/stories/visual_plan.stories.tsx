@@ -82,7 +82,7 @@ export const WithDetailDrawer = ({
   )
 }
 
-export const ThumbnailVisualPlan = ({ cteGap, ...args }) => {
+export const Thumbnail = ({ cteGap, ...args }) => {
   const minimap = false
   const cte = { gap: cteGap }
   return (
