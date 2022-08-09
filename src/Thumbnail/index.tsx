@@ -5,7 +5,8 @@ import { AssignInternalProperties } from '../utlis'
 import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
 import { Trees } from '../VisualPlan/Tree/index'
 
-import styles from './index.module.less'
+import '../style/thumbnail.less'
+import { ThemeContext } from '../context/ThemeContext'
 
 interface TreeBoundType {
   [k: string]: {
@@ -18,6 +19,7 @@ interface TreeBoundType {
 
 const VisualPlanThumbnail = ({
   data,
+  theme,
   customNode,
   customLink,
   cte,
@@ -109,15 +111,14 @@ const VisualPlanThumbnail = ({
         [0, 0, multiTreesBound.width, multiTreesBound.height].join(' ')
       )
       .attr('preserveAspectRatio', 'xMidYMid meet')
-      .style('background', 'white')
   }
 
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(_data, customNode!.nodeSize)
+    const treeNodes = AssignInternalProperties(_data, customNode?.nodeSize)
     setTreeNodeDatum(treeNodes)
-  }, [data, customNode!.nodeSize])
+  }, [data, customNode?.nodeSize])
 
   useEffect(() => {
     if (thumbnailContainerGRef.current) {
@@ -135,27 +136,30 @@ const VisualPlanThumbnail = ({
   }, [thumbnailContainerGRef.current, multiTreesBound])
 
   return (
-    <div className={styles.ThumbnailContainer} ref={thumbnailContainerGRef}>
-      <svg className="thumbnailSVG" ref={thumbnailSVGRef}>
-        <g className="thumbnailGroup">
-          <Trees
-            {...{
-              treeNodeDatum,
-              zoomToFitViewportScale: 1,
-              customLink: customLink!,
-              customNode: customNode!,
-              getTreePosition: getInitSingleTreeBound,
-            }}
-          />
-        </g>
-      </svg>
-    </div>
+    <ThemeContext.Provider value={{ theme: theme! }}>
+      <div className={`thumbnailContainer ${theme}`} ref={thumbnailContainerGRef} >
+        <svg ref={thumbnailSVGRef}>
+          <g>
+            <Trees
+              {...{
+                treeNodeDatum,
+                zoomToFitViewportScale: 1,
+                customLink,
+                customNode,
+                getTreePosition: getInitSingleTreeBound,
+              }}
+            />
+          </g>
+        </svg>
+      </div>
+    </ThemeContext.Provider>
   )
 }
 
 VisualPlanThumbnail.defaultProps = {
+  theme: 'dark',
   cte: {
-    gap: 100,
+    gap: 30,
   },
 }
 

@@ -132,7 +132,7 @@ const VisualPlan = ({
     [singleTreeBoundsMap, gapBetweenTrees]
   )
 
-  const onZoom = (event) => {
+  const onZoom = event => {
     const t = event.transform
     setMultiTreesTranslate(t)
 
@@ -148,11 +148,12 @@ const VisualPlan = ({
 
   // TODO: Limits zoom extent
   const zoomBehavior = d3Zoom()
-    .scaleExtent([0.2, 5])
-    .on('zoom', (event) => onZoom(event))
+    // set scale extent according to the whole tree scale
+    .scaleExtent([0.5 * zoomToFitViewportScale, 2 / zoomToFitViewportScale])
+    .on('zoom', event => onZoom(event))
 
   // Binds MainView container
-  const bindZoomListener = () => {
+  const bindZoomListener = useCallback(() => {
     mainViewSelection.call(zoomBehavior as any)
 
     mainViewSelection.call(
@@ -161,7 +162,7 @@ const VisualPlan = ({
         .translate(multiTreesTranslate.x, multiTreesTranslate.y)
         .scale(multiTreesTranslate.k)
     )
-  }
+  }, [zoomToFitViewportScale])
 
   // Limits brush move extent
   const brushBehavior = d3Brush()
@@ -236,7 +237,7 @@ const VisualPlan = ({
       bindZoomListener()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [multiTreesBound])
+  }, [multiTreesBound, bindZoomListener])
 
   return (
     <ThemeContext.Provider value={{ theme: theme! }}>

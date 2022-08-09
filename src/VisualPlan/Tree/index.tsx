@@ -28,7 +28,6 @@ const SingleTree = ({
   getTreePosition,
 }: SingleTreeProps) => {
   const singleTreeGroupRef = useRef(null)
-  const inited = useRef(false)
   const [nodes, setNodes] = useState<HierarchyPointNode<TreeNodeDatum>[]>([])
   const [links, setLinks] = useState<HierarchyPointLink<TreeNodeDatum>[]>([])
   const [treePosition, setTreePosition] = useState({
@@ -55,11 +54,6 @@ const SingleTree = ({
   }, [datum, margin])
 
   useEffect(() => {
-    if (!nodes.length || inited.current) {
-      return
-    }
-
-    inited.current = true
     const position = getTreePosition(treeIdx)
     setTreePosition(position)
   }, [nodes, getTreePosition, treeIdx])

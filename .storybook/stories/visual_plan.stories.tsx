@@ -27,19 +27,25 @@ export default {
       defaultValue: 0.15,
       control: { type: 'number', if: { arg: 'minimap' } },
     },
-    // cteGap: {
-    //   description: 'The gap between the main tree and the cte trees',
-    //   defaultValue: 100,
-    //   control: { type: 'number' },
-    // },
+    cteGap: {
+      description: 'The gap between the main tree and the cte trees',
+      defaultValue: 100,
+      control: { type: 'number' },
+    },
   },
 }
 
-export const Basic = ({ minimapScale, minimap: _minimap, ...args }) => {
+export const Basic = ({ minimapScale, minimap: _minimap, cteGap, ...args }) => {
   const minimap = _minimap ? { scale: minimapScale } : false
+  const cte = { gap: cteGap }
   return (
     <div style={{ height: 600 }}>
-      <VisualPlan data={mockData as any} minimap={minimap} {...args} />
+      <VisualPlan
+        data={mockData as any}
+        minimap={minimap}
+        cte={cte}
+        {...args}
+      />
     </div>
   )
 }
@@ -47,9 +53,11 @@ export const Basic = ({ minimapScale, minimap: _minimap, ...args }) => {
 export const WithDetailDrawer = ({
   minimapScale,
   minimap: _minimap,
+  cteGap,
   ...args
 }) => {
   const minimap = _minimap ? { scale: minimapScale } : false
+  const cte = { gap: cteGap }
   const [showDetailDrawer, setShowDetailDrawer] = useState(false)
   const [detailData, setDetailData] = useState<RawNodeDatum | null>(null)
 
@@ -62,12 +70,28 @@ export const WithDetailDrawer = ({
           setShowDetailDrawer(true)
         }}
         minimap={minimap}
+        cte={cte}
         {...args}
       />
       <DetailDrawer
         data={detailData!}
         visible={showDetailDrawer}
         onClose={() => setShowDetailDrawer(false)}
+      />
+    </div>
+  )
+}
+
+export const Thumbnail = ({ cteGap, ...args }) => {
+  const minimap = false
+  const cte = { gap: cteGap }
+  return (
+    <div style={{ height: 600 }}>
+      <VisualPlanThumbnail
+        data={mockData as any}
+        minimap={minimap}
+        cte={cte}
+        {...args}
       />
     </div>
   )
