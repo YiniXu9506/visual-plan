@@ -18,15 +18,6 @@ import {
 import MainView from './MainView'
 import Minimap from './Minimap'
 
-interface TreeBoundType {
-  [k: string]: {
-    x: number
-    y: number
-    width: number
-    height: number
-  }
-}
-
 const VisualPlan = ({
   data,
   customNode,
@@ -45,7 +36,6 @@ const VisualPlan = ({
 
   const [zoomToFitViewportScale, setZoomToFitViewportScale] = useState(0)
   const [adjustPosition, setAdjustPosition] = useState({ width: 0, height: 0 })
-  const singleTreeBoundsMap = useRef<TreeBoundType>({})
 
   // Sets the bound of entire tree
   const [multiTreesBound, setMultiTreesBound] = useState({
@@ -84,53 +74,6 @@ const VisualPlan = ({
           : (multiTreesViewport.height - multiTreesBound.height * k) / 2,
     })
   }
-
-  // Updates multiTrees bound and returns single tree position, which contains root point and offset to original point [0,0].
-  const getInitSingleTreeBound = useCallback(
-    treeIdx => {
-      let offset = 0
-      let multiTreesBound: RectSize = { width: 0, height: 0 }
-      const singleTreeGroupNode = select(
-        `.singleTreeGroup-${treeIdx}`
-      ).node() as SVGGraphicsElement
-
-      const { x, y, width, height } = singleTreeGroupNode.getBBox()
-
-      singleTreeBoundsMap.current[`singleTreeGroup-${treeIdx}`] = {
-        x: x,
-        y: y,
-        width: width,
-        height: height,
-      }
-
-      for (let i = treeIdx; i > 0; i--) {
-        offset =
-          offset +
-          singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].width +
-          gapBetweenTrees
-
-        multiTreesBound.width =
-          multiTreesBound.width +
-          singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].width +
-          gapBetweenTrees
-
-        multiTreesBound.height =
-          singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].height >
-          multiTreesBound.height
-            ? singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].height
-            : multiTreesBound.height
-      }
-
-      setMultiTreesBound({
-        width: multiTreesBound.width + width,
-        height:
-          multiTreesBound.height > height ? multiTreesBound.height : height,
-      })
-
-      return { x, y, offset }
-    },
-    [singleTreeBoundsMap, gapBetweenTrees]
-  )
 
   const onZoom = event => {
     const t = event.transform
@@ -246,17 +189,18 @@ const VisualPlan = ({
         className={`treeDiagramContainer ${theme}`}
       >
         <MainView
+          ref={mainViewRef}
           treeNodeDatum={treeNodeDatum}
           translate={multiTreesTranslate}
           viewport={multiTreesViewport}
           customLink={customLink!}
           customNode={customNode!}
           toggleNode={handleNodeToggle}
-          getTreePosition={getInitSingleTreeBound}
           adjustPosition={adjustPosition}
           zoomToFitViewportScale={zoomToFitViewportScale}
+          gapBetweenTrees={gapBetweenTrees}
           onNodeClick={onNodeClick}
-          ref={mainViewRef}
+          onUpdate={rect => setMultiTreesBound(rect)}
         />
         {minimap && multiTreesViewport.height && (
           <Minimap
@@ -274,7 +218,7 @@ const VisualPlan = ({
             brushRef={brushRef}
             adjustPosition={adjustPosition}
             zoomToFitViewportScale={zoomToFitViewportScale}
-            getTreePosition={getInitSingleTreeBound}
+            gapBetweenTrees={gapBetweenTrees}
           />
         )}
       </div>

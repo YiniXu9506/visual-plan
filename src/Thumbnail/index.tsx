@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { select } from 'd3'
 
 import { AssignInternalProperties } from '../utlis'
@@ -7,15 +7,6 @@ import { Trees } from '../VisualPlan/Tree/index'
 
 import '../style/thumbnail.less'
 import { ThemeContext } from '../context/ThemeContext'
-
-interface TreeBoundType {
-  [k: string]: {
-    x: number
-    y: number
-    width: number
-    height: number
-  }
-}
 
 const VisualPlanThumbnail = ({
   data,
@@ -30,7 +21,6 @@ const VisualPlanThumbnail = ({
     width: 0,
     height: 0,
   })
-  const singleTreeBoundsMap = useRef<TreeBoundType>({})
 
   const thumbnailContainerGRef = useRef<HTMLDivElement>(null)
   const thumbnailSVGRef = useRef<SVGSVGElement>(null)
@@ -41,55 +31,6 @@ const VisualPlanThumbnail = ({
     width: 0,
     height: 0,
   })
-
-  // Updates multiTrees bound and returns single tree position, which contains root point and offset to original point [0,0].
-  const getInitSingleTreeBound = useCallback(
-    treeIdx => {
-      let offset = 0
-      let multiTreesBound: RectSize = { width: 0, height: 0 }
-      const singleTreeGroupNode = select(
-        `.singleTreeGroup-${treeIdx}`
-      ).node() as SVGGraphicsElement
-
-      const { x, y, width, height } = singleTreeGroupNode.getBBox()
-
-      singleTreeBoundsMap.current[`singleTreeGroup-${treeIdx}`] = {
-        x: x,
-        y: y,
-        width: width,
-        height: height,
-      }
-
-      for (let i = treeIdx; i > 0; i--) {
-        const preSingleTreeGroupBoundWidth =
-          singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].width
-
-        const preSingleTreeGroupBoundHeight =
-          singleTreeBoundsMap.current[`singleTreeGroup-${i - 1}`].height
-
-        offset = offset + preSingleTreeGroupBoundWidth + gapBetweenTrees!
-
-        multiTreesBound.width =
-          multiTreesBound.width +
-          preSingleTreeGroupBoundWidth +
-          gapBetweenTrees!
-
-        multiTreesBound.height =
-          preSingleTreeGroupBoundHeight > multiTreesBound.height
-            ? preSingleTreeGroupBoundHeight
-            : multiTreesBound.height
-      }
-
-      setMultiTreesBound({
-        width: multiTreesBound.width + width,
-        height:
-          multiTreesBound.height > height ? multiTreesBound.height : height,
-      })
-
-      return { x, y, offset }
-    },
-    [singleTreeBoundsMap, gapBetweenTrees]
-  )
 
   const drawMinimap = () => {
     const widthRatio = multiTreesViewport.width / multiTreesBound.width
@@ -137,17 +78,18 @@ const VisualPlanThumbnail = ({
 
   return (
     <ThemeContext.Provider value={{ theme: theme! }}>
-      <div className={`thumbnailContainer ${theme}`} ref={thumbnailContainerGRef} >
+      <div
+        className={`thumbnailContainer ${theme}`}
+        ref={thumbnailContainerGRef}
+      >
         <svg ref={thumbnailSVGRef}>
           <g>
             <Trees
-              {...{
-                treeNodeDatum,
-                zoomToFitViewportScale: 1,
-                customLink,
-                customNode,
-                getTreePosition: getInitSingleTreeBound,
-              }}
+              treeNodeDatum={treeNodeDatum}
+              customLink={customLink}
+              customNode={customNode}
+              gapBetweenTrees={gapBetweenTrees}
+              onUpdate={rect => setMultiTreesBound(rect)}
             />
           </g>
         </svg>
