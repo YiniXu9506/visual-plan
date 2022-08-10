@@ -17,9 +17,10 @@ interface MainViewProps {
   viewport: RectSize
   toggleNode: (nodeId: string) => void
   onNodeClick?: (node: TreeNodeDatum) => void
-  getTreePosition: (treeIdx: number) => any
   adjustPosition: RectSize
   zoomToFitViewportScale: number
+  gapBetweenTrees: number
+  onUpdate?: (translate: RectSize) => void
 }
 
 const MainView = forwardRef<SVGSVGElement, MainViewProps>(
@@ -34,7 +35,8 @@ const MainView = forwardRef<SVGSVGElement, MainViewProps>(
       onNodeClick,
       adjustPosition,
       zoomToFitViewportScale,
-      getTreePosition,
+      gapBetweenTrees,
+      onUpdate,
     },
     ref
   ) => {
@@ -54,15 +56,14 @@ const MainView = forwardRef<SVGSVGElement, MainViewProps>(
             transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
           >
             <Trees
-              {...{
-                treeNodeDatum,
-                zoomToFitViewportScale,
-                customLink,
-                customNode,
-                toggleNode,
-                onNodeClick,
-                getTreePosition,
-              }}
+              treeNodeDatum={treeNodeDatum}
+              customLink={customLink}
+              customNode={customNode}
+              scale={zoomToFitViewportScale}
+              gapBetweenTrees={gapBetweenTrees}
+              toggleNode={toggleNode}
+              onNodeClick={onNodeClick}
+              onUpdate={onUpdate}
             />
           </g>
         </g>
