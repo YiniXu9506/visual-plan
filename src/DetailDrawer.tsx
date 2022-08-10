@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ReactJson from 'react-json-view'
 import Tabs from 'antd/lib/tabs'
 import 'antd/lib/tabs/style/index.css'
@@ -8,18 +8,20 @@ import 'antd/lib/tooltip/style/index.css'
 import Drawer, { DrawerProps } from 'antd/lib/drawer'
 import 'antd/lib/drawer/style/index.css'
 import { InfoCircleTwoTone } from '@ant-design/icons'
-
-import { RawNodeDatum } from './types'
+import { RawNodeDatum, Theme } from './types'
 import { diagnosisText } from './data/diagnosis'
-
 import { decimalSIPrefix, toFixed } from './utlis'
+
+import './style/detail_drawer.less'
 
 interface DetailDrawerProps {
   data: RawNodeDatum
+  theme: Theme
 }
 
 export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
   data,
+  theme,
   ...props
 }) => {
   return (
@@ -32,9 +34,15 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
         destroyOnClose={true}
         getContainer={false}
         style={{ position: 'absolute' }}
+        className={theme}
         {...props}
       >
-        <Tabs defaultActiveKey="1" type="card" size="middle">
+        <Tabs
+          defaultActiveKey="1"
+          type="card"
+          size="middle"
+          popupClassName={theme}
+        >
           <Tabs.TabPane tab="General" key="1" style={{ padding: '1rem' }}>
             <p>
               Duration{' '}
@@ -68,13 +76,17 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
             <p>
               Disk:{' '}
               <span>
-                {Number(data.diskBytes) ? decimalSIPrefix('B')(data.diskBytes, 2, null) : data.diskBytes}
+                {Number(data.diskBytes)
+                  ? decimalSIPrefix('B')(data.diskBytes, 2, null)
+                  : data.diskBytes}
               </span>
             </p>
             <p>
               Memory:{' '}
               <span>
-                {Number(data.memoryBytes) ? decimalSIPrefix('B')(data.memoryBytes, 2, null) : data.memoryBytes}
+                {Number(data.memoryBytes)
+                  ? decimalSIPrefix('B')(data.memoryBytes, 2, null)
+                  : data.memoryBytes}
               </span>
             </p>
           </Tabs.TabPane>
@@ -113,6 +125,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   displayObjectSize={false}
                   displayDataTypes={false}
                   name={false}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   iconStyle="circle"
                 />
               </div>
@@ -125,6 +138,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   enableClipboard={false}
                   displayObjectSize={false}
                   displayDataTypes={false}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   name={false}
                   iconStyle="circle"
                 />
@@ -138,6 +152,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   enableClipboard={false}
                   displayObjectSize={false}
                   displayDataTypes={false}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   name={false}
                   iconStyle="circle"
                 />
@@ -154,6 +169,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                       enableClipboard={false}
                       displayObjectSize={false}
                       displayDataTypes={false}
+                      theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                       name={false}
                       iconStyle="circle"
                     />
