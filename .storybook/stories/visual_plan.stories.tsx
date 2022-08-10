@@ -1,8 +1,7 @@
 import { useState } from '@storybook/addons'
 import React from 'react'
 
-// import { VisualPlan } from '../../dist'
-import { VisualPlan, VisualPlanThumbnail } from '../../src'
+import { VisualPlan } from '../../src'
 import { DetailDrawer } from '../../src/DetailDrawer'
 import { RawNodeDatum } from '../../src/types'
 import mockData from './vp_mock.json'
@@ -85,17 +84,3 @@ export const WithDetailDrawer = ({
   )
 }
 
-export const Thumbnail = ({ cteGap, ...args }) => {
-  const minimap = false
-  const cte = { gap: cteGap }
-  return (
-    <div style={{ height: 600 }}>
-      <VisualPlanThumbnail
-        data={mockData as any}
-        minimap={minimap}
-        cte={cte}
-        {...args}
-      />
-    </div>
-  )
-}
