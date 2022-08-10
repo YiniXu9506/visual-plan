@@ -47,25 +47,24 @@
         background-color: black !important;
     }
 
-    .ant-tabs-dropdown {
-        color: white;
-    }
+    &.ant-tabs-dropdown {
+        .ant-tabs-dropdown-menu {
+            background: #1f1f1f;
+            box-shadow: 0 3px 6px -4px rgb(0 0 0 / 0.48), 0 6px 16px 0 rgb(0 0 0 / 0.32), 0 9px 28px 8px rgb(0 0 0 / 0.2);
+        }
 
-    .ant-tabs-dropdown{
-        background-color: red;
-        box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
-    }
 
-    .ant-tabs-dropdown-menu-item {
-        color: white;
-        background: rgba(255, 255, 255, 0.04);
-    }
+        .ant-tabs-dropdown-menu-item {
+            color: white;
+            background: #1f1f1f;
+        }
 
-    .ant-tabs-dropdown-menu-item:hover {
-        background: #141414;
-    }
+        .ant-tabs-dropdown-menu-item:hover {
+            background: #141414;
+        }
 
-    .ant-tabs-top > .ant-tabs-nav::before, .ant-tabs-bottom > .ant-tabs-nav::before, .ant-tabs-top > div > .ant-tabs-nav::before, .ant-tabs-bottom > div > .ant-tabs-nav::before {
-        border-bottom: 1px solid #f0f0f0;
+        .ant-tabs-top > .ant-tabs-nav::before, .ant-tabs-bottom > .ant-tabs-nav::before, .ant-tabs-top > div > .ant-tabs-nav::before, .ant-tabs-bottom > div > .ant-tabs-nav::before {
+            border-bottom: 1px solid #1f1f1f;
+        }
     }
 }

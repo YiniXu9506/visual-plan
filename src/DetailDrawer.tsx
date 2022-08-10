@@ -37,7 +37,12 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
         className={theme}
         {...props}
       >
-        <Tabs defaultActiveKey="1" type="card" size="middle">
+        <Tabs
+          defaultActiveKey="1"
+          type="card"
+          size="middle"
+          popupClassName={theme}
+        >
           <Tabs.TabPane tab="General" key="1" style={{ padding: '1rem' }}>
             <p>
               Duration{' '}
@@ -71,13 +76,17 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
             <p>
               Disk:{' '}
               <span>
-                {Number(data.diskBytes) ? decimalSIPrefix('B')(data.diskBytes, 2, null) : data.diskBytes}
+                {Number(data.diskBytes)
+                  ? decimalSIPrefix('B')(data.diskBytes, 2, null)
+                  : data.diskBytes}
               </span>
             </p>
             <p>
               Memory:{' '}
               <span>
-                {Number(data.memoryBytes) ? decimalSIPrefix('B')(data.memoryBytes, 2, null) : data.memoryBytes}
+                {Number(data.memoryBytes)
+                  ? decimalSIPrefix('B')(data.memoryBytes, 2, null)
+                  : data.memoryBytes}
               </span>
             </p>
           </Tabs.TabPane>
@@ -116,7 +125,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   displayObjectSize={false}
                   displayDataTypes={false}
                   name={false}
-                  theme={theme === 'dark' ? 'monokai' : null}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   iconStyle="circle"
                 />
               </div>
@@ -129,6 +138,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   enableClipboard={false}
                   displayObjectSize={false}
                   displayDataTypes={false}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   name={false}
                   iconStyle="circle"
                 />
@@ -142,7 +152,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                   enableClipboard={false}
                   displayObjectSize={false}
                   displayDataTypes={false}
-                  theme={theme === 'dark' ? 'monokai' : null}
+                  theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                   name={false}
                   iconStyle="circle"
                 />
@@ -159,7 +169,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
                       enableClipboard={false}
                       displayObjectSize={false}
                       displayDataTypes={false}
-                      theme={theme === 'dark' ? 'monokai' : null}
+                      theme={theme === 'dark' ? 'monokai' : 'rjv-default'}
                       name={false}
                       iconStyle="circle"
                     />
