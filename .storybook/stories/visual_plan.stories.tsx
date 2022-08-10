@@ -58,6 +58,7 @@ export const WithDetailDrawer = ({
 }) => {
   const minimap = _minimap ? { scale: minimapScale } : false
   const cte = { gap: cteGap }
+  const { theme } = args
   const [showDetailDrawer, setShowDetailDrawer] = useState(false)
   const [detailData, setDetailData] = useState<RawNodeDatum | null>(null)
 
@@ -75,8 +76,10 @@ export const WithDetailDrawer = ({
       />
       <DetailDrawer
         data={detailData!}
+        theme={theme}
         visible={showDetailDrawer}
         onClose={() => setShowDetailDrawer(false)}
+        {...args}
       />
     </div>
   )
