@@ -1,41 +1,47 @@
-import React, { useEffect, useState, useMemo, useRef, memo } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  memo,
+  useLayoutEffect,
+} from 'react'
 import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
 import { DefaultNode } from './DefaultNode'
 import { DefaultLink } from './DefaultLink'
-import { TreeNodeDatum, NodeMargin, CustomLink, CustomNode } from '../../types'
+import {
+  TreeNodeDatum,
+  NodeMargin,
+  CustomLink,
+  CustomNode,
+  RectSize,
+} from '../../types'
 import { generateNodesAndLinks } from '../../utlis'
 
 interface SingleTreeProps {
   datum: TreeNodeDatum
-  treeIdx: number
-  zoomToFitViewportScale: number
+  transform?: {
+    offsetX?: number
+    scale?: number
+  }
   customLink: CustomLink
   customNode: CustomNode
-  toggleNode: (nodeId: string) => void
+  toggleNode?: (nodeId: string) => void
   onNodeClick?: (node: TreeNodeDatum) => void
-  getTreePosition: (number) => any
+  onUpdate?: (rect: RectSize) => void
 }
 
-const SingleTree = ({
+const Tree = ({
   datum,
-  treeIdx,
-  zoomToFitViewportScale,
+  transform,
   customLink = DefaultLink,
   customNode = DefaultNode,
   toggleNode,
   onNodeClick,
-  getTreePosition,
+  onUpdate,
 }: SingleTreeProps) => {
   const singleTreeGroupRef = useRef(null)
-  const [nodes, setNodes] = useState<HierarchyPointNode<TreeNodeDatum>[]>([])
-  const [links, setLinks] = useState<HierarchyPointLink<TreeNodeDatum>[]>([])
-  const [treePosition, setTreePosition] = useState({
-    x: 0,
-    y: 0,
-    offset: 0,
-  })
-
   const margin: NodeMargin = useMemo(
     () => ({
       siblingMargin: customNode.nodeMargin.childrenMargin || 40,
@@ -43,32 +49,36 @@ const SingleTree = ({
     }),
     [customNode.nodeMargin.childrenMargin, customNode.nodeMargin.siblingMargin]
   )
-
-  useEffect(() => {
+  const { nodes, links } = useMemo<{
+    nodes: HierarchyPointNode<TreeNodeDatum>[]
+    links: HierarchyPointLink<TreeNodeDatum>[]
+  }>(() => {
     if (!datum) {
+      return { nodes: [], links: [] }
+    }
+    return generateNodesAndLinks(datum, margin)
+  }, [datum, margin])
+  const transformValue = useMemo(() => {
+    if (!transform || !singleTreeGroupRef.current) {
+      return ''
+    }
+    const { x, y } = singleTreeGroupRef.current.getBBox()
+    const { offsetX, scale } = transform
+    return `translate(${scale * (-x + offsetX)}, ${scale * y}) scale(${
+      scale || 1
+    })`
+  }, [transform])
+
+  useLayoutEffect(() => {
+    if (!onUpdate) {
       return
     }
-    const { nodes, links } = generateNodesAndLinks(datum, margin)
-    setNodes(nodes)
-    setLinks(links)
-  }, [datum, margin])
-
-  useEffect(() => {
-    const position = getTreePosition(treeIdx)
-    setTreePosition(position)
-  }, [nodes, getTreePosition, treeIdx])
+    const { width, height } = singleTreeGroupRef.current.getBBox()
+    onUpdate({ width, height })
+  }, [nodes, links])
 
   return (
-    // tranform is the relative position to the original point [0,0] when initiated.
-    <g
-      className={`singleTreeGroup-${treeIdx}`}
-      ref={singleTreeGroupRef}
-      transform={`translate(${
-        zoomToFitViewportScale * (-treePosition.x + treePosition.offset)
-      }, ${
-        zoomToFitViewportScale * treePosition.y
-      }) scale(${zoomToFitViewportScale})`}
-    >
+    <g ref={singleTreeGroupRef} transform={transformValue}>
       <g className="linksWrapper">
         {links &&
           links.map((link, i) => {
@@ -84,7 +94,7 @@ const SingleTree = ({
                 key={hierarchyPointNode.data.name}
                 node={hierarchyPointNode}
                 onToggle={node => {
-                  toggleNode(node.__node_attrs.id)
+                  toggleNode?.(node.__node_attrs.id)
                 }}
                 onClick={onNodeClick}
               />
@@ -97,40 +107,70 @@ const SingleTree = ({
 
 interface TreesProps {
   treeNodeDatum: TreeNodeDatum[]
-  zoomToFitViewportScale: number
   customLink: CustomLink
   customNode: CustomNode
+  gapBetweenTrees: number
+  scale?: number
   toggleNode?: (nodeId: string) => void
   onNodeClick?: (node: TreeNodeDatum) => void
-  getTreePosition: (treeIdx: number) => any
+  onUpdate?: (rect: RectSize) => void
 }
 
 const Trees = memo(
   ({
     treeNodeDatum,
-    zoomToFitViewportScale,
     customLink,
     customNode,
+    gapBetweenTrees,
+    scale = 1,
     toggleNode,
     onNodeClick,
-    getTreePosition,
-  }: TreesProps) => (
-    <>
-      {treeNodeDatum.map((datum, idx) => (
-        <SingleTree
-          key={datum.name}
-          datum={datum}
-          treeIdx={idx}
-          zoomToFitViewportScale={zoomToFitViewportScale}
-          customLink={customLink}
-          customNode={customNode}
-          toggleNode={toggleNode!}
-          onNodeClick={onNodeClick}
-          getTreePosition={getTreePosition}
-        />
-      ))}
-    </>
-  )
+    onUpdate,
+  }: TreesProps) => {
+    const [rects, setRects] = useState<RectSize[]>([])
+    const onTreeUpdate = (idx: number, rect: RectSize) =>
+      setRects(prev => [...prev.slice(0, idx), rect, ...prev.slice(idx + 1)])
+
+    useEffect(() => {
+      if (!onUpdate) {
+        return
+      }
+      const treesRect = rects.reduce(
+        (prev, { width, height }) => {
+          prev.width += width
+          prev.height = height > prev.height ? height : prev.height
+          return prev
+        },
+        { width: 0, height: 0 }
+      )
+      treesRect.width += gapBetweenTrees * (treeNodeDatum.length - 1)
+      onUpdate(treesRect)
+    }, [rects])
+
+    return (
+      <>
+        {treeNodeDatum.map((datum, idx) => {
+          const prevGap = gapBetweenTrees * idx
+          let prevWidth = 0
+          for (let i = idx; i > 0; i--) {
+            prevWidth += rects[i - 1]?.width || 0
+          }
+          return (
+            <Tree
+              key={datum.name}
+              datum={datum}
+              transform={{ offsetX: prevWidth + prevGap, scale }}
+              customLink={customLink}
+              customNode={customNode}
+              toggleNode={toggleNode}
+              onNodeClick={onNodeClick}
+              onUpdate={rect => onTreeUpdate(idx, rect)}
+            />
+          )
+        })}
+      </>
+    )
+  }
 )
 
 export { Trees }

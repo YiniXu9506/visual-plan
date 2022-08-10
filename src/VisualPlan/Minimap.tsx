@@ -1,10 +1,4 @@
-import React, {
-  MutableRefObject,
-  Ref,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { MutableRefObject, Ref, useEffect, useRef } from 'react'
 import {
   select,
   brush as d3Brush,
@@ -22,7 +16,6 @@ import {
   CustomLink,
   CustomNode,
 } from '../types'
-import { ThemeContext } from '../context/ThemeContext'
 
 interface MinimapProps {
   treeNodeDatum: TreeNodeDatum[]
@@ -43,8 +36,8 @@ interface MinimapProps {
   brushRef?: Ref<SVGGElement>
   adjustPosition: RectSize
   zoomToFitViewportScale: number
-  getTreePosition: (idx: number) => any
   nodeMargin?: NodeMargin
+  gapBetweenTrees: number
 }
 
 const Minimap = ({
@@ -60,10 +53,9 @@ const Minimap = ({
   updateTreeTranslate,
   adjustPosition,
   zoomToFitViewportScale,
-  getTreePosition,
+  gapBetweenTrees,
   brushRef,
 }: MinimapProps) => {
-  const { theme } = useContext(ThemeContext)
   const minimapContainer = {
     width: viewport.width * minimapScale,
     height: viewport.height * minimapScale,
@@ -96,7 +88,7 @@ const Minimap = ({
       .attr('height', multiTreesBoundHeight)
   }
 
-  const onBrush = (event) => {
+  const onBrush = event => {
     if (event.sourceEvent && event.sourceEvent.type === 'zoom') return null
     if (Array.isArray(event.selection)) {
       const [[brushX, brushY]] = event.selection
@@ -121,7 +113,7 @@ const Minimap = ({
   }
 
   // TODO: Limits brush move extent
-  const brushBehavior = d3Brush().on('brush', (event) => onBrush(event))
+  const brushBehavior = d3Brush().on('brush', event => onBrush(event))
 
   const bindBrushListener = () => {
     brushSelection.call(brushBehavior)
@@ -173,14 +165,11 @@ const Minimap = ({
             transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
           >
             <Trees
-              {...{
-                treeNodeDatum,
-                zoomToFitViewportScale,
-                customLink,
-                customNode,
-                // onNodeDetailClick,
-                getTreePosition,
-              }}
+              treeNodeDatum={treeNodeDatum}
+              customLink={customLink}
+              customNode={customNode}
+              scale={zoomToFitViewportScale}
+              gapBetweenTrees={gapBetweenTrees}
             />
           </g>
         </g>
