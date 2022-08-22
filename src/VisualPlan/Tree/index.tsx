@@ -8,8 +8,6 @@ import React, {
 } from 'react'
 import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
-import { DefaultNode } from './DefaultNode'
-import { DefaultLink } from './DefaultLink'
 import {
   TreeNodeDatum,
   NodeMargin,
@@ -35,8 +33,8 @@ interface SingleTreeProps {
 const Tree = ({
   datum,
   transform,
-  customLink = DefaultLink,
-  customNode = DefaultNode,
+  customLink,
+  customNode,
   toggleNode,
   onNodeClick,
   onUpdate,

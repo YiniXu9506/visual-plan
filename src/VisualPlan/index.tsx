@@ -17,11 +17,13 @@ import {
 } from '../utlis'
 import MainView from './MainView'
 import Minimap from './Minimap'
+import { DefaultNode } from './Tree/DefaultNode'
+import { DefaultLink } from './Tree/DefaultLink'
 
 const VisualPlan = ({
   data,
-  customNode,
-  customLink,
+  customNode = DefaultNode,
+  customLink = DefaultLink,
   minimap,
   theme,
   onNodeClick,

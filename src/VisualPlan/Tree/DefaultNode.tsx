@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   PlusOutlined,
   MinusOutlined,
@@ -13,18 +13,22 @@ const collapsableButtonSize = {
   height: 30,
 }
 
+
 const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   node,
   onToggle,
   onClick,
 }) => {
   const nodeDatum = node.data
-  const { width: nodeWidth, height: nodeHeight } =
-    nodeDatum.__node_attrs.nodeFlexSize!
+  const [nodeSize, setNodeSize] = useState({ width: 250, height: 200 })
+  const [tableName, setTableName] = useState(null)
+
+  // const { width: nodeSize.width, height: nodeSize.height } =
+  //   nodeDatum.__node_attrs.nodeFlexSize!
 
   const { x, y } = node
   const nodeTranslate = {
-    x: x - nodeWidth / 2,
+    x: x - nodeSize.width / 2,
     y: y,
     k: 1,
   }
@@ -48,6 +52,25 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 
   const { theme } = useContext(ThemeContext)
 
+  const getTableName = () => {
+    let tableName = null
+    if (nodeDatum.accessObjects.length === 0) return null
+
+    const scanObject = nodeDatum.accessObjects.find(obj =>
+      Object.keys(obj).includes('scanObject')
+    )
+
+    if (scanObject) {
+      tableName = scanObject['scanObject']['table']
+    }
+
+    return tableName
+  }
+
+  useEffect(() => {
+    setTableName(getTableName())
+  }, [nodeDatum])
+
   return (
     <React.Fragment>
       <g
@@ -55,25 +78,25 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
         transform={`translate(${nodeTranslate.x}, ${nodeTranslate.y}) scale(${nodeTranslate.k})`}
       >
         <rect
-          width={nodeWidth}
-          height={nodeHeight}
+          width={nodeSize.width}
+          height={nodeSize.height}
           x={0}
           y={0}
           fill="none"
         ></rect>
         <foreignObject
           className="nodeForeginObject"
-          width={nodeWidth}
-          height={nodeHeight}
+          width={nodeSize.width}
+          height={nodeSize.height}
           x={0}
           y={0}
         >
-          <div style={{ width: nodeWidth, height: nodeHeight }}>
+          <div style={{ width: nodeSize.width, height: nodeSize.height }}>
             <div
               className="nodeCard"
               style={{
-                width: nodeWidth,
-                height: nodeHeight - collapsableButtonSize.height,
+                width: nodeSize.width,
+                height: nodeSize.height - collapsableButtonSize.height,
                 position: 'initial',
               }}
               onClick={() => onClick?.(nodeDatum)}
@@ -107,6 +130,11 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 <p className="content">
                   Run at: <span>{nodeDatum.storeType}</span>
                 </p>
+                {tableName && (
+                  <p className="content">
+                    Table: <span>{tableName}</span>
+                  </p>
+                )}
               </div>
             </div>
             {nodeDatum.__node_attrs.collapsiable && (
@@ -115,7 +143,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 style={{
                   width: collapsableButtonSize.width,
                   height: collapsableButtonSize.height,
-                  marginLeft: (nodeWidth - 60) / 2,
+                  marginLeft: (nodeSize.width - 60) / 2,
                   position: 'initial',
                 }}
                 onClick={() => onToggle(nodeDatum)}
@@ -135,7 +163,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 }
 
 export const DefaultNode: CustomNode = {
-  nodeSize: { width: 250, height: 200 },
+  nodeSize: {width: 250, height: 200},
   nodeMargin: {
     siblingMargin: 40,
     childrenMargin: 60,
