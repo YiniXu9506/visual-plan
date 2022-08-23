@@ -1,11 +1,25 @@
 {
     "ctes": [
         {
-            "accessObjects": [],
+            "accessObjects": [
+                {
+                    "scanObject": {
+                        "database": "test2",
+                        "table": "table1"
+                    }
+                }
+            ],
             "actRows": 9,
             "children": [
                 {
-                    "accessObjects": [],
+                    "accessObjects": [
+                        {
+                            "scanObject": {
+                                "database": "test2",
+                                "table": "table1"
+                            }
+                        }
+                    ],
                     "actRows": 9,
                     "children": [
                         {
@@ -315,7 +329,14 @@
                 "taskType": "root"
             },
             {
-                "accessObjects": [],
+                "accessObjects": [
+                    {
+                        "scanObject": {
+                            "database": "test2",
+                            "table": "table1"
+                        }
+                    }
+                ],
                 "actRows": 2,
                 "children": [
                     {

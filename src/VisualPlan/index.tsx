@@ -168,9 +168,9 @@ const VisualPlan = ({
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(_data, customNode?.nodeSize)
+    const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
     setTreeNodeDatum(treeNodes)
-  }, [data, customNode?.nodeSize])
+  }, [data, customNode?.calcNodeSize])
 
   useEffect(() => {
     if (treeDiagramContainerRef.current) {

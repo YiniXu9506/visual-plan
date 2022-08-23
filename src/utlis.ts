@@ -7,7 +7,7 @@ let incrementId = 0
 
 export const AssignInternalProperties = (
   data: RawNodeDatum[],
-  nodeFlexSize: RectSize
+  calcNodeFlexSize: (datum: TreeNodeDatum) => RectSize
 ): TreeNodeDatum[] => {
   const d = Array.isArray(data) ? data : [data]
   return d.map(n => {
@@ -18,10 +18,7 @@ export const AssignInternalProperties = (
       collapsed: false,
       collapsiable: false,
       isNodeDetailVisible: false,
-      nodeFlexSize: {
-        width: nodeFlexSize.width,
-        height: nodeFlexSize.height,
-      },
+      nodeFlexSize: calcNodeFlexSize(nodeDatum),
     }
     nodeDatum.__node_attrs.id = `${++incrementId}`
 
@@ -30,7 +27,7 @@ export const AssignInternalProperties = (
       nodeDatum.__node_attrs.collapsiable = true
       nodeDatum.children = AssignInternalProperties(
         nodeDatum.children,
-        nodeFlexSize
+        calcNodeFlexSize
       )
     }
     return nodeDatum

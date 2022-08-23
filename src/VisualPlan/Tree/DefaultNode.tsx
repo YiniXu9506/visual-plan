@@ -5,7 +5,7 @@ import {
   ExclamationCircleFilled,
 } from '@ant-design/icons'
 
-import { CustomNode, NodeProps } from '../../types'
+import { CustomNode, NodeProps, RectSize, TreeNodeDatum } from '../../types'
 import { ThemeContext } from '../../context/ThemeContext'
 
 const collapsableButtonSize = {
@@ -13,6 +13,30 @@ const collapsableButtonSize = {
   height: 30,
 }
 
+const getTableName = (nodeDatum) => {
+  let tableName = null
+  if (nodeDatum.accessObjects.length === 0) return null
+
+  const scanObject = nodeDatum.accessObjects.find(obj =>
+    Object.keys(obj).includes('scanObject')
+  )
+
+  if (scanObject) {
+    tableName = scanObject['scanObject']['table']
+  }
+
+  return tableName
+}
+
+const _calcNodeSize = (datum: TreeNodeDatum): RectSize => {
+  let nodeSize = { width: 250, height: 200 }
+  const tableName = getTableName(datum)
+  if (tableName) {
+    nodeSize = { width: 250, height: 230 }
+  }
+
+  return nodeSize
+}
 
 const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   node,
@@ -20,22 +44,17 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   onClick,
 }) => {
   const nodeDatum = node.data
-  const [nodeSize, setNodeSize] = useState({ width: 250, height: 200 })
   const [tableName, setTableName] = useState(null)
 
-  // const { width: nodeSize.width, height: nodeSize.height } =
-  //   nodeDatum.__node_attrs.nodeFlexSize!
+  const { width: nodeWidthh, height: nodeHeight } =
+    nodeDatum.__node_attrs.nodeFlexSize!
 
   const { x, y } = node
   const nodeTranslate = {
-    x: x - nodeSize.width / 2,
+    x: x - nodeWidthh / 2,
     y: y,
     k: 1,
   }
-
-  // const handleOnNodeDetailClick = (e, node) => {
-  //   onNodeDetailClick(node)
-  // }
 
   const headColor = (runAt: string): string => {
     switch (runAt) {
@@ -52,23 +71,8 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 
   const { theme } = useContext(ThemeContext)
 
-  const getTableName = () => {
-    let tableName = null
-    if (nodeDatum.accessObjects.length === 0) return null
-
-    const scanObject = nodeDatum.accessObjects.find(obj =>
-      Object.keys(obj).includes('scanObject')
-    )
-
-    if (scanObject) {
-      tableName = scanObject['scanObject']['table']
-    }
-
-    return tableName
-  }
-
   useEffect(() => {
-    setTableName(getTableName())
+    setTableName(getTableName(nodeDatum))
   }, [nodeDatum])
 
   return (
@@ -78,25 +82,25 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
         transform={`translate(${nodeTranslate.x}, ${nodeTranslate.y}) scale(${nodeTranslate.k})`}
       >
         <rect
-          width={nodeSize.width}
-          height={nodeSize.height}
+          width={nodeWidthh}
+          height={nodeHeight}
           x={0}
           y={0}
           fill="none"
         ></rect>
         <foreignObject
           className="nodeForeginObject"
-          width={nodeSize.width}
-          height={nodeSize.height}
+          width={nodeWidthh}
+          height={nodeHeight}
           x={0}
           y={0}
         >
-          <div style={{ width: nodeSize.width, height: nodeSize.height }}>
+          <div style={{ width: nodeWidthh, height: nodeHeight }}>
             <div
               className="nodeCard"
               style={{
-                width: nodeSize.width,
-                height: nodeSize.height - collapsableButtonSize.height,
+                width: nodeWidthh,
+                height: nodeHeight - collapsableButtonSize.height,
                 position: 'initial',
               }}
               onClick={() => onClick?.(nodeDatum)}
@@ -143,7 +147,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 style={{
                   width: collapsableButtonSize.width,
                   height: collapsableButtonSize.height,
-                  marginLeft: (nodeSize.width - 60) / 2,
+                  marginLeft: (nodeWidthh - 60) / 2,
                   position: 'initial',
                 }}
                 onClick={() => onToggle(nodeDatum)}
@@ -163,7 +167,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 }
 
 export const DefaultNode: CustomNode = {
-  nodeSize: {width: 250, height: 200},
+  calcNodeSize: ((datum: TreeNodeDatum) => _calcNodeSize(datum)),
   nodeMargin: {
     siblingMargin: 40,
     childrenMargin: 60,

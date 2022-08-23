@@ -8,11 +8,14 @@ import { Trees } from '../VisualPlan/Tree/index'
 import '../style/thumbnail.less'
 import { ThemeContext } from '../context/ThemeContext'
 
+import { DefaultNode } from '../VisualPlan/Tree/DefaultNode'
+import { DefaultLink } from '../VisualPlan/Tree/DefaultLink'
+
 const VisualPlanThumbnail = ({
   data,
   theme,
-  customNode,
-  customLink,
+  customNode = DefaultNode,
+  customLink = DefaultLink,
   cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
@@ -57,9 +60,9 @@ const VisualPlanThumbnail = ({
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(_data, customNode?.nodeSize)
+    const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
     setTreeNodeDatum(treeNodes)
-  }, [data, customNode?.nodeSize])
+  }, [data, customNode?.calcNodeSize])
 
   useEffect(() => {
     if (thumbnailContainerGRef.current) {

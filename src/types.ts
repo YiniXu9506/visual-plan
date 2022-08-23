@@ -104,7 +104,7 @@ export interface BinaryPlan {
 }
 
 export interface CustomNode {
-  nodeSize: RectSize
+  calcNodeSize: (node: TreeNodeDatum) => RectSize
   nodeMargin: NodeMargin
   renderNodeElement: React.FC<NodeProps>
 }
