@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   PlusOutlined,
   MinusOutlined,
@@ -7,25 +7,11 @@ import {
 
 import { CustomNode, NodeProps, RectSize, TreeNodeDatum } from '../../types'
 import { ThemeContext } from '../../context/ThemeContext'
+import { getTableName } from '../../utlis'
 
 const collapsableButtonSize = {
   width: 60,
   height: 30,
-}
-
-const getTableName = (nodeDatum) => {
-  let tableName = null
-  if (nodeDatum.accessObjects.length === 0) return null
-
-  const scanObject = nodeDatum.accessObjects.find(obj =>
-    Object.keys(obj).includes('scanObject')
-  )
-
-  if (scanObject) {
-    tableName = scanObject['scanObject']['table']
-  }
-
-  return tableName
 }
 
 const _calcNodeSize = (datum: TreeNodeDatum): RectSize => {
@@ -44,7 +30,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   onClick,
 }) => {
   const nodeDatum = node.data
-  const [tableName, setTableName] = useState(null)
+  const tableName = useMemo(() => getTableName(nodeDatum), [nodeDatum])
 
   const { width: nodeWidthh, height: nodeHeight } =
     nodeDatum.__node_attrs.nodeFlexSize!
@@ -70,10 +56,6 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   }
 
   const { theme } = useContext(ThemeContext)
-
-  useEffect(() => {
-    setTableName(getTableName(nodeDatum))
-  }, [nodeDatum])
 
   return (
     <React.Fragment>
@@ -167,7 +149,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 }
 
 export const DefaultNode: CustomNode = {
-  calcNodeSize: ((datum: TreeNodeDatum) => _calcNodeSize(datum)),
+  calcNodeSize: (datum: TreeNodeDatum) => _calcNodeSize(datum),
   nodeMargin: {
     siblingMargin: 40,
     childrenMargin: 60,
