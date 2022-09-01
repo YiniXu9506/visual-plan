@@ -361,7 +361,241 @@
                         },
                         "rootGroupExecInfo": [],
                         "storeType": "tidb",
-                        "taskType": "root"
+                        "taskType": "root",
+                        "children": [
+                            {
+                                "accessObjects": [],
+                                "actRows": 9,
+                                "children": [
+                                    {
+                                        "accessObjects": [
+                                            {
+                                                "scanObject": {
+                                                    "database": "test2",
+                                                    "table": "table1"
+                                                }
+                                            }
+                                        ],
+                                        "actRows": 9,
+                                        "copExecInfo": {
+                                            "scan_detail": {
+                                                "rocksdb": {
+                                                    "block": {
+                                                        "cache_hit_count": "0",
+                                                        "read_byte": "0 Bytes",
+                                                        "read_count": "0"
+                                                    },
+                                                    "delete_skipped_count": "0",
+                                                    "key_skipped_count": "9"
+                                                },
+                                                "total_keys": "10",
+                                                "total_process_keys": "9",
+                                                "total_process_keys_size": "477"
+                                            },
+                                            "tikv_task": {
+                                                "loops": "1",
+                                                "time": "1ms"
+                                            }
+                                        },
+                                        "cost": 487.5,
+                                        "diagnosis": [
+                                            "pseudo_est"
+                                        ],
+                                        "diskBytes": "N/A",
+                                        "duration": "1ms",
+                                        "estRows": 5,
+                                        "labels": [],
+                                        "memoryBytes": "N/A",
+                                        "name": "TableFullScan_15",
+                                        "operatorInfo": "keep order:false, stats:pseudo",
+                                        "rootBasicExecInfo": {},
+                                        "rootGroupExecInfo": [],
+                                        "storeType": "tikv",
+                                        "taskType": "cop"
+                                    }
+                                ],
+                                "copExecInfo": {},
+                                "cost": 39.25,
+                                "diagnosis": [],
+                                "diskBytes": "N/A",
+                                "duration": "1.23ms",
+                                "estRows": 5,
+                                "labels": [],
+                                "memoryBytes": "411",
+                                "name": "TableReader_16",
+                                "operatorInfo": "data:TableFullScan_15",
+                                "rootBasicExecInfo": {
+                                    "loops": "3",
+                                    "time": "1.23ms"
+                                },
+                                "rootGroupExecInfo": [
+                                    {
+                                        "cop_task": {
+                                            "copr_cache_hit_ratio": "0.00",
+                                            "distsql_concurrency": "15",
+                                            "max": "1.4ms",
+                                            "num": "1",
+                                            "proc_keys": "9",
+                                            "rpc_num": "1",
+                                            "rpc_time": "1.36ms",
+                                            "tot_proc": "1ms"
+                                        }
+                                    }
+                                ],
+                                "storeType": "tidb",
+                                "taskType": "root"
+                            },
+                            {
+                                "accessObjects": [],
+                                "actRows": 9,
+                                "children": [
+                                    {
+                                        "accessObjects": [
+                                            {
+                                                "scanObject": {
+                                                    "database": "test2",
+                                                    "table": "table1"
+                                                }
+                                            }
+                                        ],
+                                        "actRows": 9,
+                                        "copExecInfo": {
+                                            "scan_detail": {
+                                                "rocksdb": {
+                                                    "block": {
+                                                        "cache_hit_count": "0",
+                                                        "read_byte": "0 Bytes",
+                                                        "read_count": "0"
+                                                    },
+                                                    "delete_skipped_count": "0",
+                                                    "key_skipped_count": "9"
+                                                },
+                                                "total_keys": "10",
+                                                "total_process_keys": "9",
+                                                "total_process_keys_size": "477"
+                                            },
+                                            "tikv_task": {
+                                                "loops": "1",
+                                                "time": "1ms"
+                                            }
+                                        },
+                                        "cost": 487.5,
+                                        "diagnosis": [
+                                            "pseudo_est"
+                                        ],
+                                        "diskBytes": "N/A",
+                                        "duration": "1ms",
+                                        "estRows": 5,
+                                        "labels": [],
+                                        "memoryBytes": "N/A",
+                                        "name": "TableFullScan_1dd5",
+                                        "operatorInfo": "keep order:false, stats:pseudo",
+                                        "rootBasicExecInfo": {},
+                                        "rootGroupExecInfo": [],
+                                        "storeType": "tikv",
+                                        "taskType": "cop"
+                                    }
+                                ],
+                                "copExecInfo": {},
+                                "cost": 39.25,
+                                "diagnosis": [],
+                                "diskBytes": "N/A",
+                                "duration": "1.23ms",
+                                "estRows": 5,
+                                "labels": [],
+                                "memoryBytes": "411",
+                                "name": "TableReader_16ddee",
+                                "operatorInfo": "data:TableFullScan_15",
+                                "rootBasicExecInfo": {
+                                    "loops": "3",
+                                    "time": "1.23ms"
+                                },
+                                "rootGroupExecInfo": [
+                                    {
+                                        "cop_task": {
+                                            "copr_cache_hit_ratio": "0.00",
+                                            "distsql_concurrency": "15",
+                                            "max": "1.4ms",
+                                            "num": "1",
+                                            "proc_keys": "9",
+                                            "rpc_num": "1",
+                                            "rpc_time": "1.36ms",
+                                            "tot_proc": "1ms"
+                                        }
+                                    }
+                                ],
+                                "storeType": "tidb",
+                                "taskType": "root"
+                            },
+                            {
+                                "accessObjects": [],
+                                "actRows": 9,
+                                "copExecInfo": {},
+                                "cost": 39.25,
+                                "diagnosis": [],
+                                "diskBytes": "N/A",
+                                "duration": "1.23ms",
+                                "estRows": 5,
+                                "labels": [],
+                                "memoryBytes": "411",
+                                "name": "TableReader_16hhh",
+                                "operatorInfo": "data:TableFullScan_15",
+                                "rootBasicExecInfo": {
+                                    "loops": "3",
+                                    "time": "1.23ms"
+                                },
+                                "rootGroupExecInfo": [
+                                    {
+                                        "cop_task": {
+                                            "copr_cache_hit_ratio": "0.00",
+                                            "distsql_concurrency": "15",
+                                            "max": "1.4ms",
+                                            "num": "1",
+                                            "proc_keys": "9",
+                                            "rpc_num": "1",
+                                            "rpc_time": "1.36ms",
+                                            "tot_proc": "1ms"
+                                        }
+                                    }
+                                ],
+                                "storeType": "tidb",
+                                "taskType": "root"
+                            },
+                            {
+                                "accessObjects": [],
+                                "actRows": 9,
+                                "copExecInfo": {},
+                                "cost": 39.25,
+                                "diagnosis": [],
+                                "diskBytes": "N/A",
+                                "duration": "1.23ms",
+                                "estRows": 5,
+                                "labels": [],
+                                "memoryBytes": "411",
+                                "name": "TableRsdfeader_16hhh",
+                                "operatorInfo": "data:TableFullScan_15",
+                                "rootBasicExecInfo": {
+                                    "loops": "3",
+                                    "time": "1.23ms"
+                                },
+                                "rootGroupExecInfo": [
+                                    {
+                                        "cop_task": {
+                                            "copr_cache_hit_ratio": "0.00",
+                                            "distsql_concurrency": "15",
+                                            "max": "1.4ms",
+                                            "num": "1",
+                                            "proc_keys": "9",
+                                            "rpc_num": "1",
+                                            "rpc_time": "1.36ms",
+                                            "tot_proc": "1ms"
+                                        }
+                                    }
+                                ],
+                                "storeType": "tidb",
+                                "taskType": "root"
+                            }
+                        ]
                     }
                 ],
                 "copExecInfo": {},

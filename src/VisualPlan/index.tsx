@@ -1,19 +1,23 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import {
   select,
   zoom as d3Zoom,
   zoomIdentity,
   scaleLinear,
   brush as d3Brush,
+  HierarchyPointLink,
+  HierarchyPointNode,
 } from 'd3'
 
-import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
+import { VisualPlanProps, TreeNodeDatum, RectSize, NodeMargin, SingleTreeData } from '../types'
 import { ThemeContext } from '../context/ThemeContext'
 import {
   AssignInternalProperties,
   findNodesById,
   expandSpecificNode,
   collapseAllDescententNodes,
+  generateNodesAndLinks,
+  getTreeBound
 } from '../utlis'
 import MainView from './MainView'
 import Minimap from './Minimap'
@@ -31,19 +35,27 @@ const VisualPlan = ({
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
+  const [multiTreesData, setMultiTreesData] = useState<SingleTreeData[]>([])
+
+  // Sets viewport of trees
   const [multiTreesViewport, setMultiTreesViewport] = useState<RectSize>({
     width: 0,
     height: 0,
   })
 
+  // Sets a scale extent to make all trees fit to viewport
   const [zoomToFitViewportScale, setZoomToFitViewportScale] = useState(0)
+
+  // Makes all trees centered on viewport
   const [adjustPosition, setAdjustPosition] = useState({ width: 0, height: 0 })
 
-  // Sets the bound of entire tree
+  // Sets the bound of all trees
   const [multiTreesBound, setMultiTreesBound] = useState({
     width: 0,
     height: 0,
   })
+
+  const [initTreesBound, setInitTreesBound] = useState<RectSize[]>([])
 
   // Inits tree translate, the default position is on the top-middle of canvas
   const [multiTreesTranslate, setMultiTreesTranslate] = useState({
@@ -51,6 +63,14 @@ const VisualPlan = ({
     y: 0,
     k: 1,
   })
+
+  const margin: NodeMargin = useMemo(
+    () => ({
+      siblingMargin: customNode.nodeMargin.childrenMargin || 40,
+      childrenMargin: customNode.nodeMargin.siblingMargin || 60,
+    }),
+    [customNode.nodeMargin.childrenMargin, customNode.nodeMargin.siblingMargin]
+  )
 
   // A SVG container for main chart
   const mainViewRef = useRef<SVGSVGElement>(null)
@@ -126,8 +146,17 @@ const VisualPlan = ({
       } else {
         collapseAllDescententNodes(targetNodeDatum)
       }
-
       setTreeNodeDatum(data)
+
+
+      let _multiTreesData: SingleTreeData[] = []
+
+      data.forEach(treeNode => {
+        const _singleTreeData = generateNodesAndLinks(treeNode, margin, false)
+        _multiTreesData.push(_singleTreeData)
+      })
+
+      setMultiTreesData(_multiTreesData)
     },
     [treeNodeDatum]
   )
@@ -170,6 +199,30 @@ const VisualPlan = ({
     // Assigns all internal properties to tree node
     const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
     setTreeNodeDatum(treeNodes)
+
+    let _multiTreesData: SingleTreeData[] = []
+    let _multiTreesBound = { width: 0, heihgt: 0 }
+    let _initTreesBound: RectSize[] = []
+
+    treeNodes.forEach(treeNode => {
+      const treebound = getTreeBound(treeNode, margin)
+      _initTreesBound.push(treebound)
+      const { nodes, links} = generateNodesAndLinks(treeNode, margin)
+      _multiTreesBound = {
+        width: _multiTreesBound.width + treebound.width,
+        heihgt: _multiTreesBound.heihgt + treebound.height,
+      }
+      _multiTreesData.push({nodes, links, ...treebound})
+    })
+
+    setMultiTreesBound({
+      width: _multiTreesBound.width + (treeNodes.length - 1) * gapBetweenTrees,
+      height: _multiTreesBound.heihgt,
+    })
+
+    setInitTreesBound(_initTreesBound)
+
+    setMultiTreesData(_multiTreesData)
   }, [data, customNode?.calcNodeSize])
 
   useEffect(() => {
@@ -192,7 +245,8 @@ const VisualPlan = ({
       >
         <MainView
           ref={mainViewRef}
-          treeNodeDatum={treeNodeDatum}
+          multiTreesData={multiTreesData}
+          initTreesBound={initTreesBound}
           translate={multiTreesTranslate}
           viewport={multiTreesViewport}
           customLink={customLink!}
@@ -202,9 +256,8 @@ const VisualPlan = ({
           zoomToFitViewportScale={zoomToFitViewportScale}
           gapBetweenTrees={gapBetweenTrees}
           onNodeClick={onNodeClick}
-          onUpdate={rect => setMultiTreesBound(rect)}
         />
-        {minimap && multiTreesViewport.height && (
+        {/* {minimap && multiTreesViewport.height && (
           <Minimap
             treeNodeDatum={treeNodeDatum}
             viewport={multiTreesViewport}
@@ -222,7 +275,7 @@ const VisualPlan = ({
             zoomToFitViewportScale={zoomToFitViewportScale}
             gapBetweenTrees={gapBetweenTrees}
           />
-        )}
+        )} */}
       </div>
     </ThemeContext.Provider>
   )

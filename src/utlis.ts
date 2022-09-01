@@ -34,11 +34,42 @@ export const AssignInternalProperties = (
   })
 }
 
-export const generateNodesAndLinks = (
+export const getTreeBound = (
   treeNodeDatum: TreeNodeDatum,
   nodeMargin: NodeMargin
-) => {
-  const tree = flextree({
+): { width: number; height: number } => {
+  const rootNode = getRootNode(treeNodeDatum, nodeMargin )
+  const leaves = rootNode.leaves()
+  let mostLeftNode = leaves[0]
+  let mostRightNode = leaves[0]
+  let mostBottomNode = leaves[0]
+
+  leaves.forEach(leave => {
+    mostLeftNode =
+      leave.x - leave.xSize / 2 < mostLeftNode.x - mostLeftNode.xSize / 2
+        ? leave
+        : mostLeftNode
+    mostRightNode =
+      leave.x + leave.xSize / 2 > mostRightNode.x + mostRightNode.xSize / 2
+        ? leave
+        : mostRightNode
+    mostBottomNode =
+      leave.y + leave.ySize > mostBottomNode.y + mostBottomNode.ySize
+        ? leave
+        : mostBottomNode
+  })
+
+  const width =
+    mostRightNode.x -
+    mostLeftNode.x +
+    (mostLeftNode.xSize / 2 + mostRightNode.xSize / 2)
+
+  const height = mostBottomNode.y + mostBottomNode.ySize
+  return { width, height }
+}
+
+const getRootNode = (treeNodeDatum: TreeNodeDatum, nodeMargin: NodeMargin) => {
+  const layout = flextree({
     nodeSize: node => {
       const _nodeSize = node.data.__node_attrs.nodeFlexSize
 
@@ -49,14 +80,31 @@ export const generateNodesAndLinks = (
     },
   })
 
-  const rootNode = tree(
-    hierarchy(treeNodeDatum, d =>
-      d.__node_attrs.collapsed ? null : d.children
-    )
+  const rootNode = layout.hierarchy(treeNodeDatum, d =>
+    d.__node_attrs.collapsed ? null : d.children
   )
 
-  const nodes = rootNode.descendants()
-  const links = rootNode.links()
+  return layout(rootNode)
+}
+
+export const generateNodesAndLinks = (
+  treeNodeDatum: TreeNodeDatum,
+  nodeMargin: NodeMargin
+) => {
+  const layout = flextree({
+    nodeSize: node => {
+      const _nodeSize = node.data.__node_attrs.nodeFlexSize
+
+      return [
+        _nodeSize.width + nodeMargin.siblingMargin,
+        _nodeSize.height + nodeMargin.childrenMargin,
+      ]
+    },
+  })
+
+  const rootNode = getRootNode(treeNodeDatum, nodeMargin)
+  const nodes = layout(rootNode).descendants()
+  const links = layout(rootNode).links()
 
   return { nodes, links }
 }

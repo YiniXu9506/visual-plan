@@ -122,3 +122,11 @@ export interface CustomLink {
 export interface LinkProps {
   link: HierarchyPointLink<TreeNodeDatum>
 }
+
+export interface SingleTreeData {
+  nodes: HierarchyPointNode<TreeNodeDatum>[]
+  links: HierarchyPointLink<TreeNodeDatum>[]
+  width?: number
+  height?: number
+}
+
