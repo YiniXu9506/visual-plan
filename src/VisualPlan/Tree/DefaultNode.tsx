@@ -32,12 +32,12 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   const nodeDatum = node.data
   const tableName = useMemo(() => getTableName(nodeDatum), [nodeDatum])
 
-  const { width: nodeWidthh, height: nodeHeight } =
+  const { width: nodeWidth, height: nodeHeight } =
     nodeDatum.__node_attrs.nodeFlexSize!
 
   const { x, y } = node
   const nodeTranslate = {
-    x: x - nodeWidthh / 2,
+    x: x - nodeWidth / 2,
     y: y,
     k: 1,
   }
@@ -64,7 +64,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
         transform={`translate(${nodeTranslate.x}, ${nodeTranslate.y}) scale(${nodeTranslate.k})`}
       >
         <rect
-          width={nodeWidthh}
+          width={nodeWidth}
           height={nodeHeight}
           x={0}
           y={0}
@@ -72,16 +72,16 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
         ></rect>
         <foreignObject
           className="nodeForeginObject"
-          width={nodeWidthh}
+          width={nodeWidth}
           height={nodeHeight}
           x={0}
           y={0}
         >
-          <div style={{ width: nodeWidthh, height: nodeHeight }}>
+          <div style={{ width: nodeWidth, height: nodeHeight }}>
             <div
               className="nodeCard"
               style={{
-                width: nodeWidthh,
+                width: nodeWidth,
                 height: nodeHeight - collapsableButtonSize.height,
                 position: 'initial',
               }}
@@ -129,7 +129,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 style={{
                   width: collapsableButtonSize.width,
                   height: collapsableButtonSize.height,
-                  marginLeft: (nodeWidthh - 60) / 2,
+                  marginLeft: (nodeWidth - 60) / 2,
                   position: 'initial',
                 }}
                 onClick={() => onToggle(nodeDatum)}
