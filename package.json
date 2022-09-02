@@ -10,7 +10,7 @@
     "visual plan"
   ],
   "main": "dist/index.js",
-  "types": "dist/types.d.ts",
+  "types": "dist/types/index.d.ts",
   "targets": {
     "main": {
       "source": "src/index.ts",
@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "parcel build --no-optimize && npm run build:type",
-    "build:type": "npx -p typescript tsc --out dist/types.d.ts > /dev/null 2>&1 || true",
+    "build:type": "npx -p typescript tsc --outDir dist/types > /dev/null 2>&1 || true",
     "build:analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer",
     "dev": "parcel watch",
     "sb": "start-storybook -p 6006",

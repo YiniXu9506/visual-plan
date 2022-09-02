@@ -10,6 +10,9 @@
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"esModuleInterop": true,
-		"jsx": "react"
+    	"moduleResolution": "node",
+		"lib": ["esnext", "dom"],
+		"jsx": "react",
+		"target": "es6",
 	}
 }
