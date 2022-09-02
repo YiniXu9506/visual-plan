@@ -11,14 +11,16 @@ import {
 import { Trees } from './Tree'
 import {
   RectSize,
-  TreeNodeDatum,
   NodeMargin,
   CustomLink,
   CustomNode,
+  SingleTreeNodesAndLinks,
+  SingleTreeBound,
 } from '../types'
 
 interface MinimapProps {
-  treeNodeDatum: TreeNodeDatum[]
+  multiTreesNodesAndLinks: SingleTreeNodesAndLinks[]
+  initTreesBound: SingleTreeBound[]
   viewport: RectSize
   multiTreesBound: RectSize
   customLink: CustomLink
@@ -41,7 +43,8 @@ interface MinimapProps {
 }
 
 const Minimap = ({
-  treeNodeDatum,
+  multiTreesNodesAndLinks,
+  initTreesBound,
   viewport,
   multiTreesBound,
   customLink,
@@ -165,7 +168,8 @@ const Minimap = ({
             transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
           >
             <Trees
-              treeNodeDatum={treeNodeDatum}
+              multiTreesNodesAndLinks={multiTreesNodesAndLinks}
+              initTreesBound={initTreesBound}
               customLink={customLink}
               customNode={customNode}
               scale={zoomToFitViewportScale}

@@ -34,20 +34,19 @@ const Tree = ({
   toggleNode,
   onNodeClick,
 }: SingleTreeProps) => {
-  const singleTreeGroupRef = useRef(null)
   const transformValue = useMemo(() => {
-    if (!transform || !singleTreeGroupRef.current) {
+    if (!transform) {
       return ''
     }
-    console.log('in cal', transform)
     const { offsetX, scale } = transform
     return `translate(${scale * (offsetX)}, 0) scale(${
       scale || 1
     })`
   }, [transform])
 
+
   return (
-    <g ref={singleTreeGroupRef} transform={transformValue}>
+    <g transform={transformValue}>
       <g className="linksWrapper">
         {datum.links &&
           datum.links.map((link, i) => {

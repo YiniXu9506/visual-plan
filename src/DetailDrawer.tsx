@@ -26,8 +26,6 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
 }) => {
   const tableName = useMemo(() => getTableName(data), [data])
 
-  console.log('drawer data',  data)
-
   return (
     data && (
       <Drawer

@@ -91,7 +91,7 @@ const VisualPlan = ({
     const heightRation = multiTreesViewport.height / multiTreesBound.height
 
     const k = Math.min(widthRatio, heightRation)
-    
+
     setZoomToFitViewportScale(k > 1 ? 1 : k)
 
     setAdjustPosition({
@@ -112,11 +112,7 @@ const VisualPlan = ({
 
     // Moves brush on minimap when zoom behavior is triggered.
     brushBehavior.move(brushSelection, [
-      [minimapScaleX(t.k).invert(-t.x), minimapScaleY(t.k).invert(-t.y)],
-      [
-        minimapScaleX(t.k).invert(-t.x + multiTreesViewport.width),
-        minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height),
-      ],
+      [0,0], [50,50]
     ])
   }
 
@@ -163,7 +159,6 @@ const VisualPlan = ({
         const _singleTreeNodesAndLinks = generateNodesAndLinks(treeNode, margin)
         _multiTreesNodesAndLinks.push(_singleTreeNodesAndLinks)
       })
-
       setMultiTreesNodesAndLinks(_multiTreesNodesAndLinks)
     },
     [treeNodeDatum]
@@ -209,7 +204,7 @@ const VisualPlan = ({
     setTreeNodeDatum(treeNodes)
 
     let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
-    let _multiTreesBound = { width: 0, heihgt: 0 }
+    let _multiTreesBound = { width: 0, height: 0 }
     let _initTreesBound: SingleTreeBound[] = []
 
     treeNodes.forEach(treeNode => {
@@ -218,14 +213,14 @@ const VisualPlan = ({
       const { nodes, links } = generateNodesAndLinks(treeNode, margin)
       _multiTreesBound = {
         width: _multiTreesBound.width + treebound.width,
-        heihgt: _multiTreesBound.heihgt + treebound.height,
+        height: treebound.height > _multiTreesBound.height ? treebound.height : _multiTreesBound.height,
       }
       _multiTreesNodesAndLinks.push({ nodes, links })
     })
 
     setMultiTreesBound({
       width: _multiTreesBound.width + (treeNodes.length - 1) * gapBetweenTrees,
-      height: _multiTreesBound.heihgt,
+      height: _multiTreesBound.height,
     })
     setInitTreesBound(_initTreesBound)
     setMultiTreesNodesAndLinks(_multiTreesNodesAndLinks)
@@ -263,9 +258,10 @@ const VisualPlan = ({
           gapBetweenTrees={gapBetweenTrees}
           onNodeClick={onNodeClick}
         />
-        {/* {minimap && multiTreesViewport.height && (
+        {minimap && multiTreesViewport.height && (
           <Minimap
-            treeNodeDatum={treeNodeDatum}
+            multiTreesNodesAndLinks={multiTreesNodesAndLinks}
+            initTreesBound={initTreesBound}
             viewport={multiTreesViewport}
             customLink={customLink!}
             customNode={customNode!}
@@ -281,7 +277,7 @@ const VisualPlan = ({
             zoomToFitViewportScale={zoomToFitViewportScale}
             gapBetweenTrees={gapBetweenTrees}
           />
-        )} */}
+        )}
       </div>
     </ThemeContext.Provider>
   )
