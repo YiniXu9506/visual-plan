@@ -1,18 +1,32 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { select } from 'd3'
 
-import { AssignInternalProperties } from '../utlis'
-import { VisualPlanProps, TreeNodeDatum, RectSize } from '../types'
+import {
+  AssignInternalProperties,
+  generateNodesAndLinks,
+  getTreeBound,
+} from '../utlis'
+import {
+  VisualPlanProps,
+  TreeNodeDatum,
+  RectSize,
+  NodeMargin,
+  SingleTreeNodesAndLinks,
+  SingleTreeBound,
+} from '../types'
 import { Trees } from '../VisualPlan/Tree/index'
 
 import '../style/thumbnail.less'
 import { ThemeContext } from '../context/ThemeContext'
 
+import { DefaultNode } from '../VisualPlan/Tree/DefaultNode'
+import { DefaultLink } from '../VisualPlan/Tree/DefaultLink'
+
 const VisualPlanThumbnail = ({
   data,
   theme,
-  customNode,
-  customLink,
+  customNode = DefaultNode,
+  customLink = DefaultLink,
   cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
@@ -21,6 +35,13 @@ const VisualPlanThumbnail = ({
     width: 0,
     height: 0,
   })
+
+  const [multiTreesNodesAndLinks, setMultiTreesNodesAndLinks] = useState<
+    SingleTreeNodesAndLinks[]
+  >([])
+  const [initTreesBound, setInitTreesBound] = useState<
+    { width: number; height: number; x: number; y: number }[]
+  >([])
 
   const thumbnailContainerGRef = useRef<HTMLDivElement>(null)
   const thumbnailSVGRef = useRef<SVGSVGElement>(null)
@@ -31,6 +52,15 @@ const VisualPlanThumbnail = ({
     width: 0,
     height: 0,
   })
+
+  const margin: NodeMargin = useMemo(
+    () => ({
+      siblingMargin: customNode.nodeMargin.childrenMargin || 40,
+      childrenMargin: customNode.nodeMargin.siblingMargin || 60,
+    }),
+    [customNode.nodeMargin.childrenMargin, customNode.nodeMargin.siblingMargin]
+  )
+
 
   const drawMinimap = () => {
     const widthRatio = multiTreesViewport.width / multiTreesBound.width
@@ -57,9 +87,34 @@ const VisualPlanThumbnail = ({
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
-    const treeNodes = AssignInternalProperties(_data, customNode?.nodeSize)
+    const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
     setTreeNodeDatum(treeNodes)
-  }, [data, customNode?.nodeSize])
+
+    let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
+    let _multiTreesBound = { width: 0, height: 0 }
+    let _initTreesBound: SingleTreeBound[] = []
+
+    treeNodes.forEach(treeNode => {
+      const treebound = getTreeBound(treeNode, margin)
+      _initTreesBound.push(treebound)
+      const { nodes, links } = generateNodesAndLinks(treeNode, margin)
+      _multiTreesBound = {
+        width: _multiTreesBound.width + treebound.width,
+        height:
+          treebound.height > _multiTreesBound.height
+            ? treebound.height
+            : _multiTreesBound.height,
+      }
+      _multiTreesNodesAndLinks.push({ nodes, links })
+    })
+
+    setMultiTreesBound({
+      width: _multiTreesBound.width + (treeNodes.length - 1) * gapBetweenTrees,
+      height: _multiTreesBound.height,
+    })
+    setInitTreesBound(_initTreesBound)
+    setMultiTreesNodesAndLinks(_multiTreesNodesAndLinks)
+  }, [data, customNode?.calcNodeSize])
 
   useEffect(() => {
     if (thumbnailContainerGRef.current) {
@@ -75,7 +130,6 @@ const VisualPlanThumbnail = ({
     if (thumbnailContainerGRef.current) drawMinimap()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thumbnailContainerGRef.current, multiTreesBound])
-
   return (
     <ThemeContext.Provider value={{ theme: theme! }}>
       <div
@@ -85,11 +139,11 @@ const VisualPlanThumbnail = ({
         <svg ref={thumbnailSVGRef}>
           <g>
             <Trees
-              treeNodeDatum={treeNodeDatum}
+              multiTreesNodesAndLinks={multiTreesNodesAndLinks}
+              initTreesBound={initTreesBound}
               customLink={customLink}
               customNode={customNode}
               gapBetweenTrees={gapBetweenTrees}
-              onUpdate={rect => setMultiTreesBound(rect)}
             />
           </g>
         </svg>
