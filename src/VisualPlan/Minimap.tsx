@@ -150,7 +150,7 @@ const Minimap = ({
     if (!_brushRef.current || !brushRef) {
       return
     }
-    ;(brushRef as MutableRefObject<SVGElement>).current = _brushRef.current
+    ;(brushRef as MutableRefObject<SVGGElement>).current = _brushRef.current
   }, [brushRef])
 
   return (

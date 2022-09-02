@@ -112,7 +112,11 @@ const VisualPlan = ({
 
     // Moves brush on minimap when zoom behavior is triggered.
     brushBehavior.move(brushSelection, [
-      [0,0], [50,50]
+      [minimapScaleX(t.k).invert(-t.x), minimapScaleY(t.k).invert(-t.y)],
+      [
+        minimapScaleX(t.k).invert(-t.x + multiTreesViewport.width),
+        minimapScaleY(t.k).invert(-t.y + multiTreesViewport.height),
+      ],
     ])
   }
 
