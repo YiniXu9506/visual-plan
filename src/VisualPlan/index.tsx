@@ -5,11 +5,16 @@ import {
   zoomIdentity,
   scaleLinear,
   brush as d3Brush,
-  HierarchyPointLink,
-  HierarchyPointNode,
 } from 'd3'
 
-import { VisualPlanProps, TreeNodeDatum, RectSize, NodeMargin, SingleTreeData } from '../types'
+import {
+  VisualPlanProps,
+  TreeNodeDatum,
+  RectSize,
+  NodeMargin,
+  SingleTreeNodesAndLinks,
+  SingleTreeBound
+} from '../types'
 import { ThemeContext } from '../context/ThemeContext'
 import {
   AssignInternalProperties,
@@ -17,7 +22,7 @@ import {
   expandSpecificNode,
   collapseAllDescententNodes,
   generateNodesAndLinks,
-  getTreeBound
+  getTreeBound,
 } from '../utlis'
 import MainView from './MainView'
 import Minimap from './Minimap'
@@ -35,7 +40,7 @@ const VisualPlan = ({
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
-  const [multiTreesData, setMultiTreesData] = useState<SingleTreeData[]>([])
+  const [multiTreesNodesAndLinks, setMultiTreesNodesAndLinks] = useState<SingleTreeNodesAndLinks[]>([])
 
   // Sets viewport of trees
   const [multiTreesViewport, setMultiTreesViewport] = useState<RectSize>({
@@ -55,7 +60,9 @@ const VisualPlan = ({
     height: 0,
   })
 
-  const [initTreesBound, setInitTreesBound] = useState<RectSize[]>([])
+  const [initTreesBound, setInitTreesBound] = useState<
+    { width: number; height: number; x: number; y: number }[]
+  >([])
 
   // Inits tree translate, the default position is on the top-middle of canvas
   const [multiTreesTranslate, setMultiTreesTranslate] = useState({
@@ -82,7 +89,9 @@ const VisualPlan = ({
   const getZoomToFitViewPortScale = () => {
     const widthRatio = multiTreesViewport.width / multiTreesBound.width
     const heightRation = multiTreesViewport.height / multiTreesBound.height
+
     const k = Math.min(widthRatio, heightRation)
+    
     setZoomToFitViewportScale(k > 1 ? 1 : k)
 
     setAdjustPosition({
@@ -148,15 +157,14 @@ const VisualPlan = ({
       }
       setTreeNodeDatum(data)
 
-
-      let _multiTreesData: SingleTreeData[] = []
+      let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
 
       data.forEach(treeNode => {
-        const _singleTreeData = generateNodesAndLinks(treeNode, margin, false)
-        _multiTreesData.push(_singleTreeData)
+        const _singleTreeNodesAndLinks = generateNodesAndLinks(treeNode, margin)
+        _multiTreesNodesAndLinks.push(_singleTreeNodesAndLinks)
       })
 
-      setMultiTreesData(_multiTreesData)
+      setMultiTreesNodesAndLinks(_multiTreesNodesAndLinks)
     },
     [treeNodeDatum]
   )
@@ -200,29 +208,27 @@ const VisualPlan = ({
     const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
     setTreeNodeDatum(treeNodes)
 
-    let _multiTreesData: SingleTreeData[] = []
+    let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
     let _multiTreesBound = { width: 0, heihgt: 0 }
-    let _initTreesBound: RectSize[] = []
+    let _initTreesBound: SingleTreeBound[] = []
 
     treeNodes.forEach(treeNode => {
       const treebound = getTreeBound(treeNode, margin)
       _initTreesBound.push(treebound)
-      const { nodes, links} = generateNodesAndLinks(treeNode, margin)
+      const { nodes, links } = generateNodesAndLinks(treeNode, margin)
       _multiTreesBound = {
         width: _multiTreesBound.width + treebound.width,
         heihgt: _multiTreesBound.heihgt + treebound.height,
       }
-      _multiTreesData.push({nodes, links, ...treebound})
+      _multiTreesNodesAndLinks.push({ nodes, links })
     })
 
     setMultiTreesBound({
       width: _multiTreesBound.width + (treeNodes.length - 1) * gapBetweenTrees,
       height: _multiTreesBound.heihgt,
     })
-
     setInitTreesBound(_initTreesBound)
-
-    setMultiTreesData(_multiTreesData)
+    setMultiTreesNodesAndLinks(_multiTreesNodesAndLinks)
   }, [data, customNode?.calcNodeSize])
 
   useEffect(() => {
@@ -245,7 +251,7 @@ const VisualPlan = ({
       >
         <MainView
           ref={mainViewRef}
-          multiTreesData={multiTreesData}
+          multiTreesNodesAndLinks={multiTreesNodesAndLinks}
           initTreesBound={initTreesBound}
           translate={multiTreesTranslate}
           viewport={multiTreesViewport}

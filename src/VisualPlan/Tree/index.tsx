@@ -9,11 +9,12 @@ import {
   CustomLink,
   CustomNode,
   RectSize,
-  SingleTreeData,
+  SingleTreeNodesAndLinks,
+  SingleTreeBound
 } from '../../types'
 
 interface SingleTreeProps {
-  datum: SingleTreeData
+  datum: SingleTreeNodesAndLinks
   transform?: {
     offsetX?: number
     scale?: number
@@ -38,10 +39,9 @@ const Tree = ({
     if (!transform || !singleTreeGroupRef.current) {
       return ''
     }
-    console.log('in cal')
-    const { x, y } = singleTreeGroupRef.current.getBBox()
+    console.log('in cal', transform)
     const { offsetX, scale } = transform
-    return `translate(${scale * (-x + offsetX)}, ${scale * y}) scale(${
+    return `translate(${scale * (offsetX)}, 0) scale(${
       scale || 1
     })`
   }, [transform])
@@ -75,8 +75,8 @@ const Tree = ({
 }
 
 interface TreesProps {
-  multiTreesData: SingleTreeData[]
-  initTreesBound: RectSize[]
+  multiTreesNodesAndLinks: SingleTreeNodesAndLinks[]
+  initTreesBound: SingleTreeBound[]
   customLink: CustomLink
   customNode: CustomNode
   gapBetweenTrees: number
@@ -87,10 +87,10 @@ interface TreesProps {
 
 const Trees = memo(
   ({
-    multiTreesData,
+    multiTreesNodesAndLinks,
+    initTreesBound,
     customLink,
     customNode,
-    initTreesBound,
     gapBetweenTrees,
     scale = 1,
     toggleNode,
@@ -99,7 +99,7 @@ const Trees = memo(
   TreesProps) => {
     return (
       <>
-        {multiTreesData.map((datum, idx) => {
+        {multiTreesNodesAndLinks.map((datum, idx) => {
           const prevGap = gapBetweenTrees * idx
           let prevWidth = 0
           for (let i = idx; i > 0; i--) {
@@ -110,7 +110,7 @@ const Trees = memo(
             <Tree
               key={idx}
               datum={datum}
-              transform={{ offsetX: prevWidth + prevGap, scale }}
+              transform={{ offsetX: prevWidth - initTreesBound[idx]?.x + prevGap, scale }}
               customLink={customLink}
               customNode={customNode}
               toggleNode={toggleNode}

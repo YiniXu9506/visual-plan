@@ -1,5 +1,4 @@
 import { flextree } from 'd3-flextree'
-import { hierarchy } from 'd3'
 
 import { RawNodeDatum, TreeNodeDatum, NodeMargin, RectSize } from './types'
 
@@ -37,7 +36,7 @@ export const AssignInternalProperties = (
 export const getTreeBound = (
   treeNodeDatum: TreeNodeDatum,
   nodeMargin: NodeMargin
-): { width: number; height: number } => {
+): { width: number; height: number, x: number, y: number } => {
   const rootNode = getRootNode(treeNodeDatum, nodeMargin )
   const leaves = rootNode.leaves()
   let mostLeftNode = leaves[0]
@@ -65,7 +64,9 @@ export const getTreeBound = (
     (mostLeftNode.xSize / 2 + mostRightNode.xSize / 2)
 
   const height = mostBottomNode.y + mostBottomNode.ySize
-  return { width, height }
+  const x = mostLeftNode.x - mostLeftNode.xSize / 2
+  const y = 0
+  return { width, height, x , y }
 }
 
 const getRootNode = (treeNodeDatum: TreeNodeDatum, nodeMargin: NodeMargin) => {

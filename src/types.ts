@@ -123,10 +123,15 @@ export interface LinkProps {
   link: HierarchyPointLink<TreeNodeDatum>
 }
 
-export interface SingleTreeData {
+export interface SingleTreeNodesAndLinks {
   nodes: HierarchyPointNode<TreeNodeDatum>[]
   links: HierarchyPointLink<TreeNodeDatum>[]
-  width?: number
-  height?: number
+}
+
+export interface SingleTreeBound {
+  width: number
+  height: number,
+  x: number,
+  y: number
 }
 

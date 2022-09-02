@@ -6,16 +6,17 @@ import {
   Translate,
   CustomLink,
   CustomNode,
-  SingleTreeData
+  SingleTreeNodesAndLinks,
+  SingleTreeBound
 } from '../types'
 import { Trees } from './Tree'
 
 interface MainViewProps {
-  multiTreesData: SingleTreeData[]
+  multiTreesNodesAndLinks: SingleTreeNodesAndLinks[]
+  initTreesBound: SingleTreeBound[]
   translate: Translate
   customLink: CustomLink
   customNode: CustomNode
-  initTreesBound: RectSize[]
   viewport: RectSize
   toggleNode: (nodeId: string) => void
   onNodeClick?: (node: TreeNodeDatum) => void
@@ -27,12 +28,12 @@ interface MainViewProps {
 const MainView = forwardRef<SVGSVGElement, MainViewProps>(
   (
     {
-      multiTreesData,
+      multiTreesNodesAndLinks,
+      initTreesBound,
       translate,
       viewport,
       customLink,
       customNode,
-      initTreesBound,
       toggleNode,
       onNodeClick,
       adjustPosition,
@@ -57,8 +58,7 @@ const MainView = forwardRef<SVGSVGElement, MainViewProps>(
             transform={`translate(${adjustPosition.width}, ${adjustPosition.height}) scale(1)`}
           >
             <Trees
-              // treeNodeDatum={treeNodeDatum}
-              multiTreesData={multiTreesData}
+              multiTreesNodesAndLinks={multiTreesNodesAndLinks}
               initTreesBound={initTreesBound}
               customLink={customLink}
               customNode={customNode}
