@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import ReactJson from 'react-json-view'
 import Tabs from 'antd/lib/tabs'
 import 'antd/lib/tabs/style/index.css'
@@ -10,7 +10,7 @@ import 'antd/lib/drawer/style/index.css'
 import { InfoCircleTwoTone } from '@ant-design/icons'
 import { RawNodeDatum, Theme } from './types'
 import { diagnosisText } from './data/diagnosis'
-import { decimalSIPrefix, toFixed } from './utlis'
+import { decimalSIPrefix, getTableName, toFixed } from './utlis'
 
 import './style/detail_drawer.less'
 
@@ -24,6 +24,8 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
   theme,
   ...props
 }) => {
+  const tableName = useMemo(() => getTableName(data), [data])
+
   return (
     data && (
       <Drawer
@@ -62,6 +64,11 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
             <p>
               Run at: <span>{data.storeType}</span>
             </p>
+            {tableName && (
+              <p className="content">
+                Table: <span>{tableName}</span>
+              </p>
+            )}
             {data.cost && (
               <p>
                 Cost: <span>{data.cost}</span>

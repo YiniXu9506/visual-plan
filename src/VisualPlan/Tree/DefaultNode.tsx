@@ -1,16 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   PlusOutlined,
   MinusOutlined,
   ExclamationCircleFilled,
 } from '@ant-design/icons'
 
-import { CustomNode, NodeProps } from '../../types'
+import { CustomNode, NodeProps, RectSize, TreeNodeDatum } from '../../types'
 import { ThemeContext } from '../../context/ThemeContext'
+import { getTableName } from '../../utlis'
 
 const collapsableButtonSize = {
   width: 60,
   height: 30,
+}
+
+const _calcNodeSize = (datum: TreeNodeDatum): RectSize => {
+  let nodeSize = { width: 250, height: 200 }
+  const tableName = getTableName(datum)
+  if (tableName) {
+    nodeSize = { width: 250, height: 230 }
+  }
+
+  return nodeSize
 }
 
 const RenderDefaultNodeElement: React.FC<NodeProps> = ({
@@ -19,6 +30,8 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
   onClick,
 }) => {
   const nodeDatum = node.data
+  const tableName = useMemo(() => getTableName(nodeDatum), [nodeDatum])
+
   const { width: nodeWidth, height: nodeHeight } =
     nodeDatum.__node_attrs.nodeFlexSize!
 
@@ -28,10 +41,6 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
     y: y,
     k: 1,
   }
-
-  // const handleOnNodeDetailClick = (e, node) => {
-  //   onNodeDetailClick(node)
-  // }
 
   const headColor = (runAt: string): string => {
     switch (runAt) {
@@ -107,6 +116,11 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                 <p className="content">
                   Run at: <span>{nodeDatum.storeType}</span>
                 </p>
+                {tableName && (
+                  <p className="content">
+                    Table: <span>{tableName}</span>
+                  </p>
+                )}
               </div>
             </div>
             {nodeDatum.__node_attrs.collapsiable && (
@@ -135,7 +149,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
 }
 
 export const DefaultNode: CustomNode = {
-  nodeSize: { width: 250, height: 200 },
+  calcNodeSize: (datum: TreeNodeDatum) => _calcNodeSize(datum),
   nodeMargin: {
     siblingMargin: 40,
     childrenMargin: 60,

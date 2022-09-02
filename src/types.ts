@@ -104,7 +104,7 @@ export interface BinaryPlan {
 }
 
 export interface CustomNode {
-  nodeSize: RectSize
+  calcNodeSize: (node: TreeNodeDatum) => RectSize
   nodeMargin: NodeMargin
   renderNodeElement: React.FC<NodeProps>
 }
@@ -122,3 +122,16 @@ export interface CustomLink {
 export interface LinkProps {
   link: HierarchyPointLink<TreeNodeDatum>
 }
+
+export interface SingleTreeNodesAndLinks {
+  nodes: HierarchyPointNode<TreeNodeDatum>[]
+  links: HierarchyPointLink<TreeNodeDatum>[]
+}
+
+export interface SingleTreeBound {
+  width: number
+  height: number,
+  x: number,
+  y: number
+}
+
