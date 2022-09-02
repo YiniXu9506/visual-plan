@@ -131,14 +131,10 @@ const Minimap = ({
   useEffect(() => {
     if (minimapContainerRef.current && _brushRef.current) {
       drawMinimap()
+      bindBrushListener()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minimapContainerRef.current, _brushRef.current])
-
-  useEffect(() => {
-    bindBrushListener()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [multiTreesBound])
 
   useEffect(() => {
     // Removes these elements can avoid re-select brush on minimap
