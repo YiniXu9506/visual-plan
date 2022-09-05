@@ -16,15 +16,16 @@ import './style/detail_drawer.less'
 
 interface DetailDrawerProps {
   data: RawNodeDatum
-  theme: Theme
+  theme?: Theme
 }
 
-export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
+const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
   data,
-  theme,
+  theme = 'light',
   ...props
 }) => {
   const tableName = useMemo(() => getTableName(data), [data])
+  console.log('props',props)
 
   return (
     data && (
@@ -58,7 +59,6 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
               Actual Rows: <span>{data.actRows}</span>
             </p>
             <p>
-              {/* Estimate Rows: <span>{toFixed(data.estRows, 0)}</span> */}
               Estimate Rows: <span>{toFixed(data.estRows, 0)}</span>
             </p>
             <p>
@@ -201,3 +201,5 @@ export const DetailDrawer: React.FC<DetailDrawerProps & DrawerProps> = ({
     )
   )
 }
+
+export default DetailDrawer

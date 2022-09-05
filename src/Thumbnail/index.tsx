@@ -63,8 +63,8 @@ const VisualPlanThumbnail = ({
 
 
   const drawMinimap = () => {
-    const widthRatio = multiTreesViewport.width / multiTreesBound.width
-    const heightRation = multiTreesViewport.height / multiTreesBound.height
+    const widthRatio = (window.innerWidth / 2) / multiTreesBound.width
+    const heightRation = (window.innerHeight / 2) / multiTreesBound.height
     const k =
       Math.min(widthRatio, heightRation) > 0.5
         ? 0.5
@@ -82,6 +82,7 @@ const VisualPlanThumbnail = ({
         [0, 0, multiTreesBound.width, multiTreesBound.height].join(' ')
       )
       .attr('preserveAspectRatio', 'xMidYMid meet')
+      .style('background', 'white')
   }
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const VisualPlanThumbnail = ({
 }
 
 VisualPlanThumbnail.defaultProps = {
-  theme: 'dark',
+  theme: 'light',
   cte: {
     gap: 30,
   },

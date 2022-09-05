@@ -2,7 +2,7 @@ import { useState } from '@storybook/addons'
 import React from 'react'
 
 import { VisualPlan } from '../../src'
-import { DetailDrawer } from '../../src/DetailDrawer'
+import { DetailDrawer } from '../../src'
 import { RawNodeDatum } from '../../src/types'
 import mockData from './vp_mock.json'
 

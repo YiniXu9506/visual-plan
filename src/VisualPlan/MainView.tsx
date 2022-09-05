@@ -7,7 +7,7 @@ import {
   CustomLink,
   CustomNode,
   SingleTreeNodesAndLinks,
-  SingleTreeBound
+  SingleTreeBound,
 } from '../types'
 import { Trees } from './Tree'
 
@@ -42,6 +42,7 @@ const MainView = forwardRef<SVGSVGElement, MainViewProps>(
     },
     ref
   ) => {
+    console.log('viewport', viewport)
     return (
       <svg
         className="multiTreesSVG"

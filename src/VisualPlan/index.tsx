@@ -107,6 +107,7 @@ const VisualPlan = ({
   }
 
   const onZoom = event => {
+    console.log('zoom event',event)
     const t = event.transform
     setMultiTreesTranslate(t)
 
@@ -232,6 +233,7 @@ const VisualPlan = ({
 
   useEffect(() => {
     if (treeDiagramContainerRef.current) {
+      console.log("in use Effect", treeDiagramContainerRef.current?.clientWidth)
       setMultiTreesViewport({
         width: treeDiagramContainerRef.current?.clientWidth,
         height: treeDiagramContainerRef.current?.clientHeight,
