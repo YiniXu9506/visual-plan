@@ -1,6 +1,7 @@
 import React, { MutableRefObject, Ref, useEffect, useRef } from 'react'
 import {
   select,
+  event,
   brush as d3Brush,
   BrushBehavior,
   zoom as d3Zoom,
@@ -63,6 +64,7 @@ const Minimap = ({
     width: viewport.width * minimapScale,
     height: viewport.height * minimapScale,
   }
+
   const { width: multiTreesBoundWidth, height: multiTreesBoundHeight } =
     multiTreesBound
 
@@ -91,7 +93,7 @@ const Minimap = ({
       .attr('height', multiTreesBoundHeight)
   }
 
-  const onBrush = event => {
+  const onBrush = () => {
     if (event.sourceEvent && event.sourceEvent.type === 'zoom') return null
     if (Array.isArray(event.selection)) {
       const [[brushX, brushY]] = event.selection
@@ -116,7 +118,7 @@ const Minimap = ({
   }
 
   // TODO: Limits brush move extent
-  const brushBehavior = d3Brush().on('brush', event => onBrush(event))
+  const brushBehavior = d3Brush().on('brush', () => onBrush())
 
   const bindBrushListener = () => {
     brushSelection.call(brushBehavior)

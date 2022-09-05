@@ -7,7 +7,7 @@ import {
   CustomLink,
   CustomNode,
   SingleTreeNodesAndLinks,
-  SingleTreeBound
+  SingleTreeBound,
 } from '../types'
 import { Trees } from './Tree'
 

@@ -2,7 +2,6 @@ import { useState } from '@storybook/addons'
 import React from 'react'
 
 import { VisualPlan } from '../../src'
-import { DetailDrawer } from '../../src/DetailDrawer'
 import { RawNodeDatum } from '../../src/types'
 import mockData from './vp_mock.json'
 
@@ -48,39 +47,3 @@ export const Basic = ({ minimapScale, minimap: _minimap, cteGap, ...args }) => {
     </div>
   )
 }
-
-export const WithDetailDrawer = ({
-  minimapScale,
-  minimap: _minimap,
-  cteGap,
-  ...args
-}) => {
-  const minimap = _minimap ? { scale: minimapScale } : false
-  const cte = { gap: cteGap }
-  const { theme } = args
-  const [showDetailDrawer, setShowDetailDrawer] = useState(false)
-  const [detailData, setDetailData] = useState<RawNodeDatum | null>(null)
-
-  return (
-    <div style={{ position: 'relative', height: 600 }}>
-      <VisualPlan
-        data={mockData as any}
-        onNodeClick={n => {
-          setDetailData(n)
-          setShowDetailDrawer(true)
-        }}
-        minimap={minimap}
-        cte={cte}
-        {...args}
-      />
-      <DetailDrawer
-        data={detailData!}
-        theme={theme}
-        visible={showDetailDrawer}
-        onClose={() => setShowDetailDrawer(false)}
-        {...args}
-      />
-    </div>
-  )
-}
-

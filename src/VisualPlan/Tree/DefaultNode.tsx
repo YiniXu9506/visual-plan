@@ -7,7 +7,7 @@ import {
 
 import { CustomNode, NodeProps, RectSize, TreeNodeDatum } from '../../types'
 import { ThemeContext } from '../../context/ThemeContext'
-import { getTableName } from '../../utlis'
+import { getTableName, toFixed } from '../../utlis'
 
 const collapsableButtonSize = {
   width: 60,
@@ -15,10 +15,10 @@ const collapsableButtonSize = {
 }
 
 const _calcNodeSize = (datum: TreeNodeDatum): RectSize => {
-  let nodeSize = { width: 250, height: 200 }
+  let nodeSize = { width: 280, height: 200 }
   const tableName = getTableName(datum)
   if (tableName) {
-    nodeSize = { width: 250, height: 230 }
+    nodeSize = { width: 280, height: 230 }
   }
 
   return nodeSize
@@ -111,7 +111,7 @@ const RenderDefaultNodeElement: React.FC<NodeProps> = ({
                   Actual Rows: <span>{nodeDatum.actRows}</span>
                 </p>
                 <p className="content">
-                  Estimate Rows: <span>{nodeDatum.estRows}</span>
+                  Estimate Rows: <span>{toFixed(nodeDatum.estRows, 0)}</span>
                 </p>
                 <p className="content">
                   Run at: <span>{nodeDatum.storeType}</span>

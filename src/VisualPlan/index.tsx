@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import {
   select,
+  event,
   zoom as d3Zoom,
   zoomIdentity,
   scaleLinear,
@@ -38,6 +39,7 @@ const VisualPlan = ({
   onNodeClick,
   cte,
 }: VisualPlanProps) => {
+  console.log('mark')
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [multiTreesNodesAndLinks, setMultiTreesNodesAndLinks] = useState<SingleTreeNodesAndLinks[]>([])
@@ -106,7 +108,7 @@ const VisualPlan = ({
     })
   }
 
-  const onZoom = event => {
+  const onZoom = () => {
     const t = event.transform
     setMultiTreesTranslate(t)
 
@@ -124,7 +126,7 @@ const VisualPlan = ({
   const zoomBehavior = d3Zoom()
     // set scale extent according to the whole tree scale
     .scaleExtent([0.5 * zoomToFitViewportScale, 2 / zoomToFitViewportScale])
-    .on('zoom', event => onZoom(event))
+    .on('zoom', () => onZoom())
 
   // Binds MainView container
   const bindZoomListener = useCallback(() => {

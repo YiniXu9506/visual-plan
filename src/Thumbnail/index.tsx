@@ -30,7 +30,6 @@ const VisualPlanThumbnail = ({
   cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
-  const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [multiTreesViewport, setMultiTreesViewport] = useState<RectSize>({
     width: 0,
     height: 0,
@@ -82,13 +81,13 @@ const VisualPlanThumbnail = ({
         [0, 0, multiTreesBound.width, multiTreesBound.height].join(' ')
       )
       .attr('preserveAspectRatio', 'xMidYMid meet')
+      .style('background', 'white')
   }
 
   useEffect(() => {
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
     const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
-    setTreeNodeDatum(treeNodes)
 
     let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
     let _multiTreesBound = { width: 0, height: 0 }
@@ -153,7 +152,7 @@ const VisualPlanThumbnail = ({
 }
 
 VisualPlanThumbnail.defaultProps = {
-  theme: 'dark',
+  theme: 'light',
   cte: {
     gap: 30,
   },
