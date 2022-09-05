@@ -30,7 +30,6 @@ const VisualPlanThumbnail = ({
   cte,
 }: VisualPlanProps) => {
   const gapBetweenTrees = cte!.gap
-  const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [multiTreesViewport, setMultiTreesViewport] = useState<RectSize>({
     width: 0,
     height: 0,
@@ -63,8 +62,8 @@ const VisualPlanThumbnail = ({
 
 
   const drawMinimap = () => {
-    const widthRatio = (window.innerWidth / 2) / multiTreesBound.width
-    const heightRation = (window.innerHeight / 2) / multiTreesBound.height
+    const widthRatio = multiTreesViewport.width / multiTreesBound.width
+    const heightRation = multiTreesViewport.height / multiTreesBound.height
     const k =
       Math.min(widthRatio, heightRation) > 0.5
         ? 0.5
@@ -89,7 +88,6 @@ const VisualPlanThumbnail = ({
     const _data = [data.main, ...(data.ctes || [])]
     // Assigns all internal properties to tree node
     const treeNodes = AssignInternalProperties(_data, customNode?.calcNodeSize)
-    setTreeNodeDatum(treeNodes)
 
     let _multiTreesNodesAndLinks: SingleTreeNodesAndLinks[] = []
     let _multiTreesBound = { width: 0, height: 0 }

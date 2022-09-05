@@ -93,7 +93,6 @@ const Minimap = ({
   }
 
   const onBrush = event => {
-    console.log('event', event)
     if (event.sourceEvent && event.sourceEvent.type === 'zoom') return null
     if (Array.isArray(event.selection)) {
       const [[brushX, brushY]] = event.selection
@@ -121,8 +120,6 @@ const Minimap = ({
   const brushBehavior = d3Brush().on('brush', event => onBrush(event))
 
   const bindBrushListener = () => {
-    console.log('brushBehavior ', brushBehavior)
-    console.log('brushSelection', brushSelection)
     brushSelection.call(brushBehavior)
 
     // init brush seletion
