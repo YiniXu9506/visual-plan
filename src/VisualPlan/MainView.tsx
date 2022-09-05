@@ -42,7 +42,6 @@ const MainView = forwardRef<SVGSVGElement, MainViewProps>(
     },
     ref
   ) => {
-    console.log('viewport', viewport)
     return (
       <svg
         className="multiTreesSVG"

@@ -39,6 +39,7 @@ const VisualPlan = ({
   onNodeClick,
   cte,
 }: VisualPlanProps) => {
+  console.log('mark')
   const gapBetweenTrees = cte!.gap
   const [treeNodeDatum, setTreeNodeDatum] = useState<TreeNodeDatum[]>([])
   const [multiTreesNodesAndLinks, setMultiTreesNodesAndLinks] = useState<SingleTreeNodesAndLinks[]>([])
